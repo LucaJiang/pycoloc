@@ -81,3 +81,5 @@ or PNG without a GUI.
 An outlined diamond marks the shared candidate chosen from the corrected main
 SNP posterior for that exact row. It is absent when shared support is undefined.
 Component leads continue to identify the maximum component BF separately.
+
+See [performance and resource use](performance.md) for JIT, annotation and plotting costs.

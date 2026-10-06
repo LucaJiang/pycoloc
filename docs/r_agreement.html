@@ -14,77 +14,31 @@
 <aside class="sidebar" aria-label="Documentation sidebar">
 <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
 <span class="version">0.2.2rc3 <span>release candidate</span></span>
-<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Start</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Run the 500-SNP check</a><a href="r_agreement.html" aria-current="page">R agreement report</a><a href="https://github.com/LucaJiang/pycoloc">GitHub repository</a></div><div class="nav-group"><p class="nav-label">Use</p><a href="inputs.html">Inputs and alignment</a><a href="methods.html">Methods and priors</a><a href="api.html">API reference</a><a href="result_schema.html">Result schema</a><a href="locus_plot.html">Locus plots and annotation</a></div><div class="nav-group"><p class="nav-label">Understand</p><a href="compatibility.html">Compatibility</a><a href="upstream_differences.html">Upstream differences</a><a href="reference_mapping.html">Reference mapping</a><a href="performance.html">Performance</a></div><div class="nav-group"><p class="nav-label">Maintain</p><a href="testing.html">Testing</a><a href="pages.html">Documentation and Pages</a><a href="release_notes.html">Release notes</a><a href="migration.html">Name migration</a></div></nav>
+<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Get started</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Offline example</a></div><div class="nav-group"><p class="nav-label">Use the package</p><a href="inputs.html">Inputs and priors</a><a href="api.html">API</a><a href="result_schema.html">Results</a><a href="locus_plot.html">Locus plots</a></div><div class="nav-group"><p class="nav-label">Understand and contribute</p><a href="r_agreement.html" aria-current="page">R agreement</a><a href="compatibility.html">Scope and limitations</a><a href="methods.html">Methods</a><a href="contributing.html">Contributing</a><a href="https://github.com/LucaJiang/pycoloc">GitHub</a></div></nav>
 <div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
 </aside>
 <main id="main" tabindex="-1">
 <div class="page-meta"><span>Colocalisation / Documentation</span><a href="r_agreement.md">Markdown source</a></div>
 <article><details class="on-this-page"><summary>On this page</summary><div class="toc">
 <ul>
-<li><a href="#scope-and-reproducible-command">Scope and reproducible command</a></li>
+<li><a href="#reproduce-the-check">Reproduce the check</a></li>
 <li><a href="#public-fixture-not-new-biological-evidence">Public fixture, not new biological evidence</a></li>
 <li><a href="#1-direct-quantitative-abf-agreement">1. Direct quantitative ABF agreement</a></li>
 <li><a href="#2-colocalisation-on-identical-official-r-fits">2. Colocalisation on identical official-R fits</a></li>
 <li><a href="#3-edges-and-corrected-weighted-behavior">3. Edges and corrected weighted behavior</a></li>
 <li><a href="#4-optional-end-to-end-native-susie">4. Optional end-to-end native SuSiE</a></li>
 <li><a href="#integrity-and-failure-behavior">Integrity and failure behavior</a></li>
-<li><a href="#separately-identified-real-region-evidence-and-limits">Separately identified real-region evidence and limits</a></li>
+<li><a href="#limits">Limits</a></li>
+<li><a href="#reproducibility-appendix">Reproducibility appendix</a></li>
 </ul>
 </div>
 </details><h1 id="executed-agreement-with-official-r">Executed agreement with official R</h1>
-<blockquote>
-<p>Prior-version evidence: the measurements and downloadable records below were
-executed before the public package rename. Historical <code>pyrsusie</code> labels
-identify those original binaries. The current package is <code>prusie</code>; see
-the <a href="migration.html">rename and migration checks</a> for the new installation
-and unchanged numerical-source verification.</p>
-</blockquote>
-<p><strong>pycoloc 0.2.2rc2 passes the stated unweighted ABF and identical-fit pairing checks on the complete 500-SNP upstream teaching fixture.</strong> Corrected weighted fields deliberately differ from pinned R and instead pass independent mathematical checks. This report separates those outcomes.</p>
-<h2 id="scope-and-reproducible-command">Scope and reproducible command</h2>
-<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python -m pip install .
-python examples/check_example.py --output-dir example-output
+<p><strong>The recorded pycoloc 0.2.2rc2 execution passed the stated unweighted ABF and identical-fit pairing checks on the complete 500-SNP upstream teaching fixture.</strong> Corrected weighted fields deliberately differ from pinned R and instead pass independent mathematical checks. This report separates those outcomes.</p>
+<h2 id="reproduce-the-check">Reproduce the check</h2>
+<p>Follow <a href="install.html">installation</a>, then run from the checkout:</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python examples/check_example.py --output-dir example-output
 </code></pre>
-<p>This is an executed Markdown report, accompanied by prebuilt HTML. The command runs the public APIs and writes the complete numeric/structural check record and actual result tables. It needs neither R nor pyrsusie in standalone mode. The source archive bundles every input and reference used here.</p>
-<p>The example was executed on CPython 3.12.2, Linux x86-64, NumPy 2.2.6, SciPy 1.15.3, pandas 2.2.3 and matplotlib 3.10.1. The default NumPy hypothesis engine was used. Primary fine-mapping settings were known n=1000, L=10, max_iter=100, float64 and sequential IBSS. Reference R was 4.4.0 with Netlib BLAS and one numerical thread.</p>
-<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
-<thead>
-<tr>
-<th>Reference</th>
-<th>Exact source</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://github.com/chr1swallace/coloc/tree/8f20f0bc5e60ffc99e4c2f787bd55fd30cfe7c45">coloc 6.0.3</a></td>
-<td>commit <code>8f20f0bc5e60ffc99e4c2f787bd55fd30cfe7c45</code></td>
-</tr>
-<tr>
-<td><a href="https://github.com/stephenslab/susieR/tree/8e56a8e038e989856d106d9ca5175cc664fea9d2">susieR 0.16.6</a></td>
-<td>commit <code>8e56a8e038e989856d106d9ca5175cc664fea9d2</code></td>
-</tr>
-<tr>
-<td>Public input</td>
-<td>Full stored D1–D4 from official <code>coloc_test_data.rda</code>; 500 variables each</td>
-</tr>
-<tr>
-<td>Input and R source integrity</td>
-<td><code>examples/data/reference.lock.json</code>, <code>checksums.json</code>, <code>manifest.json</code></td>
-</tr>
-<tr>
-<td>Complete call parameters</td>
-<td><code>examples/data/parameters.json</code>; coloc p1=p2=1e-4; literal ABF defaults p12=1e-5, explicit-prior/BF cases p12=5e-6</td>
-</tr>
-<tr>
-<td>Independent mathematical expectations</td>
-<td><code>examples/data/independent_oracles.json</code> and runtime Decimal enumeration</td>
-</tr>
-<tr>
-<td>Separate native regression checkpoint</td>
-<td><code>examples/data/expected_native.json</code>, including numerical source hashes</td>
-</tr>
-</tbody>
-</table></div>
-<p>The upstream source and data hashes are fixed; the historical source lock was not changed. The task-specific reference lock identifies susieR 0.16.6 explicitly.</p>
+<p>The command checks your installed version against the same frozen expectations and writes numeric/structural results. Standalone execution needs neither R nor prusie. The checkout includes every input and reference used here.</p>
 <h2 id="public-fixture-not-new-biological-evidence">Public fixture, not new biological evidence</h2>
 <p>These are existing <strong>synthetic teaching datasets</strong>, not a newly simulated study or a human dataset. Actual stored arrays—not stale help text—confirm 500 unique variables in D1, D2, D3 and D4. All are retained in original order. No padding, duplication, SNP selection based on agreement, or random generation was used.</p>
 <p>D1/D2 share the stored causal label s105. D3 has s105 and s89; D4 has s105. N=1000 and sdY come from the stored object. Signed LD r retains the upstream synthetic variable convention and explicit axis order. Positions 1–500 are synthetic indices; biological build, ancestry and alleles are unavailable. Redistribution retains the upstream GPL declaration and attribution in the bundle. The <a href="example.html">example guide</a> describes the files and regeneration recipe.</p>
@@ -225,7 +179,7 @@ python examples/check_example.py --output-dir example-output
 <h2 id="4-optional-end-to-end-native-susie">4. Optional end-to-end native SuSiE</h2>
 <pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python examples/check_example.py --native-pair --output-dir native-example-output
 </code></pre>
-<p>This path was executed with <strong>pycoloc 0.2.2rc2 + pyrsusie 0.2.3rc4</strong>, the selected A02-only candidate. It fits D1–D4 with the same recorded known-n settings and passes the native result objects directly to pycoloc. The backend identifies itself as pyrsusie-rust/0.2.3-rc.4 with pinned susieR 0.16.6 semantics.</p>
+<p>This path was executed with <strong>pycoloc 0.2.2rc2 + pyrsusie 0.2.3rc4</strong>, the historical native binary identified in the appendix. It fits D1–D4 with the same recorded known-n settings and passes the native result objects directly to pycoloc. The backend identifies itself as pyrsusie-rust/0.2.3-rc.4 with pinned susieR 0.16.6 semantics.</p>
 <div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
 <thead>
 <tr>
@@ -295,13 +249,63 @@ python examples/check_example.py --output-dir example-output
 </tbody>
 </table></div>
 <p>These downstream quantities are <strong>diagnostics</strong>, not additional PIP acceptance thresholds. Some entries in D1/D2's conditional SNP vector and D3/D4's additional-signal row exceed the tighter identical-fit comparison bounds. The full record retains those flags rather than claiming all-field parity. The model inputs and PIP criterion remain unchanged.</p>
-<p>The selected pyrsusie source excludes B01. Its separate fixed real-panel comparison to rc17 recorded 118 faster, 0 tied and 82 slower cases out of 200 using one warmup and seven full-call repetitions per case. That observed majority applies to the A02 package versus rc17, not an isolated all-200 incremental A01 ablation, a universal speed claim, or a pycoloc speed claim.</p>
 <h2 id="integrity-and-failure-behavior">Integrity and failure behavior</h2>
-<p>The final executed standalone check passed <strong>209 checks</strong>, including structural validity, independent R/math checks and separate native regression checks. The explicitly enabled native pair passed <strong>235 checks</strong> and retained 24 separate diagnostic entries. Download the <a href="assets/standalone-check.json">standalone check record</a> and <a href="assets/native-pair-check.json">native pair check record</a> for every field, actual parameters, environment/backend versions and errors. Before the native checkpoint was frozen, the 98 input/R/math checks passed independently. Five dedicated self-check tests passed: successful R-free/no-pyrsusie execution; a corrupted input file fails checksum verification; an altered expected H4 fails numerically even after its checksum is repaired; guarded standalone computation cannot import pyrsusie/rpy2 or spawn an external process; and changing only the caller version label does not fail. The complete installed-package test suite passed 213 tests. After adding the literal-default ABF supplement, the five affected public self-check tests were rerun and passed.</p>
+<p>The final executed standalone check passed <strong>209 checks</strong>, including structural validity, independent R/math checks and separate native regression checks. The explicitly enabled native pair passed <strong>235 checks</strong> and retained 24 separate diagnostic entries. Download the <a href="assets/standalone-check.json">standalone check record</a> and <a href="assets/native-pair-check.json">native pair check record</a> for every field, actual parameters, environment/backend versions and errors. Before the native checkpoint was frozen, the 98 input/R/math checks passed independently. Five dedicated self-check tests passed: standalone execution without R or the native fine-mapper; a corrupted input file fails checksum verification; an altered expected H4 fails numerically even after its checksum is repaired; guarded standalone computation cannot import the native fine-mapper/rpy2 or spawn an external process; and changing only the caller version label does not fail. The complete installed-package test suite passed 213 tests. After adding the literal-default ABF supplement, the five affected public self-check tests were rerun and passed.</p>
 <p>A new caller version string is recorded, not treated as numerical failure. The runner never overwrites inputs, expected outputs, or R references. Check failures return a nonzero process exit code and a useful field/error message. Corrected-field differences are reported even when the intended mathematical checks pass.</p>
-<h2 id="separately-identified-real-region-evidence-and-limits">Separately identified real-region evidence and limits</h2>
-<p>The public synthetic example is not the private real-region validation panel. The release review separately accounts for the existing fixed 100 regions / 200 trait fits, using unchanged official-R outputs and final selected package source. Private inputs and outputs are not redistributed in this source archive. A PIP acceptance result is not a promise that every component BF, CS, or downstream colocalisation value is equal.</p>
-<p>These examples do not establish equivalence over every model or input. ABF assumes at most one causal variant per trait; SuSiE depends on LD/effect consistency, fitting settings and convergence. Missing CS is unavailable, not negative evidence for colocalisation. A nonconverged fit remains a limitation even when its numerical behavior is reproducible. pycoloc supports the documented summary-statistic and existing-fit interfaces; it is not the entire R coloc API. Local Linux/CPython checks do not establish remote CI success or universal platform coverage.</p></article>
+<h2 id="limits">Limits</h2>
+<p>The public synthetic example is distinct from the separately recorded 100-region /
+200-trait fine-mapping panel; those private study inputs are not redistributed.
+PIP agreement does not imply equality of component BFs, CSs or downstream
+colocalisation posteriors. ABF assumes at most one causal variant per trait;
+SuSiE depends on LD/effect consistency, fitting settings and convergence. Missing
+CS is unavailable, not negative evidence for colocalisation. A nonconverged fit
+remains a limitation even when its numerical behavior is reproducible. See
+<a href="compatibility.html">compatibility</a> for supported interfaces.</p>
+<h2 id="reproducibility-appendix">Reproducibility appendix</h2>
+<p>The original execution used pycoloc 0.2.2rc2; optional fitting used
+<code>pyrsusie 0.2.3rc4</code> before its public rename. The downloadable records retain those
+binary identities. Current installation and reproduction use pycoloc and prusie.
+These recorded numbers have not been relabeled as new release measurements.</p>
+<p>The example was executed on CPython 3.12.2, Linux x86-64, NumPy 2.2.6, SciPy 1.15.3, pandas 2.2.3 and matplotlib 3.10.1. The default NumPy hypothesis engine was used. Primary fine-mapping settings were known n=1000, L=10, max_iter=100, float64 and sequential IBSS. Reference R was 4.4.0 with Netlib BLAS and one numerical thread.</p>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Reference</th>
+<th>Exact source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/chr1swallace/coloc/tree/8f20f0bc5e60ffc99e4c2f787bd55fd30cfe7c45">coloc 6.0.3</a></td>
+<td>commit <code>8f20f0bc5e60ffc99e4c2f787bd55fd30cfe7c45</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/stephenslab/susieR/tree/8e56a8e038e989856d106d9ca5175cc664fea9d2">susieR 0.16.6</a></td>
+<td>commit <code>8e56a8e038e989856d106d9ca5175cc664fea9d2</code></td>
+</tr>
+<tr>
+<td>Public input</td>
+<td>Full stored D1–D4 from official <code>coloc_test_data.rda</code>; 500 variables each</td>
+</tr>
+<tr>
+<td>Input and R source integrity</td>
+<td><code>examples/data/reference.lock.json</code>, <code>checksums.json</code>, <code>manifest.json</code></td>
+</tr>
+<tr>
+<td>Complete call parameters</td>
+<td><code>examples/data/parameters.json</code>; coloc p1=p2=1e-4; literal ABF defaults p12=1e-5, explicit-prior/BF cases p12=5e-6</td>
+</tr>
+<tr>
+<td>Independent mathematical expectations</td>
+<td><code>examples/data/independent_oracles.json</code> and runtime Decimal enumeration</td>
+</tr>
+<tr>
+<td>Separate native regression checkpoint</td>
+<td><code>examples/data/expected_native.json</code>, including numerical source hashes</td>
+</tr>
+</tbody>
+</table></div>
+<p>The upstream source and data hashes are fixed; the historical source lock was not changed. The task-specific reference lock identifies susieR 0.16.6 explicitly.</p></article>
 <footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
 </main>
 </div>

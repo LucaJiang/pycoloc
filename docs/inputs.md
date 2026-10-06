@@ -32,5 +32,5 @@ LD population/build/sample provenance. Plotting accepts r or r² only when kind
 is explicit; r² is a display quantity. Heatmap row/column selection is coordinated
 by SNP IDs and positions and never changes the association inputs or inference.
 Local annotation, coordinate conventions and cache metadata are documented in
-[locus plots](locus_plot.md). No genotype, summary-statistic or annotation database
-is shipped with this repository.
+[locus plots](locus_plot.md). Only the synthetic teaching fixture is bundled; real genotype, study summary
+statistics and annotation databases must be supplied by the caller.

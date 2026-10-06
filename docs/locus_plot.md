@@ -1,9 +1,9 @@
-# Offline, publication-size locus plots (0.2.0)
+# Locus plots and local annotation
 
 `plot_coloc_locus` returns an editable matplotlib figure and five axes: compact
 coloc summary, GWAS association, eQTL association, genes and physical-coordinate
-pairwise LD. `plot_coloc` remains available unchanged. The new plotting API does
-not alter `ColocResult` schema 2 or the corrected 0.1.1 statistical calculations.
+pairwise LD. `plot_coloc` provides a simpler pair of marginal association tracks.
+Plotting does not alter inference results.
 
 ```python
 from pycoloc import LDMatrix, prepare_region_annotation, plot_coloc_locus
@@ -104,9 +104,10 @@ A chromosome subset is not a genome-wide cache. Preserve the original full-sourc
 IDs, square dimensions, finite range, symmetry and unit diagonal at absolute
 roundoff tolerance 1e-8 (configurable up to 1e-4). `kind` is explicitly `"r"` or
 `"r2"`; signed r is squared exactly once. Metadata retains kind and provenance.
-Use separate FIN and EUR objects for corresponding tracks. Select the single
+Use a separate, correctly documented LD panel for each trait when needed. Select the single
 heatmap panel explicitly with `heatmap_ld`; it is not silently pooled or borrowed.
-Sample counts identify founders, not independently verified unrelated subjects.
+Record reference sample selection; a founder label alone does not establish
+unrelatedness.
 
 `LeadLD(values, snp_ids, lead_id, kind, panel)` can color associations but never
 creates a pairwise heatmap. Its reference lead must match the requested lead.
@@ -128,9 +129,8 @@ omissions are explicitly distinguishable from rank thinning and out-of-window LD
 ## Styling, export and local example bundles
 
 Default width is 180 mm, title 8.5 pt, axes 7.5 pt and secondary labels 6.5–7 pt.
-The five-panel grid replaces the historical large multi-line header/two scatter
-tracks with a compact summary/legend, identity-bound per-trait LD colors, complete
-gene context and an audited vector triangle. Arial/Helvetica are preferred when
+The five-panel grid uses a compact summary/legend, SNP-aligned per-trait LD
+colors, gene context and a vector LD triangle. Arial/Helvetica are preferred when
 installed, then Liberation Sans/DejaVu Sans; metadata records the actual font.
 Style changes use local `rc_context`, never global matplotlib settings.
 

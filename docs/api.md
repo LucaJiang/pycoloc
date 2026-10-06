@@ -2,7 +2,7 @@
 
 Annotation serialization helpers and model containers are in `pycoloc.annotation`; inference and plotting entry points are top-level exports.
 
-The following signatures and parameter descriptions come from the selected public source. See the input and result guides for alignment and interpretation.
+The following signatures and parameter descriptions describe the public API. See the input and result guides for alignment and interpretation.
 
 ## coloc_abf
 

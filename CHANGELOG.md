@@ -1,30 +1,27 @@
-# 0.2.2rc3 (2026-10-06)
-
-- Update optional fitting integration, runtime labels, tests and docs to import prusie.
-- Preserve statistical code, input/reference bytes and existing licenses.
-- See [migration notes](docs/migration.md). Earlier entries retain prior-version history.
-
-# 0.2.2rc2
-
-- Add offline public teaching-fixture checks with separate official-R and mathematical expectations.
-- Add static Pages documentation, executed agreement report and local integrity/link checks.
-- Preserve inference defaults and existing corrected-field semantics.
-
 # Changelog
+
+## 0.2.2rc3
+
+- Use prusie for the optional native-fitting example; standalone inference is unchanged.
+- Clarify installation, examples and scientific validation in the documentation.
+
+## 0.2.2rc2
+
+- Add the offline 500-SNP synthetic teaching example with separate R, mathematical
+  and native expectations, and an executed [agreement report](docs/r_agreement.md).
+- Add static documentation and example integrity/failure checks.
 
 ## 0.2.2rc1
 
-- Preserve the current corrected colocalisation, locus plotting and local annotation implementation.
-- Add independent repository packaging, API/schema documentation, examples and public CI.
+- Package the colocalisation, local annotation and locus plotting interfaces with
+  self-contained tests and CI configuration.
 
-This local export has no assigned remote, DOI or package-index release. No publication or default-environment replacement was performed.
+## Earlier changes
 
-The development starting point was experimental pyrsusie0.2.2rc17; the separately accepted0.2.0 installation remains unchanged. Python/Cargo/CITATION versions identify this cleaned source.
+- Correct weighted `SNP.PP.H4`, SNP-bound prior alignment and explicit effect-prior
+  SD propagation. Support partial-zero priors and stable H3/zero/underflow handling.
+- Result schema 2 preserves original component IDs and explicit unavailable states.
+- Add locus plots with local annotation and coordinated LD heatmaps.
 
-The validation protocol uses all100 frozen regions/200 trait cases, L=5, max_iter=100 and tol=.001 against pinned susieR0.16.6. PIP absolute error ≤1e-5 (rtol0), probability validity and unchanged input/model semantics define numerical acceptance. Intermediate/credible-set and downstream colocalisation changes remain diagnostics. One known GWAS case reaches100 iterations without convergence and must remain visible in the accompanying validation report.
-
-Local checks use CPython3.12/Linux x86-64. Public tests and examples are self-contained analytical inputs; private benchmark input data and annotation databases are not redistributable artifacts here. The source includes a future GitHub CI workflow; no remote CI success is claimed. Formal measurements and local package/check results accompany the delivery separately. No universal speed or hardware bottleneck claim is made.
-
-## Earlier semantic changes
-
-Corrected SNP.PP.H4 weighting, ID-bound prior alignment, explicit effect-prior SD propagation, true-zero/underflow handling and partial-zero priors. Schema2 retains explicit no-CS and original component IDs. Locus plotting adds source-bound local annotation and coordinated LD heatmaps. See docs/upstream_differences.md.
+See [upstream differences](docs/upstream_differences.md) for the scientific
+meaning and tests of the corrected fields.

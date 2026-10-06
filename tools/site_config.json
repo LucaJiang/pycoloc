@@ -6,7 +6,7 @@
   "description": "Auditable colocalisation in Python: summary-statistic ABFs, existing SuSiE fits, and an offline 500-SNP reference check.",
   "navigation": [
     [
-      "Start",
+      "Get started",
       [
         [
           "Overview",
@@ -17,83 +17,54 @@
           "install.html"
         ],
         [
-          "Run the 500-SNP check",
+          "Offline example",
           "example.html"
-        ],
-        [
-          "R agreement report",
-          "r_agreement.html"
-        ],
-        [
-          "GitHub repository",
-          "https://github.com/LucaJiang/pycoloc"
         ]
       ]
     ],
     [
-      "Use",
+      "Use the package",
       [
         [
-          "Inputs and alignment",
+          "Inputs and priors",
           "inputs.html"
         ],
         [
-          "Methods and priors",
-          "methods.html"
-        ],
-        [
-          "API reference",
+          "API",
           "api.html"
         ],
         [
-          "Result schema",
+          "Results",
           "result_schema.html"
         ],
         [
-          "Locus plots and annotation",
+          "Locus plots",
           "locus_plot.html"
         ]
       ]
     ],
     [
-      "Understand",
+      "Understand and contribute",
       [
         [
-          "Compatibility",
+          "R agreement",
+          "r_agreement.html"
+        ],
+        [
+          "Scope and limitations",
           "compatibility.html"
         ],
         [
-          "Upstream differences",
-          "upstream_differences.html"
+          "Methods",
+          "methods.html"
         ],
         [
-          "Reference mapping",
-          "reference_mapping.html"
+          "Contributing",
+          "contributing.html"
         ],
         [
-          "Performance",
-          "performance.html"
-        ]
-      ]
-    ],
-    [
-      "Maintain",
-      [
-        [
-          "Testing",
-          "testing.html"
-        ],
-        [
-          "Documentation and Pages",
-          "pages.html"
-        ],
-        [
-          "Release notes",
-          "release_notes.html"
-        ],
-        [
-          "Name migration",
-          "migration.html"
+          "GitHub",
+          "https://github.com/LucaJiang/pycoloc"
         ]
       ]
     ]

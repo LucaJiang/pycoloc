@@ -1,4 +1,4 @@
-# Colocalisation, with inspectable evidence
+# Bayesian colocalisation
 
 <p class="intro">Compare association signals with Bayesian colocalisation in Python. Start with summary statistics or existing SuSiE fits, then inspect the hypotheses, shared-variant probabilities, and model assumptions.</p>
 
@@ -10,10 +10,9 @@
 
 ## Quick start
 
-From a source checkout or unpacked source archive, install the package and run its offline check:
+Follow [installation](install.md) to clone the repository and install its dependencies, then run from the checkout:
 
 ```sh
-python -m pip install .
 python examples/check_example.py --output-dir example-output
 ```
 
@@ -37,8 +36,9 @@ Both coloc prior-weight vectors follow explicit SNP identities. An existing fit 
 
 The [result schema](result_schema.md), [methods and priors](methods.md), and [upstream differences](upstream_differences.md) explain how to interpret computed, missing, and unavailable results. [Locus plotting](locus_plot.md) adds association tracks and local annotation without changing inference.
 
-## Reference and availability
+## Reference
 
-pycoloc is developed by **Wenxin Jiang**. The algorithm reference is official coloc 6.0.3 at commit `8f20f0bc5e60ffc99e4c2f787bd55fd30cfe7c45`; the example's SuSiE fits use pinned susieR 0.16.6. This is a release candidate, with no claimed package-index publication or remote CI execution. See [compatibility](compatibility.md) and [release notes](release_notes.md) for supported scope.
-
-Source: [pycoloc on GitHub](https://github.com/LucaJiang/pycoloc). Related package: [prusie](https://github.com/LucaJiang/prusie).
+The algorithm reference is official coloc 6.0.3; the example's SuSiE fits use
+susieR 0.16.6. See [compatibility](compatibility.md) for supported scope and
+[source mapping](reference_mapping.md) for pinned identities.
+Maintained by Wenxin Jiang. Source: [GitHub](https://github.com/LucaJiang/pycoloc).

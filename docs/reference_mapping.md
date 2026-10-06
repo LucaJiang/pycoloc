@@ -23,7 +23,7 @@ diagnostic evidence. `_validation.weights` admits partial zeros uniformly.
 the fixed `approx.bf.p` scales. Quantitative beta prior SD is multiplied by sdY,
 then squared, as the pinned `approx.bf.estimates` code actually does (despite
 its parameter documentation calling the inputs variances).
-Stable difference IDs, old values and test names are in upstream_differences.md.
+Counterexamples and regression tests are in [upstream differences](upstream_differences.md).
 
 The R source was read locally from the locked archive, not a floating branch or
 third-party Python implementation. The source archive SHA256 is
@@ -31,11 +31,7 @@ f6580ab471e1bd9f3acc45e23a73bb2ee16fe3c0a45e01cd8cc008854661b479.
 The current public teaching-fit exports use [susieR 0.16.6](https://github.com/stephenslab/susieR/tree/8e56a8e038e989856d106d9ca5175cc664fea9d2), commit
 `8e56a8e038e989856d106d9ca5175cc664fea9d2`. Its exact archive/data hashes and
 R/dependency environment are in `examples/data/reference.lock.json` and
-`reference_environment.json`. The original development lock used CRAN 0.14.2
-(SHA256 ba02322eb1f7a7cc024c9278aa7903a34d8ad5d6f3b12c168374bc6214ed2c6e);
-that historical lock is preserved and is not the current example reference.
-
-Methods cited by upstream: Giambartolomei et al., PLoS Genetics,
+`reference_environment.json`. Methods cited by upstream: Giambartolomei et al., PLoS Genetics,
 doi:10.1371/journal.pgen.1004383; Wallace, PLoS Genetics,
 doi:10.1371/journal.pgen.1008720 and doi:10.1371/journal.pgen.1009440.
 These are upstream method citations, not identifiers for this Python package.
@@ -47,16 +43,4 @@ union and documented transcript selection. `annotation.local` adapts official
 gffutils SQLite indexing/overlap/parent queries with local provenance and locking.
 `locus_ld` implements explicit LD validation, ID mapping and audited plot-only
 thinning. `locus` implements the five-panel layout and physical triangle; these
-are new visualization APIs, not ports of statistical R functions. The existing
-`_math`, `_validation`, `abf`, `pairing` and `result` statistical code is unchanged
-from the preserved 0.1.1 checkpoint. See locus_plot.md and annotation/locus tests.
-
-## Equivalent implementation changes in 0.2.1
-
-`_math.combine` now passes its already computed shared log-sum to `conditional`;
-the log-sum implementation, inputs and reduction order are identical. `pairing`
-constructs SNP columns together and reuses original component index arrays when
-forming R indices. This changes result allocation only, not component selection,
-ID alignment, posterior support or any formula. All annotation and locus modules
-retain their 0.2.0 bytes. Bounded profiles and installed before/after measurements
-are in the revision run's PERFORMANCE_PROFILE_REPORT.md.
+are new visualization APIs, not ports of statistical R functions. See [locus plots](locus_plot.md) and the annotation/locus tests for these interfaces.

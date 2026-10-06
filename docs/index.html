@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Auditable colocalisation in Python: summary-statistic ABFs, existing SuSiE fits, and an offline 500-SNP reference check.">
-<title>Colocalisation, with inspectable evidence · pycoloc</title>
+<title>Bayesian colocalisation · pycoloc</title>
 <link rel="stylesheet" href="assets/site.css">
 <script src="assets/site.js" defer></script>
 </head>
@@ -14,7 +14,7 @@
 <aside class="sidebar" aria-label="Documentation sidebar">
 <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
 <span class="version">0.2.2rc3 <span>release candidate</span></span>
-<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Start</p><a href="index.html" aria-current="page">Overview</a><a href="install.html">Install</a><a href="example.html">Run the 500-SNP check</a><a href="r_agreement.html">R agreement report</a><a href="https://github.com/LucaJiang/pycoloc">GitHub repository</a></div><div class="nav-group"><p class="nav-label">Use</p><a href="inputs.html">Inputs and alignment</a><a href="methods.html">Methods and priors</a><a href="api.html">API reference</a><a href="result_schema.html">Result schema</a><a href="locus_plot.html">Locus plots and annotation</a></div><div class="nav-group"><p class="nav-label">Understand</p><a href="compatibility.html">Compatibility</a><a href="upstream_differences.html">Upstream differences</a><a href="reference_mapping.html">Reference mapping</a><a href="performance.html">Performance</a></div><div class="nav-group"><p class="nav-label">Maintain</p><a href="testing.html">Testing</a><a href="pages.html">Documentation and Pages</a><a href="release_notes.html">Release notes</a><a href="migration.html">Name migration</a></div></nav>
+<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Get started</p><a href="index.html" aria-current="page">Overview</a><a href="install.html">Install</a><a href="example.html">Offline example</a></div><div class="nav-group"><p class="nav-label">Use the package</p><a href="inputs.html">Inputs and priors</a><a href="api.html">API</a><a href="result_schema.html">Results</a><a href="locus_plot.html">Locus plots</a></div><div class="nav-group"><p class="nav-label">Understand and contribute</p><a href="r_agreement.html">R agreement</a><a href="compatibility.html">Scope and limitations</a><a href="methods.html">Methods</a><a href="contributing.html">Contributing</a><a href="https://github.com/LucaJiang/pycoloc">GitHub</a></div></nav>
 <div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
 </aside>
 <main id="main" tabindex="-1">
@@ -24,10 +24,10 @@
 <li><a href="#quick-start">Quick start</a></li>
 <li><a href="#choose-your-input">Choose your input</a></li>
 <li><a href="#read-the-result-in-context">Read the result in context</a></li>
-<li><a href="#reference-and-availability">Reference and availability</a></li>
+<li><a href="#reference">Reference</a></li>
 </ul>
 </div>
-</details><h1 id="colocalisation-with-inspectable-evidence">Colocalisation, with inspectable evidence</h1>
+</details><h1 id="bayesian-colocalisation">Bayesian colocalisation</h1>
 <p class="intro">Compare association signals with Bayesian colocalisation in Python. Start with summary statistics or existing SuSiE fits, then inspect the hypotheses, shared-variant probabilities, and model assumptions.</p>
 
 <div class="cards">
@@ -37,9 +37,8 @@
 </div>
 
 <h2 id="quick-start">Quick start</h2>
-<p>From a source checkout or unpacked source archive, install the package and run its offline check:</p>
-<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python -m pip install .
-python examples/check_example.py --output-dir example-output
+<p>Follow <a href="install.html">installation</a> to clone the repository and install its dependencies, then run from the checkout:</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python examples/check_example.py --output-dir example-output
 </code></pre>
 <p>Once dependencies are installed, the check needs no network, R, private study files, or prusie. It calls real public APIs on the bundled upstream <strong>synthetic teaching fixture</strong>. It checks file integrity and numerical results, writes a machine-readable record, and exits nonzero on a substantive mismatch.</p>
 <h2 id="choose-your-input">Choose your input</h2>
@@ -75,9 +74,11 @@ python examples/check_example.py --output-dir example-output
 <div class="callout"><p><strong>Agreement has a defined scope.</strong> Unweighted paths with explicitly recorded priors are checked against pinned official R. Corrected weighted SNP posteriors, stable H3, and several input semantics deliberately differ where the reference is inconsistent. The report preserves those differences and checks independent mathematical expectations.</p></div>
 
 <p>The <a href="result_schema.html">result schema</a>, <a href="methods.html">methods and priors</a>, and <a href="upstream_differences.html">upstream differences</a> explain how to interpret computed, missing, and unavailable results. <a href="locus_plot.html">Locus plotting</a> adds association tracks and local annotation without changing inference.</p>
-<h2 id="reference-and-availability">Reference and availability</h2>
-<p>pycoloc is developed by <strong>Wenxin Jiang</strong>. The algorithm reference is official coloc 6.0.3 at commit <code>8f20f0bc5e60ffc99e4c2f787bd55fd30cfe7c45</code>; the example's SuSiE fits use pinned susieR 0.16.6. This is a release candidate, with no claimed package-index publication or remote CI execution. See <a href="compatibility.html">compatibility</a> and <a href="release_notes.html">release notes</a> for supported scope.</p>
-<p>Source: <a href="https://github.com/LucaJiang/pycoloc">pycoloc on GitHub</a>. Related package: <a href="https://github.com/LucaJiang/prusie">prusie</a>.</p></article>
+<h2 id="reference">Reference</h2>
+<p>The algorithm reference is official coloc 6.0.3; the example's SuSiE fits use
+susieR 0.16.6. See <a href="compatibility.html">compatibility</a> for supported scope and
+<a href="reference_mapping.html">source mapping</a> for pinned identities.
+Maintained by Wenxin Jiang. Source: <a href="https://github.com/LucaJiang/pycoloc">GitHub</a>.</p></article>
 <footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
 </main>
 </div>

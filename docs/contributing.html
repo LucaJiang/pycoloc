@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Auditable colocalisation in Python: summary-statistic ABFs, existing SuSiE fits, and an offline 500-SNP reference check.">
+<title>Contributing · pycoloc</title>
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/site.js" defer></script>
+</head>
+<body class="pycoloc">
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="site-shell">
+<aside class="sidebar" aria-label="Documentation sidebar">
+<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
+<span class="version">0.2.2rc3 <span>release candidate</span></span>
+<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Get started</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Offline example</a></div><div class="nav-group"><p class="nav-label">Use the package</p><a href="inputs.html">Inputs and priors</a><a href="api.html">API</a><a href="result_schema.html">Results</a><a href="locus_plot.html">Locus plots</a></div><div class="nav-group"><p class="nav-label">Understand and contribute</p><a href="r_agreement.html">R agreement</a><a href="compatibility.html">Scope and limitations</a><a href="methods.html">Methods</a><a href="contributing.html" aria-current="page">Contributing</a><a href="https://github.com/LucaJiang/pycoloc">GitHub</a></div></nav>
+<div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
+</aside>
+<main id="main" tabindex="-1">
+<div class="page-meta"><span>Colocalisation / Documentation</span><a href="contributing.md">Markdown source</a></div>
+<article><details class="on-this-page"><summary>On this page</summary><div class="toc">
+<ul>
+<li><a href="#tests-and-packages">Tests and packages</a></li>
+<li><a href="#documentation">Documentation</a></li>
+<li><a href="#scientific-checks-and-provenance">Scientific checks and provenance</a></li>
+</ul>
+</div>
+</details><h1 id="contributing">Contributing</h1>
+<p>Start with the checkout and environment in <a href="install.html">installation</a>. Run the
+existing tests for affected code, and document any changed scientific behavior.</p>
+<h2 id="tests-and-packages">Tests and packages</h2>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python -m pip install -c requirements-dev.lock '.[jit,annotation,test]'
+python -m pytest tests
+python examples/quickstart.py
+python examples/check_example.py --output-dir example-output
+python -m pip install build
+python -m build
+</code></pre>
+<p>The build writes a wheel and source distribution into <code>dist/</code>; use the actual
+filename when installing your own wheel. The source distribution includes the
+repository examples. These commands do not publish artifacts.</p>
+<p>The public tests cover independent configuration enumeration, ABF equations,
+weighted alignment, explicit priors, null components, partial zeros and stable
+H3, NumPy/Numba parity, runtime independence, plotting and local miniature
+GTF/GFF3 indexing. Install the JIT and annotation extras for the full suite.
+<code>tests/test_example.py</code> includes checksum and numerical failure controls and
+verifies standalone execution without R or prusie. Optional native integration
+is documented in the <a href="example.html#optional-native-fitting-with-prusie">example guide</a>.</p>
+<h2 id="documentation">Documentation</h2>
+<p>Markdown in <code>docs/</code> is the source for the committed static HTML. From the
+repository root:</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python -m pip install -r tools/docs-requirements.txt
+python tools/build_docs.py
+python tools/build_docs.py --check
+python tools/check_docs.py
+python -m http.server 8000 --bind 127.0.0.1 --directory docs
+</code></pre>
+<p>Open <code>http://127.0.0.1:8000/</code>, or open <code>docs/index.html</code> directly. Navigation,
+code and tables work without JavaScript; Tab reaches the skip link and scrollable
+content. Links are relative so the site also works below a repository subpath.
+<code>--check</code> detects stale HTML; the link checker validates local pages, anchors,
+assets and metadata. Review desktop and mobile rendering after layout changes.
+When merging a page, remove its obsolete HTML and update inbound links too.</p>
+<p>The published site is <a href="https://lucajiang.github.io/pycoloc/">pycoloc documentation</a>.
+An owner can configure it under <strong>Settings → Pages → Build and deployment</strong>:
+<strong>Deploy from a branch → main → /docs → Save</strong>. <code>docs/.nojekyll</code> serves the
+prebuilt files. Committing source and deploying Pages are separate operations;
+check deployment status after publishing changes.</p>
+<h2 id="scientific-checks-and-provenance">Scientific checks and provenance</h2>
+<p>The <a href="r_agreement.html">R agreement report</a> identifies the measured versions,
+parameters, tolerances, corrected behavior and limits. Keep official-R outputs,
+mathematical expectations and native regression snapshots distinct. Never
+refresh frozen outputs merely to make a failed check pass. Reference regeneration
+uses a separate directory and the pinned recipe in
+<a href="https://github.com/LucaJiang/pycoloc/blob/main/examples/data/README.md">the data README</a>.
+See <a href="reference_mapping.html">source mapping</a> for implementation responsibilities.</p>
+<p>Retain GPL and third-party notices with code and data. Cite the statistical
+methods as well as the software version. Tests use redistributable analytical
+inputs and the fixed synthetic teaching fixture; they do not need private study
+data or an R installation. The workflow in <code>.github/workflows/ci.yml</code> runs local
+build/test/doc commands on GitHub; consult the actual workflow run for CI status.</p></article>
+<footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
+</main>
+</div>
+</body>
+</html>

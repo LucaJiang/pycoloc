@@ -1,4 +1,4 @@
-# ColocResult schema 2 (pycoloc 0.1.1)
+# ColocResult schema
 
 `metadata.result_schema_version` is the string `2`. Summary shape and all
 existing H0–H4, prior, SNP and component identifiers retain their definitions.

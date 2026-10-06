@@ -14,7 +14,7 @@
 <aside class="sidebar" aria-label="Documentation sidebar">
 <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
 <span class="version">0.2.2rc3 <span>release candidate</span></span>
-<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Start</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Run the 500-SNP check</a><a href="r_agreement.html">R agreement report</a><a href="https://github.com/LucaJiang/pycoloc">GitHub repository</a></div><div class="nav-group"><p class="nav-label">Use</p><a href="inputs.html">Inputs and alignment</a><a href="methods.html">Methods and priors</a><a href="api.html">API reference</a><a href="result_schema.html">Result schema</a><a href="locus_plot.html">Locus plots and annotation</a></div><div class="nav-group"><p class="nav-label">Understand</p><a href="compatibility.html">Compatibility</a><a href="upstream_differences.html">Upstream differences</a><a href="reference_mapping.html" aria-current="page">Reference mapping</a><a href="performance.html">Performance</a></div><div class="nav-group"><p class="nav-label">Maintain</p><a href="testing.html">Testing</a><a href="pages.html">Documentation and Pages</a><a href="release_notes.html">Release notes</a><a href="migration.html">Name migration</a></div></nav>
+<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Get started</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Offline example</a></div><div class="nav-group"><p class="nav-label">Use the package</p><a href="inputs.html">Inputs and priors</a><a href="api.html">API</a><a href="result_schema.html">Results</a><a href="locus_plot.html">Locus plots</a></div><div class="nav-group"><p class="nav-label">Understand and contribute</p><a href="r_agreement.html">R agreement</a><a href="compatibility.html">Scope and limitations</a><a href="methods.html">Methods</a><a href="contributing.html">Contributing</a><a href="https://github.com/LucaJiang/pycoloc">GitHub</a></div></nav>
 <div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
 </aside>
 <main id="main" tabindex="-1">
@@ -22,7 +22,6 @@
 <article><details class="on-this-page"><summary>On this page</summary><div class="toc">
 <ul>
 <li><a href="#locus-feature-020">Locus feature 0.2.0</a></li>
-<li><a href="#equivalent-implementation-changes-in-021">Equivalent implementation changes in 0.2.1</a></li>
 </ul>
 </div>
 </details><h1 id="pinned-source-mapping">Pinned source mapping</h1>
@@ -100,17 +99,14 @@ diagnostic evidence. <code>_validation.weights</code> admits partial zeros unifo
 the fixed <code>approx.bf.p</code> scales. Quantitative beta prior SD is multiplied by sdY,
 then squared, as the pinned <code>approx.bf.estimates</code> code actually does (despite
 its parameter documentation calling the inputs variances).
-Stable difference IDs, old values and test names are in upstream_differences.md.</p>
+Counterexamples and regression tests are in <a href="upstream_differences.html">upstream differences</a>.</p>
 <p>The R source was read locally from the locked archive, not a floating branch or
 third-party Python implementation. The source archive SHA256 is
 f6580ab471e1bd9f3acc45e23a73bb2ee16fe3c0a45e01cd8cc008854661b479.
 The current public teaching-fit exports use <a href="https://github.com/stephenslab/susieR/tree/8e56a8e038e989856d106d9ca5175cc664fea9d2">susieR 0.16.6</a>, commit
 <code>8e56a8e038e989856d106d9ca5175cc664fea9d2</code>. Its exact archive/data hashes and
 R/dependency environment are in <code>examples/data/reference.lock.json</code> and
-<code>reference_environment.json</code>. The original development lock used CRAN 0.14.2
-(SHA256 ba02322eb1f7a7cc024c9278aa7903a34d8ad5d6f3b12c168374bc6214ed2c6e);
-that historical lock is preserved and is not the current example reference.</p>
-<p>Methods cited by upstream: Giambartolomei et al., PLoS Genetics,
+<code>reference_environment.json</code>. Methods cited by upstream: Giambartolomei et al., PLoS Genetics,
 doi:10.1371/journal.pgen.1004383; Wallace, PLoS Genetics,
 doi:10.1371/journal.pgen.1008720 and doi:10.1371/journal.pgen.1009440.
 These are upstream method citations, not identifiers for this Python package.</p>
@@ -120,17 +116,7 @@ union and documented transcript selection. <code>annotation.local</code> adapts 
 gffutils SQLite indexing/overlap/parent queries with local provenance and locking.
 <code>locus_ld</code> implements explicit LD validation, ID mapping and audited plot-only
 thinning. <code>locus</code> implements the five-panel layout and physical triangle; these
-are new visualization APIs, not ports of statistical R functions. The existing
-<code>_math</code>, <code>_validation</code>, <code>abf</code>, <code>pairing</code> and <code>result</code> statistical code is unchanged
-from the preserved 0.1.1 checkpoint. See locus_plot.md and annotation/locus tests.</p>
-<h2 id="equivalent-implementation-changes-in-021">Equivalent implementation changes in 0.2.1</h2>
-<p><code>_math.combine</code> now passes its already computed shared log-sum to <code>conditional</code>;
-the log-sum implementation, inputs and reduction order are identical. <code>pairing</code>
-constructs SNP columns together and reuses original component index arrays when
-forming R indices. This changes result allocation only, not component selection,
-ID alignment, posterior support or any formula. All annotation and locus modules
-retain their 0.2.0 bytes. Bounded profiles and installed before/after measurements
-are in the revision run's PERFORMANCE_PROFILE_REPORT.md.</p></article>
+are new visualization APIs, not ports of statistical R functions. See <a href="locus_plot.html">locus plots</a> and the annotation/locus tests for these interfaces.</p></article>
 <footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
 </main>
 </div>

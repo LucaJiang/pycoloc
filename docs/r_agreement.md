@@ -1,35 +1,16 @@
 # Executed agreement with official R
 
-> Prior-version evidence: the measurements and downloadable records below were
-> executed before the public package rename. Historical `pyrsusie` labels
-> identify those original binaries. The current package is `prusie`; see
-> the [rename and migration checks](migration.md) for the new installation
-> and unchanged numerical-source verification.
+**The recorded pycoloc 0.2.2rc2 execution passed the stated unweighted ABF and identical-fit pairing checks on the complete 500-SNP upstream teaching fixture.** Corrected weighted fields deliberately differ from pinned R and instead pass independent mathematical checks. This report separates those outcomes.
 
-**pycoloc 0.2.2rc2 passes the stated unweighted ABF and identical-fit pairing checks on the complete 500-SNP upstream teaching fixture.** Corrected weighted fields deliberately differ from pinned R and instead pass independent mathematical checks. This report separates those outcomes.
+## Reproduce the check
 
-## Scope and reproducible command
+Follow [installation](install.md), then run from the checkout:
 
 ```sh
-python -m pip install .
 python examples/check_example.py --output-dir example-output
 ```
 
-This is an executed Markdown report, accompanied by prebuilt HTML. The command runs the public APIs and writes the complete numeric/structural check record and actual result tables. It needs neither R nor pyrsusie in standalone mode. The source archive bundles every input and reference used here.
-
-The example was executed on CPython 3.12.2, Linux x86-64, NumPy 2.2.6, SciPy 1.15.3, pandas 2.2.3 and matplotlib 3.10.1. The default NumPy hypothesis engine was used. Primary fine-mapping settings were known n=1000, L=10, max_iter=100, float64 and sequential IBSS. Reference R was 4.4.0 with Netlib BLAS and one numerical thread.
-
-| Reference | Exact source |
-| --- | --- |
-| [coloc 6.0.3](https://github.com/chr1swallace/coloc/tree/8f20f0bc5e60ffc99e4c2f787bd55fd30cfe7c45) | commit `8f20f0bc5e60ffc99e4c2f787bd55fd30cfe7c45` |
-| [susieR 0.16.6](https://github.com/stephenslab/susieR/tree/8e56a8e038e989856d106d9ca5175cc664fea9d2) | commit `8e56a8e038e989856d106d9ca5175cc664fea9d2` |
-| Public input | Full stored D1–D4 from official `coloc_test_data.rda`; 500 variables each |
-| Input and R source integrity | `examples/data/reference.lock.json`, `checksums.json`, `manifest.json` |
-| Complete call parameters | `examples/data/parameters.json`; coloc p1=p2=1e-4; literal ABF defaults p12=1e-5, explicit-prior/BF cases p12=5e-6 |
-| Independent mathematical expectations | `examples/data/independent_oracles.json` and runtime Decimal enumeration |
-| Separate native regression checkpoint | `examples/data/expected_native.json`, including numerical source hashes |
-
-The upstream source and data hashes are fixed; the historical source lock was not changed. The task-specific reference lock identifies susieR 0.16.6 explicitly.
+The command checks your installed version against the same frozen expectations and writes numeric/structural results. Standalone execution needs neither R nor prusie. The checkout includes every input and reference used here.
 
 ## Public fixture, not new biological evidence
 
@@ -96,7 +77,7 @@ Shared q12 is not renormalized to a fixed total. Keyed SNP/weight alignment, exp
 python examples/check_example.py --native-pair --output-dir native-example-output
 ```
 
-This path was executed with **pycoloc 0.2.2rc2 + pyrsusie 0.2.3rc4**, the selected A02-only candidate. It fits D1–D4 with the same recorded known-n settings and passes the native result objects directly to pycoloc. The backend identifies itself as pyrsusie-rust/0.2.3-rc.4 with pinned susieR 0.16.6 semantics.
+This path was executed with **pycoloc 0.2.2rc2 + pyrsusie 0.2.3rc4**, the historical native binary identified in the appendix. It fits D1–D4 with the same recorded known-n settings and passes the native result objects directly to pycoloc. The backend identifies itself as pyrsusie-rust/0.2.3-rc.4 with pinned susieR 0.16.6 semantics.
 
 | Dataset | Max absolute PIP error | Native / R iterations | Native / R CS count | Max absolute component logBF difference (diagnostic) |
 | --- | ---: | --- | --- | ---: |
@@ -115,16 +96,40 @@ All four primary fits converge. All 2,000 PIPs pass atol=1e-5, rtol=0; alpha nor
 
 These downstream quantities are **diagnostics**, not additional PIP acceptance thresholds. Some entries in D1/D2's conditional SNP vector and D3/D4's additional-signal row exceed the tighter identical-fit comparison bounds. The full record retains those flags rather than claiming all-field parity. The model inputs and PIP criterion remain unchanged.
 
-The selected pyrsusie source excludes B01. Its separate fixed real-panel comparison to rc17 recorded 118 faster, 0 tied and 82 slower cases out of 200 using one warmup and seven full-call repetitions per case. That observed majority applies to the A02 package versus rc17, not an isolated all-200 incremental A01 ablation, a universal speed claim, or a pycoloc speed claim.
-
 ## Integrity and failure behavior
 
-The final executed standalone check passed **209 checks**, including structural validity, independent R/math checks and separate native regression checks. The explicitly enabled native pair passed **235 checks** and retained 24 separate diagnostic entries. Download the [standalone check record](assets/standalone-check.json) and [native pair check record](assets/native-pair-check.json) for every field, actual parameters, environment/backend versions and errors. Before the native checkpoint was frozen, the 98 input/R/math checks passed independently. Five dedicated self-check tests passed: successful R-free/no-pyrsusie execution; a corrupted input file fails checksum verification; an altered expected H4 fails numerically even after its checksum is repaired; guarded standalone computation cannot import pyrsusie/rpy2 or spawn an external process; and changing only the caller version label does not fail. The complete installed-package test suite passed 213 tests. After adding the literal-default ABF supplement, the five affected public self-check tests were rerun and passed.
+The final executed standalone check passed **209 checks**, including structural validity, independent R/math checks and separate native regression checks. The explicitly enabled native pair passed **235 checks** and retained 24 separate diagnostic entries. Download the [standalone check record](assets/standalone-check.json) and [native pair check record](assets/native-pair-check.json) for every field, actual parameters, environment/backend versions and errors. Before the native checkpoint was frozen, the 98 input/R/math checks passed independently. Five dedicated self-check tests passed: standalone execution without R or the native fine-mapper; a corrupted input file fails checksum verification; an altered expected H4 fails numerically even after its checksum is repaired; guarded standalone computation cannot import the native fine-mapper/rpy2 or spawn an external process; and changing only the caller version label does not fail. The complete installed-package test suite passed 213 tests. After adding the literal-default ABF supplement, the five affected public self-check tests were rerun and passed.
 
 A new caller version string is recorded, not treated as numerical failure. The runner never overwrites inputs, expected outputs, or R references. Check failures return a nonzero process exit code and a useful field/error message. Corrected-field differences are reported even when the intended mathematical checks pass.
 
-## Separately identified real-region evidence and limits
+## Limits
 
-The public synthetic example is not the private real-region validation panel. The release review separately accounts for the existing fixed 100 regions / 200 trait fits, using unchanged official-R outputs and final selected package source. Private inputs and outputs are not redistributed in this source archive. A PIP acceptance result is not a promise that every component BF, CS, or downstream colocalisation value is equal.
+The public synthetic example is distinct from the separately recorded 100-region /
+200-trait fine-mapping panel; those private study inputs are not redistributed.
+PIP agreement does not imply equality of component BFs, CSs or downstream
+colocalisation posteriors. ABF assumes at most one causal variant per trait;
+SuSiE depends on LD/effect consistency, fitting settings and convergence. Missing
+CS is unavailable, not negative evidence for colocalisation. A nonconverged fit
+remains a limitation even when its numerical behavior is reproducible. See
+[compatibility](compatibility.md) for supported interfaces.
 
-These examples do not establish equivalence over every model or input. ABF assumes at most one causal variant per trait; SuSiE depends on LD/effect consistency, fitting settings and convergence. Missing CS is unavailable, not negative evidence for colocalisation. A nonconverged fit remains a limitation even when its numerical behavior is reproducible. pycoloc supports the documented summary-statistic and existing-fit interfaces; it is not the entire R coloc API. Local Linux/CPython checks do not establish remote CI success or universal platform coverage.
+## Reproducibility appendix
+
+The original execution used pycoloc 0.2.2rc2; optional fitting used
+`pyrsusie 0.2.3rc4` before its public rename. The downloadable records retain those
+binary identities. Current installation and reproduction use pycoloc and prusie.
+These recorded numbers have not been relabeled as new release measurements.
+
+The example was executed on CPython 3.12.2, Linux x86-64, NumPy 2.2.6, SciPy 1.15.3, pandas 2.2.3 and matplotlib 3.10.1. The default NumPy hypothesis engine was used. Primary fine-mapping settings were known n=1000, L=10, max_iter=100, float64 and sequential IBSS. Reference R was 4.4.0 with Netlib BLAS and one numerical thread.
+
+| Reference | Exact source |
+| --- | --- |
+| [coloc 6.0.3](https://github.com/chr1swallace/coloc/tree/8f20f0bc5e60ffc99e4c2f787bd55fd30cfe7c45) | commit `8f20f0bc5e60ffc99e4c2f787bd55fd30cfe7c45` |
+| [susieR 0.16.6](https://github.com/stephenslab/susieR/tree/8e56a8e038e989856d106d9ca5175cc664fea9d2) | commit `8e56a8e038e989856d106d9ca5175cc664fea9d2` |
+| Public input | Full stored D1–D4 from official `coloc_test_data.rda`; 500 variables each |
+| Input and R source integrity | `examples/data/reference.lock.json`, `checksums.json`, `manifest.json` |
+| Complete call parameters | `examples/data/parameters.json`; coloc p1=p2=1e-4; literal ABF defaults p12=1e-5, explicit-prior/BF cases p12=5e-6 |
+| Independent mathematical expectations | `examples/data/independent_oracles.json` and runtime Decimal enumeration |
+| Separate native regression checkpoint | `examples/data/expected_native.json`, including numerical source hashes |
+
+The upstream source and data hashes are fixed; the historical source lock was not changed. The task-specific reference lock identifies susieR 0.16.6 explicitly.

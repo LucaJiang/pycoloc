@@ -13,7 +13,5 @@ Whole-genome GTF indexing can take substantial time and disk space; rendering
 prepared local annotation avoids rebuilding the index. Cache identities retain
 source, release, build, indexer/schema and content hashes.
 
-Prusie comparisons depend on actual R BLAS/LAPACK and LD redundancy; no such
-timings establish an independent pycoloc speed claim. The package supplies no
-whole-host utilization guarantee or hidden worker pool. See the separate
-prusie performance guide when fine-mapping is part of your analysis.
+No fine-mapping timing establishes an independent pycoloc speed claim. The
+package supplies no whole-host utilization guarantee or hidden worker pool.

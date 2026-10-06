@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Auditable colocalisation in Python: summary-statistic ABFs, existing SuSiE fits, and an offline 500-SNP reference check.">
-<title>Offline, publication-size locus plots (0.2.0) · pycoloc</title>
+<title>Locus plots and local annotation · pycoloc</title>
 <link rel="stylesheet" href="assets/site.css">
 <script src="assets/site.js" defer></script>
 </head>
@@ -14,7 +14,7 @@
 <aside class="sidebar" aria-label="Documentation sidebar">
 <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
 <span class="version">0.2.2rc3 <span>release candidate</span></span>
-<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Start</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Run the 500-SNP check</a><a href="r_agreement.html">R agreement report</a><a href="https://github.com/LucaJiang/pycoloc">GitHub repository</a></div><div class="nav-group"><p class="nav-label">Use</p><a href="inputs.html">Inputs and alignment</a><a href="methods.html">Methods and priors</a><a href="api.html">API reference</a><a href="result_schema.html">Result schema</a><a href="locus_plot.html" aria-current="page">Locus plots and annotation</a></div><div class="nav-group"><p class="nav-label">Understand</p><a href="compatibility.html">Compatibility</a><a href="upstream_differences.html">Upstream differences</a><a href="reference_mapping.html">Reference mapping</a><a href="performance.html">Performance</a></div><div class="nav-group"><p class="nav-label">Maintain</p><a href="testing.html">Testing</a><a href="pages.html">Documentation and Pages</a><a href="release_notes.html">Release notes</a><a href="migration.html">Name migration</a></div></nav>
+<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Get started</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Offline example</a></div><div class="nav-group"><p class="nav-label">Use the package</p><a href="inputs.html">Inputs and priors</a><a href="api.html">API</a><a href="result_schema.html">Results</a><a href="locus_plot.html" aria-current="page">Locus plots</a></div><div class="nav-group"><p class="nav-label">Understand and contribute</p><a href="r_agreement.html">R agreement</a><a href="compatibility.html">Scope and limitations</a><a href="methods.html">Methods</a><a href="contributing.html">Contributing</a><a href="https://github.com/LucaJiang/pycoloc">GitHub</a></div></nav>
 <div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
 </aside>
 <main id="main" tabindex="-1">
@@ -26,11 +26,11 @@
 <li><a href="#styling-export-and-local-example-bundles">Styling, export and local example bundles</a></li>
 </ul>
 </div>
-</details><h1 id="offline-publication-size-locus-plots-020">Offline, publication-size locus plots (0.2.0)</h1>
+</details><h1 id="locus-plots-and-local-annotation">Locus plots and local annotation</h1>
 <p><code>plot_coloc_locus</code> returns an editable matplotlib figure and five axes: compact
 coloc summary, GWAS association, eQTL association, genes and physical-coordinate
-pairwise LD. <code>plot_coloc</code> remains available unchanged. The new plotting API does
-not alter <code>ColocResult</code> schema 2 or the corrected 0.1.1 statistical calculations.</p>
+pairwise LD. <code>plot_coloc</code> provides a simpler pair of marginal association tracks.
+Plotting does not alter inference results.</p>
 <pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-python">from pycoloc import LDMatrix, prepare_region_annotation, plot_coloc_locus
 
 # All input objects and metadata are supplied by the caller.
@@ -118,9 +118,10 @@ A chromosome subset is not a genome-wide cache. Preserve the original full-sourc
 IDs, square dimensions, finite range, symmetry and unit diagonal at absolute
 roundoff tolerance 1e-8 (configurable up to 1e-4). <code>kind</code> is explicitly <code>"r"</code> or
 <code>"r2"</code>; signed r is squared exactly once. Metadata retains kind and provenance.
-Use separate FIN and EUR objects for corresponding tracks. Select the single
+Use a separate, correctly documented LD panel for each trait when needed. Select the single
 heatmap panel explicitly with <code>heatmap_ld</code>; it is not silently pooled or borrowed.
-Sample counts identify founders, not independently verified unrelated subjects.</p>
+Record reference sample selection; a founder label alone does not establish
+unrelatedness.</p>
 <p><code>LeadLD(values, snp_ids, lead_id, kind, panel)</code> can color associations but never
 creates a pairwise heatmap. Its reference lead must match the requested lead.
 Missing LD is gray, separate from the blue 0–0.2 bin. Discrete boundaries are
@@ -138,9 +139,8 @@ spacing; thinning necessarily coarsens displayed cells. Repeated-position
 omissions are explicitly distinguishable from rank thinning and out-of-window LD.</p>
 <h2 id="styling-export-and-local-example-bundles">Styling, export and local example bundles</h2>
 <p>Default width is 180 mm, title 8.5 pt, axes 7.5 pt and secondary labels 6.5–7 pt.
-The five-panel grid replaces the historical large multi-line header/two scatter
-tracks with a compact summary/legend, identity-bound per-trait LD colors, complete
-gene context and an audited vector triangle. Arial/Helvetica are preferred when
+The five-panel grid uses a compact summary/legend, SNP-aligned per-trait LD
+colors, gene context and a vector LD triangle. Arial/Helvetica are preferred when
 installed, then Liberation Sans/DejaVu Sans; metadata records the actual font.
 Style changes use local <code>rc_context</code>, never global matplotlib settings.</p>
 <p>Useful knobs are <code>figsize</code>, <code>fontsize</code>, <code>point_size</code>, <code>max_labels</code> (0–2 total),

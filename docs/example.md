@@ -2,26 +2,19 @@
 
 The example executes `coloc_abf`, `coloc_bf_bf`, and `coloc_susie` on a fixed, redistributable **synthetic upstream teaching fixture**. Each of its four datasets contains 500 distinct SNP-like variables. It is software validation, not evidence from a new biological study.
 
-## Standalone, offline execution
+## Run offline after installation
 
-From a clean checkout or unpacked pycoloc source archive:
+Follow [installation](install.md) to clone the repository, create an environment
+and install the package. From that checkout:
 
 ```sh
-python -m venv .venv
-. .venv/bin/activate
-python -m pip install .
 python examples/check_example.py --help
 python examples/check_example.py --output-dir example-output
 ```
 
-Installation may require a network connection to obtain dependencies. After pycoloc and its runtime dependencies are installed, the example itself runs offline. You can instead install the supplied wheel and run the script from this source archive:
-
-```sh
-python -m pip install /path/to/pycoloc-0.2.2rc3-py3-none-any.whl
-python examples/check_example.py --output-dir example-output
-```
-
-The pure Python wheel contains the importable package; the accompanying source archive contains `examples/`, its complete data bundle, and this documentation. No R, prusie, system compiler, private data, or original workspace is required by the standalone check.
+Installation may download dependencies. Once installed, the check runs offline
+without R or external study data. It imports the installed package and uses the
+frozen files in `examples/data/`.
 
 ## What the check does
 
@@ -41,7 +34,7 @@ The [executed R agreement report](r_agreement.md) explains which differences are
 
 All stored D1, D2, D3 and D4 data were exported from coloc's pinned `coloc_test_data.rda`, unchanged and without outcome-based selection. Each has N=1000, quantitative beta/varbeta and its actual stored sdY. The stored causal labels identify s105 in D1/D2/D4, and s105 plus s89 in D3; these are synthetic variable identities. Positions are indices, not genomic coordinates. Build, ancestry, effect alleles and counting alleles are unavailable and explicitly null. Do not convert these into biological claims.
 
-The bundle supplies numeric float64 NPZ with `allow_pickle=False`, portable TSV/JSON, and a variant manifest that maps both LD axes. LD values are signed correlation r. The full input bundle is about 9 MB, with four complete 500×500 matrices. No private FinnGen, BLUEPRINT, genotype, or annotation data are included.
+The bundle supplies numeric float64 NPZ with `allow_pickle=False`, portable TSV/JSON, and a variant manifest that maps both LD axes. LD values are signed correlation r. The full input bundle is about 9 MB, with four complete 500×500 matrices. No human study data or annotation database is included.
 
 The literal default ABF calls pass only the two datasets: p1=p2=1e-4 and p12=1e-5. A second pair of ABF calls explicitly uses p12=5e-6, matching the SuSiE pairing priors. Both use the standard quantitative effect-prior SD `0.15 × sdY`. It requires no LD. Frozen SuSiE fits use known-n z-RSS, `z=beta/sqrt(varbeta)`, L=10, max_iter=100, tol=0.001, coverage=0.95, min_abs_corr=0.5 and full 500-variable purity. Prior variance uses `optim`; residual variance remains fixed. All arguments are recorded in `examples/data/parameters.json`.
 
@@ -49,7 +42,16 @@ Two explicitly labelled diagnostics change one setting: D3_strict_purity uses mi
 
 ## Optional native fitting with prusie
 
-Install the separately provided prusie candidate into the same environment first. Then:
+Install [prusie](https://github.com/LucaJiang/prusie) into the same activated
+environment, with its Rust toolchain, C linker and Python headers available.
+Starting in the pycoloc checkout:
+
+```sh
+git clone https://github.com/LucaJiang/prusie.git ../prusie
+python -m pip install ../prusie
+```
+
+Then run:
 
 ```sh
 python examples/check_example.py --native-pair --output-dir native-example-output
@@ -67,7 +69,7 @@ Reference regeneration is optional and writes a new directory. Follow the exact 
 
 ## Deliberate failure tests
 
-From the source archive, with pytest installed:
+From the checkout, install the test extra and run:
 
 ```sh
 python -m pip install -c requirements-dev.lock '.[test]'
