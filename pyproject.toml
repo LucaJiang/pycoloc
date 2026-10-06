@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+authors = [{name = "Wenxin Jiang"}]
+maintainers = [{name = "Wenxin Jiang"}]
+name = "pycoloc"
+version = "0.2.2rc3"
+description = "Auditable Bayesian colocalisation with variant-specific priors"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES"]
+dependencies = ["numpy>=1.24", "scipy>=1.10", "pandas>=2", "matplotlib>=3.7"]
+
+[project.urls]
+Repository = "https://github.com/LucaJiang/pycoloc"
+Documentation = "https://github.com/LucaJiang/pycoloc/tree/main/docs"
+Issues = "https://github.com/LucaJiang/pycoloc/issues"
+
+[project.optional-dependencies]
+jit = ["numba>=0.59"]
+test = ["pytest>=8"]
+annotation = ["gffutils>=0.13,<0.15"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/test_plotting.py" = ["E402"]
+"tests/test_locus.py" = ["E402"]
+"examples/abf_region.py" = ["E402"]

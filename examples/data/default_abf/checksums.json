@@ -1,0 +1,26 @@
+{
+  "format_version": 1,
+  "source_bundle_checksums_sha256": "2e084ad2c77ecd48e8d07cddff8ea332c18efa93672141cf7e562fec3e8071ee",
+  "files": {
+    "r_default_abf.json": {
+      "bytes": 315329,
+      "sha256": "29e5a1134c6e1d2b68709d49b8f696b463baa400fd9e27809f82bcaabce47a98"
+    },
+    "regenerate_default_abf.R": {
+      "bytes": 2060,
+      "sha256": "a0c6ec7e893fc6dd0999e16d9a31d610b9ffff0b70fccde142a37a15d26a782c"
+    },
+    "reference.lock.json": {
+      "bytes": 1564,
+      "sha256": "f9113dda425405b54ab8577499dae6607e81acbb757beae485ae0b5a54b3970d"
+    },
+    "reference_environment.json": {
+      "bytes": 2716,
+      "sha256": "312c67e864582434b1df4012050bfbbb6a900e63b138c932e30102ef6881c457"
+    },
+    "README.md": {
+      "bytes": 1375,
+      "sha256": "da3ceedad047ef6fab6a644510759d862f0717e9cd171c7ceee55123f1748b3b"
+    }
+  }
+}

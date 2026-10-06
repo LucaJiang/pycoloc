@@ -1,0 +1,101 @@
+{
+  "package": "pycoloc",
+  "mark": "C",
+  "tagline": "Bayesian colocalisation",
+  "section": "Colocalisation / Documentation",
+  "description": "Auditable colocalisation in Python: summary-statistic ABFs, existing SuSiE fits, and an offline 500-SNP reference check.",
+  "navigation": [
+    [
+      "Start",
+      [
+        [
+          "Overview",
+          "index.html"
+        ],
+        [
+          "Install",
+          "install.html"
+        ],
+        [
+          "Run the 500-SNP check",
+          "example.html"
+        ],
+        [
+          "R agreement report",
+          "r_agreement.html"
+        ],
+        [
+          "GitHub repository",
+          "https://github.com/LucaJiang/pycoloc"
+        ]
+      ]
+    ],
+    [
+      "Use",
+      [
+        [
+          "Inputs and alignment",
+          "inputs.html"
+        ],
+        [
+          "Methods and priors",
+          "methods.html"
+        ],
+        [
+          "API reference",
+          "api.html"
+        ],
+        [
+          "Result schema",
+          "result_schema.html"
+        ],
+        [
+          "Locus plots and annotation",
+          "locus_plot.html"
+        ]
+      ]
+    ],
+    [
+      "Understand",
+      [
+        [
+          "Compatibility",
+          "compatibility.html"
+        ],
+        [
+          "Upstream differences",
+          "upstream_differences.html"
+        ],
+        [
+          "Reference mapping",
+          "reference_mapping.html"
+        ],
+        [
+          "Performance",
+          "performance.html"
+        ]
+      ]
+    ],
+    [
+      "Maintain",
+      [
+        [
+          "Testing",
+          "testing.html"
+        ],
+        [
+          "Documentation and Pages",
+          "pages.html"
+        ],
+        [
+          "Release notes",
+          "release_notes.html"
+        ],
+        [
+          "Name migration",
+          "migration.html"
+        ]
+      ]
+    ]
+  ]
+}

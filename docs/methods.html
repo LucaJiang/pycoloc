@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Auditable colocalisation in Python: summary-statistic ABFs, existing SuSiE fits, and an offline 500-SNP reference check.">
+<title>Methods and parameters · pycoloc</title>
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/site.js" defer></script>
+</head>
+<body class="pycoloc">
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="site-shell">
+<aside class="sidebar" aria-label="Documentation sidebar">
+<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
+<span class="version">0.2.2rc3 <span>release candidate</span></span>
+<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Start</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Run the 500-SNP check</a><a href="r_agreement.html">R agreement report</a><a href="https://github.com/LucaJiang/pycoloc">GitHub repository</a></div><div class="nav-group"><p class="nav-label">Use</p><a href="inputs.html">Inputs and alignment</a><a href="methods.html" aria-current="page">Methods and priors</a><a href="api.html">API reference</a><a href="result_schema.html">Result schema</a><a href="locus_plot.html">Locus plots and annotation</a></div><div class="nav-group"><p class="nav-label">Understand</p><a href="compatibility.html">Compatibility</a><a href="upstream_differences.html">Upstream differences</a><a href="reference_mapping.html">Reference mapping</a><a href="performance.html">Performance</a></div><div class="nav-group"><p class="nav-label">Maintain</p><a href="testing.html">Testing</a><a href="pages.html">Documentation and Pages</a><a href="release_notes.html">Release notes</a><a href="migration.html">Name migration</a></div></nav>
+<div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
+</aside>
+<main id="main" tabindex="-1">
+<div class="page-meta"><span>Colocalisation / Documentation</span><a href="methods.md">Markdown source</a></div>
+<article><h1 id="methods-and-parameters">Methods and parameters</h1>
+<p>The ABF uses a normal effect prior with standard deviation 0.2 for log odds
+ratios, or 0.15 × sdY for quantitative beta estimates. For P-value input the
+quantitative prior SD is 0.15, using variance 1 / (2 N f (1−f)); case-control
+variance divides additionally by s(1−s). With effect variance W and sampling
+variance V, r = W/(W+V), and logBF = ½[log(V/(V+W)) + r z²]. All arrays use
+float64 and natural log BF. Input P values are two-sided.</p>
+<p><code>effect_priors={'quant': ..., 'cc': ...}</code> specifies <strong>standard deviations</strong>,
+not variances. On beta/varbeta inputs quantitative SD is multiplied by sdY
+before squaring; case-control SD is on the log(OR) scale. Nondefault values
+are forwarded to the actual ABF calculation. The active P/MAF/N branch retains
+fixed SDs 0.15 (unit-variance quantitative phenotype) and 0.2 (logOR), and
+rejects an explicit effect_priors mapping. Supplying both input branches still
+selects beta/varbeta and applies the mapping.</p>
+<p>When sdY is unavailable, regress 2 N f (1−f) against 1/varbeta through the origin
+and take the square root of its slope. Record the estimate in
+<code>metadata['dataset1'/'dataset2']</code>; the software warns about estimation. N is
+scalar. Frequency validation matches pinned coloc's open interval (0,1);
+the variance expression is invariant to f versus 1−f, but frequencies must not
+be used to infer allele direction without effect-allele evidence.</p>
+<p>For Q common SNPs, weights define q1[j]=Q p1 w1[j]/Σw1 and analogously q2.
+Omitting a side's weights means q=p for that side. Shared q12[j] is
+q1[j]q2[j]p12/(p1p2), <strong>without</strong> fixing its sum to Q p12. H1 and H2 sum
+single-trait contributions; H3 sums q1[i]q2[j] BF1[i]BF2[j] over i≠j; H4 sums
+q12[j] BF1[j]BF2[j]. H0 has unnormalised mass 1. Normalize the five masses.</p>
+<p>H3 uses O(Q) log-prefix/suffix reductions (NumPy) or an O(Q) sequential
+logaddexp kernel (Numba), avoiding subtraction of nearly equal masses and any
+Q×Q allocation. <code>engine='numba'</code> compiles on first call, without fastmath or a
+disk compilation cache. The default is the readable NumPy implementation.</p>
+<p>Base priors must be finite scalars in (0,1]. Boundary zero priors are rejected
+explicitly: pinned weighted formulas divide by p1p2 and do not define a reliable
+zero-prior convention. Vector base priors are unsupported; use SNP weights.
+ABF adjusts p1 and p2 using the original trait SNP counts and p12 after
+intersection: when n p≥1, replace p by 1/(n+1), with a warning. BF pairing does
+not apply that adjustment to hypothesis priors. Weight normalization occurs on
+the common support after these steps.</p>
+<p>Weights may be keyed mappings/Series or arrays. Arrays first bind to the
+input's explicit SNP IDs. Keys must match each complete biological support.
+All three interfaces accept partial zeros and reject all-zero common support.
+Infinite, missing, negative or mismatched weights always raise. Zero weights
+remove configuration support exactly, without an epsilon or uniform fallback.
+The main SNP.PP.H4 fields normalize q12[j] BF1[j] BF2[j] in log space;
+<code>.weighted</code> fields are equal transitional aliases. No extra q12 normalization
+is applied. This is P(shared SNP=j | H4, data); a joint posterior would multiply
+it by PP.H4. Disjoint shared support gives logU4=−∞, PP.H4=0, conditional NaN,
+and h4_status='zero_shared_evidence'. Finite logU4 with PP.H4 rounded to zero
+gives h4_status='posterior_underflow' and a valid conditional posterior. Ordinary
+computed rows have h4_status='defined'. Both logU3 and logU4 are exposed for
+diagnostics. These statuses are separate from structural result.status.</p>
+<p>SuSiE consumption selects original <code>sets.cs_index</code> <strong>rows</strong> of lbf_variable and
+retains every biological column, including SNPs outside CS membership. Rows
+pair with trait 1 varying fastest. Credible set indices and all public component
+indices are zero based; idx1_r/idx2_r explicitly add one for R comparisons.
+An optional null must be the final column and be declared by null_index=m.
+Biological IDs and coloc weights exclude it. Each row is shifted by its null
+logBF. Overlap is the posterior fraction on common SNPs conditional on a
+biological association, evaluated against each full input support. It ignores
+coloc weights just as the pinned source does. It is not a SNP-count overlap.</p>
+<p><code>no_cs</code>, <code>no_overlap</code>, <code>insufficient_overlap</code>, <code>partially_trimmed</code> and <code>ok</code> are
+distinct. Insufficient overlap for every pair preserves rows with H1–H4 missing
+and the upstream minimum-null H0 diagnostic; this is not a valid five-hypothesis
+posterior. Unconverged fits emit a warning and retain explicit convergence
+metadata. Computation is still possible, matching upstream consumption.</p>
+<p><code>plot_coloc</code> draws full supplied regional marginal tracks. Original valid P
+values take priority over Wald P. Natural logP or stable normal log tails recover
+underflowed zeros when possible; otherwise clipping is labelled. No conditional
+association or LD coloring is inferred. Coordinates and chromosome are mandatory.
+Titles derive H0–H4 from one exact summary row. Multiple pairs require explicit
+original component IDs. The figure and axes remain editable; save as SVG, PDF
+or PNG without a GUI.
+An outlined diamond marks the shared candidate chosen from the corrected main
+SNP posterior for that exact row. It is absent when shared support is undefined.
+Component leads continue to identify the maximum component BF separately.</p></article>
+<footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
+</main>
+</div>
+</body>
+</html>

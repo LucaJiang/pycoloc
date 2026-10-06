@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Auditable colocalisation in Python: summary-statistic ABFs, existing SuSiE fits, and an offline 500-SNP reference check.">
+<title>Run the 500-SNP reference check · pycoloc</title>
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/site.js" defer></script>
+</head>
+<body class="pycoloc">
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="site-shell">
+<aside class="sidebar" aria-label="Documentation sidebar">
+<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
+<span class="version">0.2.2rc3 <span>release candidate</span></span>
+<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Start</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html" aria-current="page">Run the 500-SNP check</a><a href="r_agreement.html">R agreement report</a><a href="https://github.com/LucaJiang/pycoloc">GitHub repository</a></div><div class="nav-group"><p class="nav-label">Use</p><a href="inputs.html">Inputs and alignment</a><a href="methods.html">Methods and priors</a><a href="api.html">API reference</a><a href="result_schema.html">Result schema</a><a href="locus_plot.html">Locus plots and annotation</a></div><div class="nav-group"><p class="nav-label">Understand</p><a href="compatibility.html">Compatibility</a><a href="upstream_differences.html">Upstream differences</a><a href="reference_mapping.html">Reference mapping</a><a href="performance.html">Performance</a></div><div class="nav-group"><p class="nav-label">Maintain</p><a href="testing.html">Testing</a><a href="pages.html">Documentation and Pages</a><a href="release_notes.html">Release notes</a><a href="migration.html">Name migration</a></div></nav>
+<div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
+</aside>
+<main id="main" tabindex="-1">
+<div class="page-meta"><span>Colocalisation / Documentation</span><a href="example.md">Markdown source</a></div>
+<article><details class="on-this-page"><summary>On this page</summary><div class="toc">
+<ul>
+<li><a href="#standalone-offline-execution">Standalone, offline execution</a></li>
+<li><a href="#what-the-check-does">What the check does</a></li>
+<li><a href="#the-data-and-model">The data and model</a></li>
+<li><a href="#optional-native-fitting-with-prusie">Optional native fitting with prusie</a></li>
+<li><a href="#frozen-reference-provenance-and-regeneration">Frozen reference provenance and regeneration</a></li>
+<li><a href="#deliberate-failure-tests">Deliberate failure tests</a></li>
+</ul>
+</div>
+</details><h1 id="run-the-500-snp-reference-check">Run the 500-SNP reference check</h1>
+<p>The example executes <code>coloc_abf</code>, <code>coloc_bf_bf</code>, and <code>coloc_susie</code> on a fixed, redistributable <strong>synthetic upstream teaching fixture</strong>. Each of its four datasets contains 500 distinct SNP-like variables. It is software validation, not evidence from a new biological study.</p>
+<h2 id="standalone-offline-execution">Standalone, offline execution</h2>
+<p>From a clean checkout or unpacked pycoloc source archive:</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python -m venv .venv
+. .venv/bin/activate
+python -m pip install .
+python examples/check_example.py --help
+python examples/check_example.py --output-dir example-output
+</code></pre>
+<p>Installation may require a network connection to obtain dependencies. After pycoloc and its runtime dependencies are installed, the example itself runs offline. You can instead install the supplied wheel and run the script from this source archive:</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python -m pip install /path/to/pycoloc-0.2.2rc3-py3-none-any.whl
+python examples/check_example.py --output-dir example-output
+</code></pre>
+<p>The pure Python wheel contains the importable package; the accompanying source archive contains <code>examples/</code>, its complete data bundle, and this documentation. No R, prusie, system compiler, private data, or original workspace is required by the standalone check.</p>
+<h2 id="what-the-check-does">What the check does</h2>
+<ol>
+<li>Verify SHA256 checksums of the input, official-reference and native-checkpoint files.</li>
+<li>Validate the 500 unique IDs, effect/variance arrays, signed LD order, symmetry and diagonal.</li>
+<li>Execute unweighted quantitative ABF comparisons for D1/D2 and D3/D4 against official coloc 6.0.3, both with literal public defaults and with the separately recorded common prior settings.</li>
+<li>Consume the frozen official SuSiE fits and compare component-pair H0–H4, SNP posteriors, IDs, leads and probability validity. Call BF pairing separately on the same full component rows.</li>
+<li>Check no-CS as unavailable and propagate an explicitly nonconverged frozen fit with its warning.</li>
+<li>Check corrected weighted and partial-zero behavior against independently enumerated mathematical expectations, preserving the raw R differences as diagnostics.</li>
+<li>Compare against a separate frozen pycoloc regression checkpoint. It is labelled as native output and never used as an independent R or mathematical oracle.</li>
+</ol>
+<p>The command prints <code>PASS</code> or <code>FAIL</code>, field-level maximum absolute errors, and the thresholds used. It writes <code>report.json</code> and <code>actual_results.json</code> to your output directory and exits with a nonzero code for a substantive failure. A package version change is recorded transparently; its string alone cannot cause a numerical failure. Output inside the frozen data directory is rejected. The runner never updates its expected results.</p>
+<p>The <a href="r_agreement.html">executed R agreement report</a> explains which differences are expected and why. A final <code>PASS</code> means the stated checks passed; it does <strong>not</strong> mean every upstream field was identical.</p>
+<h2 id="the-data-and-model">The data and model</h2>
+<p>All stored D1, D2, D3 and D4 data were exported from coloc's pinned <code>coloc_test_data.rda</code>, unchanged and without outcome-based selection. Each has N=1000, quantitative beta/varbeta and its actual stored sdY. The stored causal labels identify s105 in D1/D2/D4, and s105 plus s89 in D3; these are synthetic variable identities. Positions are indices, not genomic coordinates. Build, ancestry, effect alleles and counting alleles are unavailable and explicitly null. Do not convert these into biological claims.</p>
+<p>The bundle supplies numeric float64 NPZ with <code>allow_pickle=False</code>, portable TSV/JSON, and a variant manifest that maps both LD axes. LD values are signed correlation r. The full input bundle is about 9 MB, with four complete 500×500 matrices. No private FinnGen, BLUEPRINT, genotype, or annotation data are included.</p>
+<p>The literal default ABF calls pass only the two datasets: p1=p2=1e-4 and p12=1e-5. A second pair of ABF calls explicitly uses p12=5e-6, matching the SuSiE pairing priors. Both use the standard quantitative effect-prior SD <code>0.15 × sdY</code>. It requires no LD. Frozen SuSiE fits use known-n z-RSS, <code>z=beta/sqrt(varbeta)</code>, L=10, max_iter=100, tol=0.001, coverage=0.95, min_abs_corr=0.5 and full 500-variable purity. Prior variance uses <code>optim</code>; residual variance remains fixed. All arguments are recorded in <code>examples/data/parameters.json</code>.</p>
+<p>Two explicitly labelled diagnostics change one setting: D3_strict_purity uses min_abs_corr=1 and actually returns no CS; D3_one_iteration uses max_iter=1 and actually fails to converge. They do not change the primary fit protocol.</p>
+<h2 id="optional-native-fitting-with-prusie">Optional native fitting with prusie</h2>
+<p>Install the separately provided prusie candidate into the same environment first. Then:</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python examples/check_example.py --native-pair --output-dir native-example-output
+</code></pre>
+<p>This additionally calls <code>prusie.susie_rss</code> for D1–D4 with the same known-n parameters and passes those native result objects to <code>coloc_susie</code>. It checks PIP absolute error ≤1e-5 with zero relative tolerance, input/model and probability validity. It records convergence, iterations and downstream colocalisation differences separately. An end-to-end result combines fine-mapping and colocalisation numerical behavior; it is a distinct comparison from pairing identical frozen fits.</p>
+<p>The optional import is made only when this flag is present. pycoloc does not install or invoke prusie implicitly. Consult the agreement report for the actual pair of package versions tested.</p>
+<h2 id="frozen-reference-provenance-and-regeneration">Frozen reference provenance and regeneration</h2>
+<p>The bundle's <code>README.md</code>, <code>LICENSE.GPL-3</code>, <code>reference.lock.json</code>, <code>reference_environment.json</code> and <code>checksums.json</code> contain attribution, redistribution terms, pinned archives/data hashes, and actual R/dependency versions. coloc is 6.0.3 at commit <code>8f20f0bc5e60ffc99e4c2f787bd55fd30cfe7c45</code>; susieR is 0.16.6 at <code>8e56a8e038e989856d106d9ca5175cc664fea9d2</code>. No floating R reference is used.</p>
+<p>Reference regeneration is optional and writes a new directory. Follow the exact recipe in <code>examples/data/README.md</code> with the locked R 4.4.0 environment. The original generator is preserved for inspection and is <strong>not run</strong>. The separate <code>examples/data/default_abf/</code> supplement contains its own frozen R results, checksums and regeneration script for the two literal default-prior calls. Verify the original RDA hash, execute <code>export_reference.R</code>, then convert its output with <code>convert_exports.py</code>. Never replace the shipped expectations as a way to make a failed check pass.</p>
+<h2 id="deliberate-failure-tests">Deliberate failure tests</h2>
+<p>From the source archive, with pytest installed:</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python -m pip install -c requirements-dev.lock '.[test]'
+python -m pytest tests/test_example.py -q
+</code></pre>
+<p>Tests run the CLI with no executable search path, reject a changed input checksum, and alter an expected H4 value while repairing that file's checksum to verify that a real numerical mismatch also fails. A separate import/process guard proves the standalone numerical path does not import prusie/rpy2 or spawn an external computation.</p></article>
+<footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
+</main>
+</div>
+</body>
+</html>

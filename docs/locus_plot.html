@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Auditable colocalisation in Python: summary-statistic ABFs, existing SuSiE fits, and an offline 500-SNP reference check.">
+<title>Offline, publication-size locus plots (0.2.0) · pycoloc</title>
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/site.js" defer></script>
+</head>
+<body class="pycoloc">
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="site-shell">
+<aside class="sidebar" aria-label="Documentation sidebar">
+<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
+<span class="version">0.2.2rc3 <span>release candidate</span></span>
+<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Start</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Run the 500-SNP check</a><a href="r_agreement.html">R agreement report</a><a href="https://github.com/LucaJiang/pycoloc">GitHub repository</a></div><div class="nav-group"><p class="nav-label">Use</p><a href="inputs.html">Inputs and alignment</a><a href="methods.html">Methods and priors</a><a href="api.html">API reference</a><a href="result_schema.html">Result schema</a><a href="locus_plot.html" aria-current="page">Locus plots and annotation</a></div><div class="nav-group"><p class="nav-label">Understand</p><a href="compatibility.html">Compatibility</a><a href="upstream_differences.html">Upstream differences</a><a href="reference_mapping.html">Reference mapping</a><a href="performance.html">Performance</a></div><div class="nav-group"><p class="nav-label">Maintain</p><a href="testing.html">Testing</a><a href="pages.html">Documentation and Pages</a><a href="release_notes.html">Release notes</a><a href="migration.html">Name migration</a></div></nav>
+<div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
+</aside>
+<main id="main" tabindex="-1">
+<div class="page-meta"><span>Colocalisation / Documentation</span><a href="locus_plot.md">Markdown source</a></div>
+<article><details class="on-this-page"><summary>On this page</summary><div class="toc">
+<ul>
+<li><a href="#annotation-source-cache-and-fallback-policy">Annotation source, cache and fallback policy</a></li>
+<li><a href="#ld-geometry-and-missing-information">LD, geometry and missing information</a></li>
+<li><a href="#styling-export-and-local-example-bundles">Styling, export and local example bundles</a></li>
+</ul>
+</div>
+</details><h1 id="offline-publication-size-locus-plots-020">Offline, publication-size locus plots (0.2.0)</h1>
+<p><code>plot_coloc_locus</code> returns an editable matplotlib figure and five axes: compact
+coloc summary, GWAS association, eQTL association, genes and physical-coordinate
+pairwise LD. <code>plot_coloc</code> remains available unchanged. The new plotting API does
+not alter <code>ColocResult</code> schema 2 or the corrected 0.1.1 statistical calculations.</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-python">from pycoloc import LDMatrix, prepare_region_annotation, plot_coloc_locus
+
+# All input objects and metadata are supplied by the caller.
+annotation = prepare_region_annotation(
+    local_gtf, chromosome=chromosome, start=start, end=end,
+    genome_build=&quot;GRCh38&quot;, version=annotation_version,
+    cache_dir=&quot;annotation-index&quot;, source_name=&quot;GENCODE&quot;,
+)
+ld1 = LDMatrix(r1, ids1, positions1, kind=&quot;r&quot;, panel=&quot;Trait 1 reference&quot;,
+               provenance=provenance1)
+ld2 = LDMatrix(r2, ids2, positions2, kind=&quot;r&quot;, panel=&quot;Trait 2 reference&quot;,
+               provenance=provenance2)
+fig, axes = plot_coloc_locus(
+    result, dataset1, dataset2, region=(chromosome, start, end, &quot;GRCh38&quot;),
+    annotation=annotation, target_gene=target_gene, signal_pair=signal_pair,
+    gwas_ld=ld1, eqtl_ld=ld2, heatmap_ld=ld2, output_prefix=&quot;figures/locus&quot;,
+)
+</code></pre>
+<p>Supply your existing result, association data and actual LD in this example;
+pycoloc does not compute LD or invent allele coding. Mappings and DataFrames
+require <code>snp</code>, <code>chromosome</code>, integer <code>position</code> and <code>pvalues</code> (preferred), <code>logp</code>,
+<code>z</code> or <code>beta</code>/<code>varbeta</code>. Coordinates are positive <strong>1-based inclusive</strong>, including
+GTF/GFF3 models. Every supplied association point must lie in the explicit window;
+every analysed SNP must be present. Shared IDs must have matching positions in
+both traits, the result, and supplied LD. The plot displays all supplied points,
+which can exceed the common analysed set; both counts are recorded. It never
+filters associations to LD support. Original P values are retained in metadata;
+P=0 recovery from logP/Wald statistics or display clipping is explicitly identified.</p>
+<p>The summary uses one exact comparison, with all five posteriors and actual priors.
+Multiple pairs require explicit original zero-based component IDs. CS labels use
+original component index + 1, not a re-numbered retained-set ordinal. No-CS/empty
+results show unavailable posteriors and analysed count; shared association count
+remains available. True zero shared evidence and floating H4 underflow are labeled
+separately. The corrected main conditional SNP posterior determines the recorded
+shared candidate; it is never confused with the joint H4/SNP probability.</p>
+<p>Default leads are minimum original P (or maximum displayed −log10P when derived),
+with position then SNP-ID tie breaks. <code>lead_rule="component"</code> uses selected
+<code>hit1</code>/<code>hit2</code>; <code>leads=(gwas_id, eqtl_id)</code> overrides the rule explicitly. The figures
+remain <strong>marginal</strong> association tracks, not residual/conditional SuSiE association
+plots. A reference lead absent from its LD panel produces gray colors and an
+explicit caption, without selecting a replacement silently.</p>
+<h2 id="annotation-source-cache-and-fallback-policy">Annotation source, cache and fallback policy</h2>
+<p>Install the optional local indexer with <code>python -m pip install '.[annotation]'</code> from this repository.
+Ordinary colocalisation and rendering a prepared <code>RegionAnnotation</code> require no
+gffutils, R, prusie or network access. <code>GeneModel</code>, <code>TranscriptModel</code>, <code>ExonModel</code>
+and <code>RegionAnnotation</code> are source/matplotlib-independent dataclasses in
+<code>pycoloc.annotation</code>; <code>annotation_to_dict</code>/<code>annotation_from_dict</code> save/load full
+prepared models offline.</p>
+<p>Human GRCh38 local GENCODE comprehensive GTF is the default supported source.
+Acquire a <strong>specific release explicitly</strong> from <a href="https://www.gencodegenes.org/human/">GENCODE Human</a>
+and retain its source URL, release and SHA256. Plotting never downloads data.
+There is no remote Ensembl fallback: a missing/corrupt local file is an explicit
+error or cache rebuild from the supplied source, never a different annotation.
+Other complete local GTF/GFF3 files can be indexed with an explicit source/version;
+explicit gene and transcript/mRNA records are required (inference is disabled).
+The build must be declared GRCh38; a conflicting source header is rejected.</p>
+<p>The SQLite backend uses <a href="https://daler.github.io/gffutils/autodocs/gffutils.create.create_db.html">gffutils create_db</a>
+with inference disabled, explicit duplicate errors and actual GTF/GFF3 parent
+relationships. <a href="https://daler.github.io/gffutils/autodocs/gffutils.interface.FeatureDB.region.html">Overlap queries</a>
+include genes crossing the window boundaries and retain all complete transcript
+and exon coordinates. Only rendering clips the visible segments. Default exons
+are the union across a gene's transcripts, merging overlapping/adjacent inclusive
+intervals. <code>target_mode="canonical"</code> prioritizes MANE_Select, then
+Ensembl_canonical; otherwise it records a representative fallback chosen by
+longest union-exon length and transcript ID. It never calls an untagged transcript
+annotated canonical. Context genes remain collapsed unions, with directional marks
+on both strands. Target identity can be a gene ID (with or without version) or
+an unambiguous gene name.</p>
+<p>Cache identity includes indexed-file SHA256/path, source/version/build, indexer
+version, schema, chromosome policy, scope and upstream provenance. Valid cache
+metadata, database SHA256 and SQLite integrity must agree before reuse. A changed
+identity creates a separate index; corrupted cache files are rebuilt. POSIX file
+locks serialize same-index builds and temporary files plus atomic replacements
+prevent partial indices from being reused. The first index can take time and disk
+space for a whole genome; no performance claim is made.</p>
+<p>Chromosome spelling normalization is explicit: <code>chromosome_policy="chr"</code> adds a
+leading <code>chr</code>, <code>"none"</code> removes it, and <code>"exact"</code> requires exact spelling. Ambiguous
+normalizations fail. For a deliberate whole-chromosome subset, set
+<code>index_scope=["chr22"]</code> and preserve the full-source hash and deterministic subset
+rule in <code>source_provenance</code>. Requests outside that scope fail. Coordinate-window
+subsets are not supported because boundary-spanning models would be incomplete.
+A chromosome subset is not a genome-wide cache. Preserve the original full-source identity and the subset rule.</p>
+<h2 id="ld-geometry-and-missing-information">LD, geometry and missing information</h2>
+<p><code>LDMatrix(values, snp_ids, positions, kind, panel, provenance={})</code> validates unique
+IDs, square dimensions, finite range, symmetry and unit diagonal at absolute
+roundoff tolerance 1e-8 (configurable up to 1e-4). <code>kind</code> is explicitly <code>"r"</code> or
+<code>"r2"</code>; signed r is squared exactly once. Metadata retains kind and provenance.
+Use separate FIN and EUR objects for corresponding tracks. Select the single
+heatmap panel explicitly with <code>heatmap_ld</code>; it is not silently pooled or borrowed.
+Sample counts identify founders, not independently verified unrelated subjects.</p>
+<p><code>LeadLD(values, snp_ids, lead_id, kind, panel)</code> can color associations but never
+creates a pairwise heatmap. Its reference lead must match the requested lead.
+Missing LD is gray, separate from the blue 0–0.2 bin. Discrete boundaries are
+0, .2, .4, .6, .8, 1; bins are left-inclusive and the final bin includes 1.
+The highlighted purple diamond is independent of the LD color scale.</p>
+<p>Only the heatmap can be thinned. SNPs are sorted by position then ID, repeated
+positions keep a deterministic representative (requested lead preferred), and
+at most <code>max_heatmap_snps</code> position-ranked evenly spaced SNPs remain, preserving
+the heatmap lead (the eQTL lead in the composite plot). All selected IDs, exact
+positions, original matrix indices, omissions and rules are recorded. Matrix
+rows/columns are reindexed together; no association order is changed. Physical
+cell edges are midpoint boundaries between selected positions, transformed by
+x=(u+v)/2, y=(v−u)/2. This is a physical genomic triangle, not equal SNP-index
+spacing; thinning necessarily coarsens displayed cells. Repeated-position
+omissions are explicitly distinguishable from rank thinning and out-of-window LD.</p>
+<h2 id="styling-export-and-local-example-bundles">Styling, export and local example bundles</h2>
+<p>Default width is 180 mm, title 8.5 pt, axes 7.5 pt and secondary labels 6.5–7 pt.
+The five-panel grid replaces the historical large multi-line header/two scatter
+tracks with a compact summary/legend, identity-bound per-trait LD colors, complete
+gene context and an audited vector triangle. Arial/Helvetica are preferred when
+installed, then Liberation Sans/DejaVu Sans; metadata records the actual font.
+Style changes use local <code>rc_context</code>, never global matplotlib settings.</p>
+<p>Useful knobs are <code>figsize</code>, <code>fontsize</code>, <code>point_size</code>, <code>max_labels</code> (0–2 total),
+<code>max_heatmap_snps</code>, <code>max_gene_lanes</code>, <code>target_mode</code> and explicit <code>leads</code>.
+Context gene labels that collide are suppressed and recorded; gene models stay.
+The target is prioritized. Lead labels are bounded and avoid their panel captions.
+Especially dense loci may still need manual label placement in the editable SVG
+or a wider figure. Metadata reports renderer bounds; inspect the PNG at intended
+print size before publication. <code>plot_gene_track(annotation, ...)</code> and
+<code>plot_ld_heatmap(ld, start=..., end=...)</code> also work independently, returning axes
+with <code>gene_metadata</code> and <code>ld_metadata</code> respectively.</p>
+<p><code>output_prefix</code> saves editable SVG, vector PDF, PNG preview and a JSON sidecar;
+PNG is always produced even if <code>formats</code> requests only vector formats. Heatmap
+polygons are not rasterized. JSON includes full annotation provenance/models,
+P values/coordinates, tracks, exact component pair, corrected candidate,
+posteriors/priors, LD order/subset, labels and font/renderer bounds.</p>
+<p>A user-supplied local bundle can reproduce figures with the installed package:</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python examples/locus_region.py --config example_bundle.json \
+  --output-prefix figures/locus --max-heatmap-snps 140
+</code></pre>
+<p>The bundle is JSON with <code>method</code> (<code>abf</code> or <code>susie</code>), <code>datasets</code> (two JSON mappings),
+<code>region</code> (<code>chromosome</code>, <code>start</code>, <code>end</code>, <code>genome_build</code>), <code>target_gene</code>, optional
+<code>coloc_options</code>, <code>signal_pair</code>, <code>leads</code>/<code>lead_rule</code>, <code>trait1</code>/<code>trait2</code> and
+<code>plot_options</code>. SuSiE bundles include two <code>fits</code> entries (<code>json</code> metadata and
+<code>npz</code> arrays); no refitting is done. <code>annotation_snapshot</code> points to a prepared
+model, or <code>annotation_source</code> supplies <code>path</code>, <code>version</code>, <code>cache_dir</code>, optional
+<code>index_scope</code>/<code>provenance</code>. Each <code>ld.gwas</code>/<code>ld.eqtl</code> entry names <code>npz</code>, <code>values_key</code>,
+<code>snp_ids_key</code>, <code>positions_key</code>, <code>kind</code>, <code>panel</code> and provenance. <code>ld.heatmap</code>
+explicitly selects <code>gwas</code>, <code>eqtl</code> or null. Paths resolve relative to the bundle.
+No Python code is evaluated from the bundle and no online requests occur.</p>
+<p>The composite heatmap first intersects the full reference matrix with the
+analysed shared SNP IDs (or actual shared association IDs for no-CS), preserving
+original full-matrix indices. Extra reference-only variants are listed as
+<code>omitted_not_shared</code>. Explicit LD provenance build/chromosome must agree with the
+region. Annotation models reject noninteger/nonfinite/reversed coordinates,
+invalid strands and child chromosome/parent-bound conflicts. Recognized GENCODE
+header releases must agree with the supplied version. A source modified during
+index creation is rejected before commit. Supported GFF3 transcript parents are
+transcript, mRNA, ncRNA, lnc_RNA, tRNA, rRNA, miRNA, snRNA, snoRNA, scRNA,
+primary_transcript, pseudogenic_transcript and processed_transcript; other exon
+parent types fail explicitly. A canonical transcript outside the window is named
+as unavailable there, without drawing a reversed interval.</p>
+<p>The default heatmap uses a restrained continuous white-to-red scale, independently
+of the discrete association colors. <code>heatmap_cmap</code> (composite) or <code>cmap</code>
+(standalone helper) accepts another matplotlib colormap. The heatmap <strong>and its
+colorbar</strong> remain vector. Unresolved text outside the canvas raises a layout
+error before any output is saved; increase width/font spacing or shorten labels.</p>
+<p>For an executable, explicitly analytical illustration without a local annotation file, run <code>python examples/locus_analytical.py --output-prefix figures/analytical</code>. It creates SVG/PDF/PNG and a metadata sidecar from hand-written inputs, not a biological locus or simulated study.</p></article>
+<footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
+</main>
+</div>
+</body>
+</html>

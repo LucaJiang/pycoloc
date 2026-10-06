@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Auditable colocalisation in Python: summary-statistic ABFs, existing SuSiE fits, and an offline 500-SNP reference check.">
+<title>Installation · pycoloc</title>
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/site.js" defer></script>
+</head>
+<body class="pycoloc">
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="site-shell">
+<aside class="sidebar" aria-label="Documentation sidebar">
+<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
+<span class="version">0.2.2rc3 <span>release candidate</span></span>
+<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Start</p><a href="index.html">Overview</a><a href="install.html" aria-current="page">Install</a><a href="example.html">Run the 500-SNP check</a><a href="r_agreement.html">R agreement report</a><a href="https://github.com/LucaJiang/pycoloc">GitHub repository</a></div><div class="nav-group"><p class="nav-label">Use</p><a href="inputs.html">Inputs and alignment</a><a href="methods.html">Methods and priors</a><a href="api.html">API reference</a><a href="result_schema.html">Result schema</a><a href="locus_plot.html">Locus plots and annotation</a></div><div class="nav-group"><p class="nav-label">Understand</p><a href="compatibility.html">Compatibility</a><a href="upstream_differences.html">Upstream differences</a><a href="reference_mapping.html">Reference mapping</a><a href="performance.html">Performance</a></div><div class="nav-group"><p class="nav-label">Maintain</p><a href="testing.html">Testing</a><a href="pages.html">Documentation and Pages</a><a href="release_notes.html">Release notes</a><a href="migration.html">Name migration</a></div></nav>
+<div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
+</aside>
+<main id="main" tabindex="-1">
+<div class="page-meta"><span>Colocalisation / Documentation</span><a href="install.md">Markdown source</a></div>
+<article><h1 id="installation">Installation</h1>
+<p>Python ≥3.10 is required. Runtime dependencies are NumPy≥1.24, SciPy≥1.10,
+pandas≥2 and matplotlib≥3.7. Local release checks use CPython3.12/Linux x86-64.
+The package is pure Python; dependency wheels must support your platform. Other
+platforms are not claimed as locally tested.</p>
+<p>From this repository root:</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python -m venv .venv
+. .venv/bin/activate
+python -m pip install .
+python -m pip install -c requirements-dev.lock '.[jit,annotation,test]'
+python -m pytest tests
+python examples/quickstart.py
+</code></pre>
+<p><code>jit</code> adds Numba for the optional hypothesis kernel; first compilation and warm
+execution differ. <code>annotation</code> adds gffutils for local GTF/GFF3 indexing.
+Prepared annotation models render without that extra. <code>test</code> adds pytest.
+R and prusie are not runtime dependencies for ABF, BF pairing, consuming
+existing fits, or plotting. The separate prusie repository builds distribution
+prusie when native fine-mapping is wanted.</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python -m pip install build
+python -m build
+python -m pip install --no-deps dist/pycoloc-*.whl
+</code></pre>
+<p>To install a supplied source archive, use its real filename with
+<code>python -m pip install path/to/pycoloc-VERSION.tar.gz</code>. Building uses setuptools≥77.
+No package-index release or remote CI success is implied by these local commands.</p>
+<p>To obtain the source and its frozen offline example:</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">git clone https://github.com/LucaJiang/pycoloc.git
+cd pycoloc
+python -m pip install .
+</code></pre>
+<p>This installs from the checkout; it does not require or imply a PyPI release.</p></article>
+<footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
+</main>
+</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Auditable colocalisation in Python: summary-statistic ABFs, existing SuSiE fits, and an offline 500-SNP reference check.">
+<title>Performance and resource use · pycoloc</title>
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/site.js" defer></script>
+</head>
+<body class="pycoloc">
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="site-shell">
+<aside class="sidebar" aria-label="Documentation sidebar">
+<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
+<span class="version">0.2.2rc3 <span>release candidate</span></span>
+<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Start</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Run the 500-SNP check</a><a href="r_agreement.html">R agreement report</a><a href="https://github.com/LucaJiang/pycoloc">GitHub repository</a></div><div class="nav-group"><p class="nav-label">Use</p><a href="inputs.html">Inputs and alignment</a><a href="methods.html">Methods and priors</a><a href="api.html">API reference</a><a href="result_schema.html">Result schema</a><a href="locus_plot.html">Locus plots and annotation</a></div><div class="nav-group"><p class="nav-label">Understand</p><a href="compatibility.html">Compatibility</a><a href="upstream_differences.html">Upstream differences</a><a href="reference_mapping.html">Reference mapping</a><a href="performance.html" aria-current="page">Performance</a></div><div class="nav-group"><p class="nav-label">Maintain</p><a href="testing.html">Testing</a><a href="pages.html">Documentation and Pages</a><a href="release_notes.html">Release notes</a><a href="migration.html">Name migration</a></div></nav>
+<div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
+</aside>
+<main id="main" tabindex="-1">
+<div class="page-meta"><span>Colocalisation / Documentation</span><a href="performance.md">Markdown source</a></div>
+<article><h1 id="performance-and-resource-use">Performance and resource use</h1>
+<p>The NumPy hypothesis implementation is O(m) and avoids an m×m configuration
+matrix. Optional Numba accelerates the numerical hypothesis kernel; report
+first compilation separately from warmed calls. R and fine-mapping are never
+invoked implicitly. Independent-region process concurrency is controlled by the
+caller, who must budget total library threads and memory.</p>
+<p>LD heatmap thinning affects only visualization. It reindexes both matrix axes
+by one explicit SNP permutation, records omissions, and preserves association
+tracks and inference inputs. Stored SNP order need not be genomic order.
+Whole-genome GTF indexing can take substantial time and disk space; rendering
+prepared local annotation avoids rebuilding the index. Cache identities retain
+source, release, build, indexer/schema and content hashes.</p>
+<p>Prusie comparisons depend on actual R BLAS/LAPACK and LD redundancy; no such
+timings establish an independent pycoloc speed claim. The package supplies no
+whole-host utilization guarantee or hidden worker pool. See the separate
+prusie performance guide when fine-mapping is part of your analysis.</p></article>
+<footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
+</main>
+</div>
+</body>
+</html>

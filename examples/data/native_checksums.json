@@ -1,0 +1,10 @@
+{
+  "algorithm": "sha256",
+  "kind": "separate native checkpoint integrity, not an independent oracle",
+  "files": {
+    "expected_native.json": {
+      "sha256": "e499a9ccc6ebd7817a53bfcb8425459f5ded649261aa83f0a41b5f8fc3e18b00",
+      "bytes": 1082450
+    }
+  }
+}

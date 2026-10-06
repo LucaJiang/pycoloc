@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Auditable colocalisation in Python: summary-statistic ABFs, existing SuSiE fits, and an offline 500-SNP reference check.">
+<title>Inputs and statistical interpretation · pycoloc</title>
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/site.js" defer></script>
+</head>
+<body class="pycoloc">
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="site-shell">
+<aside class="sidebar" aria-label="Documentation sidebar">
+<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
+<span class="version">0.2.2rc3 <span>release candidate</span></span>
+<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Start</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Run the 500-SNP check</a><a href="r_agreement.html">R agreement report</a><a href="https://github.com/LucaJiang/pycoloc">GitHub repository</a></div><div class="nav-group"><p class="nav-label">Use</p><a href="inputs.html" aria-current="page">Inputs and alignment</a><a href="methods.html">Methods and priors</a><a href="api.html">API reference</a><a href="result_schema.html">Result schema</a><a href="locus_plot.html">Locus plots and annotation</a></div><div class="nav-group"><p class="nav-label">Understand</p><a href="compatibility.html">Compatibility</a><a href="upstream_differences.html">Upstream differences</a><a href="reference_mapping.html">Reference mapping</a><a href="performance.html">Performance</a></div><div class="nav-group"><p class="nav-label">Maintain</p><a href="testing.html">Testing</a><a href="pages.html">Documentation and Pages</a><a href="release_notes.html">Release notes</a><a href="migration.html">Name migration</a></div></nav>
+<div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
+</aside>
+<main id="main" tabindex="-1">
+<div class="page-meta"><span>Colocalisation / Documentation</span><a href="inputs.md">Markdown source</a></div>
+<article><h1 id="inputs-and-statistical-interpretation">Inputs and statistical interpretation</h1>
+<p>For ABF, each dataset supplies unique SNP IDs and trait type <code>cc</code> or <code>quant</code>.
+Use signed beta (log OR for case-control) and positive varbeta=SE². Quantitative
+traits need known sdY or MAF/N for the documented estimator. The alternative
+P-value branch needs P, MAF, N and case fraction s for case-control. If both
+branches are present, beta/varbeta takes precedence. Explicit effect_priors
+are prior SDs and apply only to that branch. ABF requires no LD.</p>
+<p>Weights can be SNP-keyed mappings/Series or vectors bound to the supplied SNP
+order. Each side must have positive total after intersection; partial zeros are
+allowed. For Q common SNPs, q1=Q<em>p1</em>w1/sum(w1), q2=Q<em>p2</em>w2/sum(w2) and
+q12=q1<em>q2</em>p12/(p1*p2). q12 is not separately normalized. Main SNP.PP.H4 includes
+both weights; the <code>.weighted</code> columns are equal aliases. True zero shared
+evidence yields undefined conditional SNP posteriors; H4 underflow can still
+have a valid conditional distribution. See <a href="result_schema.html">result schema</a>.</p>
+<p><code>coloc_bf_bf</code> consumes full natural-log BF rows. <code>coloc_susie</code> selects the full
+lbf_variable rows named by original sets.cs_index, preserving all biological SNP
+columns, not only CS members. Marginal PIPs are not substitutes for component
+BFs. Fine-mapping prior_weights and coloc prior_weights1/2 act at different stages;
+do not apply one again automatically. Null columns must be declared explicitly.</p>
+<p>H0–H4 are comparison-specific hypotheses. A conditional SNP posterior is
+P(shared SNP | H4,data), not the joint H4/SNP probability. Multiple component
+pairs do not define one aggregate region-level H4. no_cs, no_overlap,
+insufficient_overlap and nonconvergence are distinct states; unavailable
+probabilities must not be replaced by zeros.</p>
+<p>For fine-mapping with prusie, use signed r, exact SNP/allele order and documented
+LD population/build/sample provenance. Plotting accepts r or r² only when kind
+is explicit; r² is a display quantity. Heatmap row/column selection is coordinated
+by SNP IDs and positions and never changes the association inputs or inference.
+Local annotation, coordinate conventions and cache metadata are documented in
+<a href="locus_plot.html">locus plots</a>. No genotype, summary-statistic or annotation database
+is shipped with this repository.</p></article>
+<footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
+</main>
+</div>
+</body>
+</html>

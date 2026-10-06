@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Auditable colocalisation in Python: summary-statistic ABFs, existing SuSiE fits, and an offline 500-SNP reference check.">
+<title>API reference · pycoloc</title>
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/site.js" defer></script>
+</head>
+<body class="pycoloc">
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="site-shell">
+<aside class="sidebar" aria-label="Documentation sidebar">
+<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
+<span class="version">0.2.2rc3 <span>release candidate</span></span>
+<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Start</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Run the 500-SNP check</a><a href="r_agreement.html">R agreement report</a><a href="https://github.com/LucaJiang/pycoloc">GitHub repository</a></div><div class="nav-group"><p class="nav-label">Use</p><a href="inputs.html">Inputs and alignment</a><a href="methods.html">Methods and priors</a><a href="api.html" aria-current="page">API reference</a><a href="result_schema.html">Result schema</a><a href="locus_plot.html">Locus plots and annotation</a></div><div class="nav-group"><p class="nav-label">Understand</p><a href="compatibility.html">Compatibility</a><a href="upstream_differences.html">Upstream differences</a><a href="reference_mapping.html">Reference mapping</a><a href="performance.html">Performance</a></div><div class="nav-group"><p class="nav-label">Maintain</p><a href="testing.html">Testing</a><a href="pages.html">Documentation and Pages</a><a href="release_notes.html">Release notes</a><a href="migration.html">Name migration</a></div></nav>
+<div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
+</aside>
+<main id="main" tabindex="-1">
+<div class="page-meta"><span>Colocalisation / Documentation</span><a href="api.md">Markdown source</a></div>
+<article><details class="on-this-page"><summary>On this page</summary><div class="toc">
+<ul>
+<li><a href="#coloc_abf">coloc_abf</a><ul>
+<li><a href="#parameters">Parameters</a></li>
+<li><a href="#returns">Returns</a></li>
+<li><a href="#raises">Raises</a></li>
+<li><a href="#notes">Notes</a></li>
+<li><a href="#references">References</a></li>
+<li><a href="#examples">Examples</a></li>
+</ul>
+</li>
+<li><a href="#coloc_bf_bf">coloc_bf_bf</a><ul>
+<li><a href="#parameters_1">Parameters</a></li>
+<li><a href="#returns_1">Returns</a></li>
+<li><a href="#raises_1">Raises</a></li>
+<li><a href="#notes_1">Notes</a></li>
+<li><a href="#references_1">References</a></li>
+<li><a href="#examples_1">Examples</a></li>
+</ul>
+</li>
+<li><a href="#coloc_susie">coloc_susie</a><ul>
+<li><a href="#parameters_2">Parameters</a></li>
+<li><a href="#returns_2">Returns</a></li>
+<li><a href="#raises_2">Raises</a></li>
+<li><a href="#notes_2">Notes</a></li>
+<li><a href="#references_2">References</a></li>
+<li><a href="#examples_2">Examples</a></li>
+</ul>
+</li>
+<li><a href="#plot_coloc">plot_coloc</a><ul>
+<li><a href="#parameters_3">Parameters</a></li>
+<li><a href="#returns_3">Returns</a></li>
+<li><a href="#raises_3">Raises</a></li>
+<li><a href="#notes_3">Notes</a></li>
+<li><a href="#references_3">References</a></li>
+<li><a href="#examples_3">Examples</a></li>
+</ul>
+</li>
+<li><a href="#plot_coloc_locus">plot_coloc_locus</a></li>
+<li><a href="#prepare_region_annotation">prepare_region_annotation</a></li>
+<li><a href="#plot_gene_track">plot_gene_track</a></li>
+<li><a href="#plot_ld_heatmap">plot_ld_heatmap</a></li>
+<li><a href="#annotation_to_dict">annotation_to_dict</a></li>
+<li><a href="#annotation_from_dict">annotation_from_dict</a></li>
+<li><a href="#data-containers">Data containers</a><ul>
+<li><a href="#ldmatrix">LDMatrix</a></li>
+<li><a href="#leadld">LeadLD</a></li>
+<li><a href="#exonmodel">ExonModel</a></li>
+<li><a href="#transcriptmodel">TranscriptModel</a></li>
+<li><a href="#genemodel">GeneModel</a></li>
+<li><a href="#regionannotation">RegionAnnotation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</details><h1 id="api-reference">API reference</h1>
+<p>Annotation serialization helpers and model containers are in <code>pycoloc.annotation</code>; inference and plotting entry points are top-level exports.</p>
+<p>The following signatures and parameter descriptions come from the selected public source. See the input and result guides for alignment and interpretation.</p>
+<h2 id="coloc_abf">coloc_abf</h2>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-python">coloc_abf(dataset1: Mapping, dataset2: Mapping, *, p1: float=0.0001, p2: float=0.0001, p12: float=1e-05, prior_weights1=None, prior_weights2=None, MAF=None, effect_priors: Mapping | None=None, engine: str='numpy') -&gt; ColocResult
+</code></pre>
+<p>Colocalise two traits under at most one causal variant per trait.</p>
+<h3 id="parameters">Parameters</h3>
+<p>dataset1, dataset2 : mapping
+    Unique <code>snp</code> IDs, <code>type</code> ('quant' or 'cc'), and either beta/varbeta
+    or pvalues/MAF/N vectors. beta for cc is log(OR); varbeta is SE².
+    Quant beta requires sdY or MAF/N for official sdY estimation. The
+    pvalue cc path also requires scalar case fraction s. beta/varbeta
+    takes precedence. N is a scalar; no LD is required.
+p1, p2, p12 : float
+    Positive scalar SNP priors. Defaults 1e-4, 1e-4, 1e-5; large-region
+    adjustment follows pinned coloc 6.0.3 before/after intersection.
+prior_weights1, prior_weights2 : mapping, pandas.Series or array, optional
+    Nonnegative finite weights, positive total on common SNPs. Keys must
+    exactly match each input's SNP IDs; arrays bind to input SNP order.
+    Intersection is followed by renormalisation. Fine-mapping priors are
+    a separate parameter and must not be copied automatically here.
+MAF : mapping or array, optional
+    Shared fallback frequency. Arrays require identical input SNP order.
+effect_priors : mapping, optional
+    Prior SDs, default {'quant': 0.15, 'cc': 0.2}. Quant is multiplied by
+    sdY on the estimate path. Explicit nondefaults are honored here,
+    unlike the pinned R public wrapper which silently drops this option.
+    P-value ABFs use fixed SDs (quant: 0.15 on a unit-variance phenotype;
+    cc: 0.2 on the logOR scale). Explicit effect_priors with an active
+    P-value branch raises ValueError. SDs are squared to obtain variance W.
+engine : {'numpy', 'numba'}
+    Stable O(m) H3 reduction. Numba is optional, without fastmath.</p>
+<h3 id="returns">Returns</h3>
+<p>ColocResult
+    One-row summary, per-SNP ABFs and conditional shared probabilities.</p>
+<h3 id="raises">Raises</h3>
+<p>ValueError
+    Invalid statistics, priors or weights. No overlap instead returns
+    status='no_overlap' with an empty summary, never H4=0.</p>
+<h3 id="notes">Notes</h3>
+<p>SNP.PP.H4 is conditional on H4 and includes both coloc weights;
+SNP.PP.H4.weighted is an alias. SNPs are aligned by ID; conflicting
+shared positions raise rather than silently changing the analysis support.</p>
+<h3 id="references">References</h3>
+<p>coloc 6.0.3, claudia.R: process.dataset, combine_abf_weighted, coloc.abf.</p>
+<h3 id="examples">Examples</h3>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-pycon">&gt;&gt;&gt; d = dict(snp=['a', 'b'], beta=[0.2, 0.0], varbeta=[0.01, 0.01], type='cc')
+&gt;&gt;&gt; coloc_abf(d, d).nsnps
+2
+</code></pre>
+<h2 id="coloc_bf_bf">coloc_bf_bf</h2>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-python">coloc_bf_bf(bf1, bf2, *, snps1, snps2, p1: float=0.0001, p2: float=0.0001, p12: float=5e-06, prior_weights1=None, prior_weights2=None, null_index1: int | None=None, null_index2: int | None=None, overlap_min: float=0.5, trim_by_posterior: bool=True, engine: str='numpy') -&gt; ColocResult
+</code></pre>
+<p>Colocalise every pair of natural-log Bayes-factor rows.</p>
+<h3 id="parameters_1">Parameters</h3>
+<p>bf1, bf2 : array-like, shape (L, m) or (m,)
+    Full component rows of natural log BF; -inf denotes zero BF. An
+    explicit final null column changes shape to (L, m+1). No PIPs.
+snps1, snps2 : sequence of str
+    Unique biological SNP IDs in each matrix's column order, excluding null.
+p1, p2, p12 : float
+    Positive scalar priors, defaults 1e-4, 1e-4, 5e-6. BF hypothesis priors
+    are not adjusted for region size by the upstream function.
+prior_weights1, prior_weights2 : mapping, Series or array, optional
+    Nonnegative finite biological-SNP weights, bound by ID (arrays bind
+    to supplied SNP order). Each side needs positive total on common SNPs.
+    Unlike R's matrix-column length check, null weights are not requested.
+null_index1, null_index2 : int, optional
+    Must equal m for an explicit final null. Null is never inferred.
+overlap_min : float
+    Minimum fraction of each component's full biological posterior support
+    represented by common SNPs. Coloc weights do not change this check.
+trim_by_posterior : bool
+    Drop insufficient pairs. If all fail, retain reference-compatible rows
+    with H1–H4 missing and H0=min(null posterior1, null posterior2).
+engine : {'numpy', 'numba'}
+    O(m) stable H3 calculation without a SNP-by-SNP configuration matrix.</p>
+<h3 id="returns_1">Returns</h3>
+<p>ColocResult
+    First trait row varies fastest, matching R expand.grid. idx1/idx2 are
+    zero based, idx1_r/idx2_r are R indices. SNP.PP.H4.abf (one pair) or
+    SNP.PP.H4.rowK (multiple) gives P(shared SNP | H4, data), including
+    both coloc weights. Parallel .weighted fields are identical aliases.</p>
+<h3 id="raises_1">Raises</h3>
+<p>ValueError
+    Invalid BF, identifiers, priors, weights or null convention.</p>
+<h3 id="notes_1">Notes</h3>
+<p>Common columns and weights are always matched by SNP ID. No-overlap,
+insufficient-overlap and partial trimming are distinct result statuses.</p>
+<h3 id="references_1">References</h3>
+<p>coloc 6.0.3 susie.R: coloc.bf_bf and logbf_to_pp.</p>
+<h3 id="examples_1">Examples</h3>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-pycon">&gt;&gt;&gt; r = coloc_bf_bf([1., 3.], [2., 4.], snps1=['a', 'b'], snps2=['a', 'b'])
+&gt;&gt;&gt; r.summary.idx1.tolist()
+[0]
+</code></pre>
+<h2 id="coloc_susie">coloc_susie</h2>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-python">coloc_susie(fit1, fit2, *, p1: float=0.0001, p2: float=0.0001, p12: float=5e-06, prior_weights1=None, prior_weights2=None, overlap_min: float=0.5, trim_by_posterior: bool=True, engine: str='numpy') -&gt; ColocResult
+</code></pre>
+<p>Consume existing SuSiE fits and pair rows selected by actual cs_index.</p>
+<h3 id="parameters_2">Parameters</h3>
+<p>fit1, fit2 : mapping or object with as_dict()
+    Fields: variant_ids (m biological IDs), lbf_variable (L,m or L,m+1),
+    sets.cs, sets.cs_index (zero-based original component IDs), converged,
+    and optional null_index=m. Every SNP column is retained, including
+    SNPs outside credible sets. Fine-mapping priors are not reapplied.
+p1, p2, p12 : float
+    Positive scalar coloc priors, defaults 1e-4, 1e-4, 5e-6.
+prior_weights1, prior_weights2 : mapping, Series or array, optional
+    Nonnegative finite coloc weights on biological SNPs of each fit,
+    with positive total on each side after intersection.
+overlap_min : float
+    Posterior overlap threshold, default 0.5.
+trim_by_posterior : bool
+    Apply full-support overlap trimming, default True.
+engine : {'numpy', 'numba'}
+    Stable hypothesis kernel implementation.</p>
+<h3 id="returns_2">Returns</h3>
+<p>ColocResult
+    Pair-specific hypotheses. Original zero-based component IDs and R
+    index mapping are explicit. No CS returns status='no_cs'.</p>
+<h3 id="raises_2">Raises</h3>
+<p>ValueError
+    Invalid result contract or input, including invalid CS component IDs.</p>
+<h3 id="notes_2">Notes</h3>
+<p>Unconverged fits produce a warning and metadata, preserving computable
+reference behavior. No fitting, R calls, or prusie import occurs here.</p>
+<h3 id="references_2">References</h3>
+<p>coloc 6.0.3 susie.R: coloc.susie and coloc.bf_bf.</p>
+<h3 id="examples_2">Examples</h3>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-pycon">Pass the SusieResult returned by prusie.susie_rss directly as either fit.
+</code></pre>
+<h2 id="plot_coloc">plot_coloc</h2>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-python">plot_coloc(result: ColocResult, dataset1: Mapping, dataset2: Mapping, *, signal_pair: tuple[int, int] | None=None, trait1: str='Trait 1', trait2: str='Trait 2', figsize: tuple[float, float]=(10, 7), fontsize: float=10, point_size: float=14, annotate_leads: bool=True, highlight_cs: bool=True)
+</code></pre>
+<p>Plot two regional marginal-association tracks and exact result summaries.</p>
+<h3 id="parameters_3">Parameters</h3>
+<p>result : ColocResult
+    Output of any coloc interface. Empty/ineligible states show no invented
+    probabilities. Multiple valid pairs require explicit signal_pair.
+dataset1, dataset2 : mapping
+    snp, position (bp), chromosome (scalar or constant vector), and pvalues,
+    natural logp, beta/varbeta or z. Valid original P values take precedence.
+    P=0 is recovered from logp or Wald statistics if available, otherwise
+    explicitly clipped for display. Inputs are never changed.
+signal_pair : tuple of int, optional
+    Original zero-based component IDs, not credible-set ordinals.
+trait1, trait2 : str
+    Trait/gene names printed above the tracks.
+figsize : tuple of float
+    Figure dimensions in inches.
+fontsize, point_size : float
+    Local font size and marker area; no global matplotlib settings change.
+annotate_leads, highlight_cs : bool
+    Mark actual result lead variants, the shared candidate selected from
+    the main conditional SNP posterior, and selected component CS members.</p>
+<h3 id="returns_3">Returns</h3>
+<p>figure, axes
+    Editable matplotlib figure and two axes; never calls show().</p>
+<h3 id="raises_3">Raises</h3>
+<p>ValueError
+    Missing coordinates/statistics, chromosome conflicts, unknown signal
+    pair, or plotted datasets missing analyzed SNPs.</p>
+<h3 id="notes_3">Notes</h3>
+<p>These are marginal tracks, not conditional or residual associations. H0–H4
+come directly from a single result row and are never aggregated over pairs.
+Save with figure.savefig('region.svg') or figure.savefig('region.png').</p>
+<h3 id="references_3">References</h3>
+<p>The statistical rows use the coloc 6.0.3 conventions documented by pycoloc.</p>
+<h3 id="examples_3">Examples</h3>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-pycon">&gt;&gt;&gt; # fig, axes = plot_coloc(result, d1, d2, signal_pair=(0, 2))
+</code></pre>
+<h2 id="plot_coloc_locus">plot_coloc_locus</h2>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-python">plot_coloc_locus(result, gwas, eqtl, *, region, annotation=None, target_gene=None, signal_pair=None, gwas_ld=None, eqtl_ld=None, heatmap_ld=None, leads=None, lead_rule='min_p', trait1='GWAS', trait2='eQTL', chromosome_policy='chr', output_prefix=None, formats=('svg', 'pdf', 'png'), figsize=(180 / 25.4, 6.6), fontsize=7.5, point_size=7, max_labels=2, max_heatmap_snps=180, target_mode='union', max_gene_lanes=6, heatmap_cmap='white_red', dpi=180)
+</code></pre>
+<p>Create a summary, two association tracks, genes and physical LD triangle.</p>
+<p><code>region=(chromosome, start, end, 'GRCh38')</code> is explicit, 1-based inclusive.
+Association mappings/DataFrames require snp, chromosome, position and original
+pvalues (preferred), logp or z/beta/varbeta. Every supplied point is retained;
+all analysed IDs must be supplied. Counts distinguish displayed and analysed.
+LDMatrix/LeadLD or their field mappings are accepted separately for each
+association; heatmap_ld must be explicitly chosen, never borrowed silently.
+Leads default to minimum P (maximum plotted −log10P, ties position then ID);
+lead_rule='component' requires a selected row's hit1/hit2. Explicit two-item
+leads override this. Missing reference leads yield gray points, not zero LD.
+max_labels is 0–2 across both tracks; heatmap thinning never changes tracks.
+Multiple comparisons require original zero-based signal_pair IDs.</p>
+<p>Returns editable <code>(figure, axes)</code> with axes ordered summary/GWAS/eQTL/genes/LD.
+<code>figure.coloc_metadata</code> and the JSON sidecar contain full provenance and
+numeric selections. Output always includes a PNG preview; SVG text remains
+editable and PDF/heatmap stay vector. Only a local rc_context is changed.</p>
+<h2 id="prepare_region_annotation">prepare_region_annotation</h2>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-python">prepare_region_annotation(source, *, chromosome, start, end, genome_build, version, cache_dir, source_name='GENCODE', chromosome_policy='chr', index_scope=None, source_provenance=None)
+</code></pre>
+<p>Index a local GTF/GFF3 and query complete genes overlapping a region.</p>
+<p>No network access is performed. Install <code>pycoloc[annotation]</code> to index;
+prepared RegionAnnotation objects need no gffutils to plot. <code>index_scope</code>
+lists all permitted chromosomes for a deliberate chromosome subset, otherwise
+the file is declared a complete supplied source. Coordinate-window subsets
+are not supported. <code>source_provenance</code> records an upstream source/hash and
+deterministic subsetting rule without replacing the actual indexed-file hash.
+A changed source/version/build/indexer/schema gets a separate index identity.
+Corrupt or mismatched cache files are rebuilt while holding a POSIX file lock.</p>
+<h2 id="plot_gene_track">plot_gene_track</h2>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-python">plot_gene_track(annotation, *, target_gene=None, ax=None, target_mode='union', max_lanes=6, fontsize=7)
+</code></pre>
+<p>Draw all overlapping genes; default exons are the transcript union.</p>
+<p><code>target_mode='canonical'</code> prefers MANE_Select, then Ensembl_canonical,
+then a clearly recorded representative fallback. Other genes remain unions.
+Labels are bounded and collision-filtered with target priority; gene bodies
+are retained even when their labels are suppressed. Full coordinates remain
+in <code>ax.gene_metadata</code>; only visible segments are clipped to the window.</p>
+<h2 id="plot_ld_heatmap">plot_ld_heatmap</h2>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-python">plot_ld_heatmap(ld, *, start, end, ax=None, max_snps=180, lead=None, colorbar=True, colorbar_ax=None, allowed_ids=None, cmap='white_red')
+</code></pre>
+<p>Draw a vector triangle with physical-coordinate cells and audited thinning.</p>
+<p>Only a real pairwise matrix can supply a heatmap. Repeated physical positions
+retain one deterministic SNP (lead preferred); rank thinning affects only
+this panel. Return the axis with <code>ld_metadata</code> and an optional colorbar.</p>
+<h2 id="annotation_to_dict">annotation_to_dict</h2>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-python">annotation_to_dict(annotation)
+</code></pre>
+<p>Return a JSON-serializable complete annotation snapshot.</p>
+<h2 id="annotation_from_dict">annotation_from_dict</h2>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-python">annotation_from_dict(value)
+</code></pre>
+<p>Load a prepared snapshot without gffutils, files, or network requests.</p>
+<h2 id="data-containers">Data containers</h2>
+<p>ColocResult fields are documented in <a href="result_schema.html">result schema</a>. Plotting/annotation containers below preserve supplied source metadata and validate their coordinates/LD geometry.</p>
+<h3 id="ldmatrix">LDMatrix</h3>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>values</td>
+<td><code>object</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>snp_ids</td>
+<td><code>object</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>positions</td>
+<td><code>object</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>kind</td>
+<td><code>str</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>panel</td>
+<td><code>str</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>provenance</td>
+<td><code>dict</code></td>
+<td><code>field(default_factory=dict)</code></td>
+</tr>
+<tr>
+<td>tolerance</td>
+<td><code>float</code></td>
+<td><code>1e-08</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="leadld">LeadLD</h3>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>values</td>
+<td><code>object</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>snp_ids</td>
+<td><code>object</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>lead_id</td>
+<td><code>str</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>kind</td>
+<td><code>str</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>panel</td>
+<td><code>str</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>provenance</td>
+<td><code>dict</code></td>
+<td><code>field(default_factory=dict)</code></td>
+</tr>
+<tr>
+<td>tolerance</td>
+<td><code>float</code></td>
+<td><code>1e-08</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="exonmodel">ExonModel</h3>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>exon_id</td>
+<td><code>str</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>chromosome</td>
+<td><code>str</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>start</td>
+<td><code>int</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>end</td>
+<td><code>int</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>strand</td>
+<td><code>str</code></td>
+<td><code>'.'</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="transcriptmodel">TranscriptModel</h3>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>transcript_id</td>
+<td><code>str</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>chromosome</td>
+<td><code>str</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>start</td>
+<td><code>int</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>end</td>
+<td><code>int</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>strand</td>
+<td><code>str</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>exons</td>
+<td><code>tuple[ExonModel, ...]</code></td>
+<td><code>()</code></td>
+</tr>
+<tr>
+<td>tags</td>
+<td><code>tuple[str, ...]</code></td>
+<td><code>()</code></td>
+</tr>
+<tr>
+<td>name</td>
+<td><code>str \| None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td>biotype</td>
+<td><code>str \| None</code></td>
+<td><code>None</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="genemodel">GeneModel</h3>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gene_id</td>
+<td><code>str</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>name</td>
+<td><code>str</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>chromosome</td>
+<td><code>str</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>start</td>
+<td><code>int</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>end</td>
+<td><code>int</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>strand</td>
+<td><code>str</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>transcripts</td>
+<td><code>tuple[TranscriptModel, ...]</code></td>
+<td><code>()</code></td>
+</tr>
+<tr>
+<td>exons</td>
+<td><code>tuple[ExonModel, ...]</code></td>
+<td><code>()</code></td>
+</tr>
+<tr>
+<td>biotype</td>
+<td><code>str \| None</code></td>
+<td><code>None</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="regionannotation">RegionAnnotation</h3>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>chromosome</td>
+<td><code>str</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>start</td>
+<td><code>int</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>end</td>
+<td><code>int</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>genome_build</td>
+<td><code>str</code></td>
+<td><code>required</code></td>
+</tr>
+<tr>
+<td>genes</td>
+<td><code>tuple[GeneModel, ...]</code></td>
+<td><code>()</code></td>
+</tr>
+<tr>
+<td>provenance</td>
+<td><code>dict[str, Any]</code></td>
+<td><code>field(default_factory=dict)</code></td>
+</tr>
+<tr>
+<td>chromosome_policy</td>
+<td><code>str</code></td>
+<td><code>'chr'</code></td>
+</tr>
+</tbody>
+</table></div></article>
+<footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
+</main>
+</div>
+</body>
+</html>

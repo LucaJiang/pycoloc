@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Auditable colocalisation in Python: summary-statistic ABFs, existing SuSiE fits, and an offline 500-SNP reference check.">
+<title>Executed agreement with official R · pycoloc</title>
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/site.js" defer></script>
+</head>
+<body class="pycoloc">
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="site-shell">
+<aside class="sidebar" aria-label="Documentation sidebar">
+<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
+<span class="version">0.2.2rc3 <span>release candidate</span></span>
+<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Start</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Run the 500-SNP check</a><a href="r_agreement.html" aria-current="page">R agreement report</a><a href="https://github.com/LucaJiang/pycoloc">GitHub repository</a></div><div class="nav-group"><p class="nav-label">Use</p><a href="inputs.html">Inputs and alignment</a><a href="methods.html">Methods and priors</a><a href="api.html">API reference</a><a href="result_schema.html">Result schema</a><a href="locus_plot.html">Locus plots and annotation</a></div><div class="nav-group"><p class="nav-label">Understand</p><a href="compatibility.html">Compatibility</a><a href="upstream_differences.html">Upstream differences</a><a href="reference_mapping.html">Reference mapping</a><a href="performance.html">Performance</a></div><div class="nav-group"><p class="nav-label">Maintain</p><a href="testing.html">Testing</a><a href="pages.html">Documentation and Pages</a><a href="release_notes.html">Release notes</a><a href="migration.html">Name migration</a></div></nav>
+<div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
+</aside>
+<main id="main" tabindex="-1">
+<div class="page-meta"><span>Colocalisation / Documentation</span><a href="r_agreement.md">Markdown source</a></div>
+<article><details class="on-this-page"><summary>On this page</summary><div class="toc">
+<ul>
+<li><a href="#scope-and-reproducible-command">Scope and reproducible command</a></li>
+<li><a href="#public-fixture-not-new-biological-evidence">Public fixture, not new biological evidence</a></li>
+<li><a href="#1-direct-quantitative-abf-agreement">1. Direct quantitative ABF agreement</a></li>
+<li><a href="#2-colocalisation-on-identical-official-r-fits">2. Colocalisation on identical official-R fits</a></li>
+<li><a href="#3-edges-and-corrected-weighted-behavior">3. Edges and corrected weighted behavior</a></li>
+<li><a href="#4-optional-end-to-end-native-susie">4. Optional end-to-end native SuSiE</a></li>
+<li><a href="#integrity-and-failure-behavior">Integrity and failure behavior</a></li>
+<li><a href="#separately-identified-real-region-evidence-and-limits">Separately identified real-region evidence and limits</a></li>
+</ul>
+</div>
+</details><h1 id="executed-agreement-with-official-r">Executed agreement with official R</h1>
+<blockquote>
+<p>Prior-version evidence: the measurements and downloadable records below were
+executed before the public package rename. Historical <code>pyrsusie</code> labels
+identify those original binaries. The current package is <code>prusie</code>; see
+the <a href="migration.html">rename and migration checks</a> for the new installation
+and unchanged numerical-source verification.</p>
+</blockquote>
+<p><strong>pycoloc 0.2.2rc2 passes the stated unweighted ABF and identical-fit pairing checks on the complete 500-SNP upstream teaching fixture.</strong> Corrected weighted fields deliberately differ from pinned R and instead pass independent mathematical checks. This report separates those outcomes.</p>
+<h2 id="scope-and-reproducible-command">Scope and reproducible command</h2>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python -m pip install .
+python examples/check_example.py --output-dir example-output
+</code></pre>
+<p>This is an executed Markdown report, accompanied by prebuilt HTML. The command runs the public APIs and writes the complete numeric/structural check record and actual result tables. It needs neither R nor pyrsusie in standalone mode. The source archive bundles every input and reference used here.</p>
+<p>The example was executed on CPython 3.12.2, Linux x86-64, NumPy 2.2.6, SciPy 1.15.3, pandas 2.2.3 and matplotlib 3.10.1. The default NumPy hypothesis engine was used. Primary fine-mapping settings were known n=1000, L=10, max_iter=100, float64 and sequential IBSS. Reference R was 4.4.0 with Netlib BLAS and one numerical thread.</p>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Reference</th>
+<th>Exact source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/chr1swallace/coloc/tree/8f20f0bc5e60ffc99e4c2f787bd55fd30cfe7c45">coloc 6.0.3</a></td>
+<td>commit <code>8f20f0bc5e60ffc99e4c2f787bd55fd30cfe7c45</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/stephenslab/susieR/tree/8e56a8e038e989856d106d9ca5175cc664fea9d2">susieR 0.16.6</a></td>
+<td>commit <code>8e56a8e038e989856d106d9ca5175cc664fea9d2</code></td>
+</tr>
+<tr>
+<td>Public input</td>
+<td>Full stored D1–D4 from official <code>coloc_test_data.rda</code>; 500 variables each</td>
+</tr>
+<tr>
+<td>Input and R source integrity</td>
+<td><code>examples/data/reference.lock.json</code>, <code>checksums.json</code>, <code>manifest.json</code></td>
+</tr>
+<tr>
+<td>Complete call parameters</td>
+<td><code>examples/data/parameters.json</code>; coloc p1=p2=1e-4; literal ABF defaults p12=1e-5, explicit-prior/BF cases p12=5e-6</td>
+</tr>
+<tr>
+<td>Independent mathematical expectations</td>
+<td><code>examples/data/independent_oracles.json</code> and runtime Decimal enumeration</td>
+</tr>
+<tr>
+<td>Separate native regression checkpoint</td>
+<td><code>examples/data/expected_native.json</code>, including numerical source hashes</td>
+</tr>
+</tbody>
+</table></div>
+<p>The upstream source and data hashes are fixed; the historical source lock was not changed. The task-specific reference lock identifies susieR 0.16.6 explicitly.</p>
+<h2 id="public-fixture-not-new-biological-evidence">Public fixture, not new biological evidence</h2>
+<p>These are existing <strong>synthetic teaching datasets</strong>, not a newly simulated study or a human dataset. Actual stored arrays—not stale help text—confirm 500 unique variables in D1, D2, D3 and D4. All are retained in original order. No padding, duplication, SNP selection based on agreement, or random generation was used.</p>
+<p>D1/D2 share the stored causal label s105. D3 has s105 and s89; D4 has s105. N=1000 and sdY come from the stored object. Signed LD r retains the upstream synthetic variable convention and explicit axis order. Positions 1–500 are synthetic indices; biological build, ancestry and alleles are unavailable. Redistribution retains the upstream GPL declaration and attribution in the bundle. The <a href="example.html">example guide</a> describes the files and regeneration recipe.</p>
+<h2 id="1-direct-quantitative-abf-agreement">1. Direct quantitative ABF agreement</h2>
+<p>All calls use the beta/varbeta route and stored sdY, with default quantitative prior SD 0.15 × sdY. R and Python receive the same complete dataset pairs. Two calls pass literally no prior arguments (public defaults p1=p2=1e-4, p12=1e-5), and two explicitly set p12=5e-6 for consistency with the BF-pairing examples. No fine-mapping or LD calculation occurs in this layer. The literal-default R outputs, checked actual defaults and regeneration recipe are a separate immutable supplement in examples/data/default_abf/.</p>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Full 500-SNP pair</th>
+<th style="text-align: right;">Max absolute H0–H4 error</th>
+<th style="text-align: right;">Max absolute logBF error, either trait</th>
+<th style="text-align: right;">Max absolute SNP.PP.H4 error</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D1 / D2, literal defaults</td>
+<td style="text-align: right;">1.110e-16</td>
+<td style="text-align: right;">6.750e-14</td>
+<td style="text-align: right;">1.110e-16</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>D3 / D4, literal defaults</td>
+<td style="text-align: right;">2.220e-16</td>
+<td style="text-align: right;">7.105e-14</td>
+<td style="text-align: right;">4.441e-16</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>D1 / D2, explicit p12=5e-6</td>
+<td style="text-align: right;">2.646e-17</td>
+<td style="text-align: right;">6.750e-14</td>
+<td style="text-align: right;">1.110e-16</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>D3 / D4, explicit p12=5e-6</td>
+<td style="text-align: right;">3.331e-16</td>
+<td style="text-align: right;">7.105e-14</td>
+<td style="text-align: right;">4.441e-16</td>
+<td>PASS</td>
+</tr>
+</tbody>
+</table></div>
+<p>Hypothesis probabilities use the existing atol=1e-10, rtol=0 criterion. LogBF and conditional SNP posterior comparisons retain atol=1e-10, rtol=1e-10. SNP identities/order and counts compare exactly; hypothesis and conditional probabilities are finite, in [0,1] and normalized. The thresholds follow the inherited comparison scripts; no threshold was relaxed after execution.</p>
+<p>D3 contains two upstream signals. Its ABF call is included to compare identical software inputs; the single-causal-variant ABF model does not become a multi-signal model because that call agrees. Use the component-pair layer for the multi-signal interpretation.</p>
+<h2 id="2-colocalisation-on-identical-official-r-fits">2. Colocalisation on identical official-R fits</h2>
+<p>Official susieR fits are exported to numeric arrays and JSON. Both coloc implementations consume those same fits: this isolates BF pairing from numerical differences in fitting. pycoloc selects the original credible-set component IDs and keeps the entire logBF row across all 500 SNPs, not only CS members. <code>coloc_bf_bf</code> is also called separately on those complete selected rows and matches <code>coloc_susie</code> exactly in this execution. Those two public paths share the production pairing implementation, so this is API consistency evidence; independence comes from the official-R comparisons.</p>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Pair</th>
+<th>Original components (Python, zero-based)</th>
+<th style="text-align: right;">Max absolute H0–H4 error</th>
+<th style="text-align: right;">Max absolute SNP.PP.H4 error</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D1 / D2</td>
+<td>0 / 0</td>
+<td style="text-align: right;">4.441e-16</td>
+<td style="text-align: right;">9.923e-16</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>D3 / D4, shared signal</td>
+<td>0 / 0</td>
+<td style="text-align: right;">2.168e-19</td>
+<td style="text-align: right;">1.110e-16</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>D3 / D4, additional versus shared signal</td>
+<td>1 / 0</td>
+<td style="text-align: right;">1.665e-15</td>
+<td style="text-align: right;">1.033e-14</td>
+<td>PASS</td>
+</tr>
+</tbody>
+</table></div>
+<p>R IDs are the original Python component IDs plus one. IDs are matched explicitly; return order is not treated as scientific identity. Lead SNPs and SNP count agree exactly. The D3/D4 official H4 values are approximately 0.999161 for the shared pair and 0.0304694 for the additional-versus-shared pair. The latter favors H3, approximately 0.963106. No single region-wide H4 is synthesized from these rows.</p>
+<p>The frozen official fits converge in 2 iterations for D1, D2 and D4 and 8 for D3, returning 1, 1, 1 and 2 CS respectively. Actual returned coverage is stored separately from requested 0.95; it is not replaced with 0.95 or zero.</p>
+<figure>
+<img src="assets/agreement.svg" alt="Left: the D3/D4 shared component pair favors H4 and the additional-versus-shared pair favors H3. Right: raw R weighted SNP probabilities are 0.5 and 0.5, while pycoloc and the independent oracle give 0.9 and 0.1.">
+<figcaption>Saved executed outputs. Left: colocalisation on identical official-R fits, using all 500 SNPs. Right: the fixed two-variant weighted counterexample. Synthetic examples are software checks, not new biological evidence.</figcaption>
+</figure>
+
+<h2 id="3-edges-and-corrected-weighted-behavior">3. Edges and corrected weighted behavior</h2>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Case</th>
+<th>Actual behavior</th>
+<th>Check</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D3 strict purity / D4</td>
+<td>R returns unavailable; pycoloc returns <code>status='no_cs'</code>, no hypothesis rows</td>
+<td>PASS; no fabricated H4=0</td>
+</tr>
+<tr>
+<td>D3 one iteration / D4</td>
+<td>D3 really did not converge; warning and <code>[False, True]</code> metadata remain visible</td>
+<td>PASS as a labelled diagnostic, not an accepted fit</td>
+</tr>
+<tr>
+<td>Two equal BFs, weights [9,1] and [1,1]</td>
+<td>Corrected shared-SNP probabilities [0.9,0.1]</td>
+<td>Max oracle error 1.110e-16</td>
+</tr>
+<tr>
+<td>Partial-zero weights [1,0] and [1,1]</td>
+<td>Corrected shared-SNP probabilities [1,0]</td>
+<td>Exact oracle match; R BF wrapper rejects this input</td>
+</tr>
+<tr>
+<td>Disjoint weights [1,0] and [0,1]</td>
+<td>H4=0 with undefined conditional SNP posterior; H3 stays positive</td>
+<td>Correct state and Decimal hypotheses</td>
+</tr>
+<tr>
+<td>Fixed index weights on all 500 D1/D2 SNPs</td>
+<td>Shared priors stay bound to SNP IDs through sorting</td>
+<td>H0–H4 oracle error 4.441e-16; SNP error 2.331e-15</td>
+</tr>
+</tbody>
+</table></div>
+<p>The independent small oracle enumerates all H0–H4 configurations in Decimal arithmetic. With unit BFs, q1=[0.00018,0.00002], q2=[0.0001,0.0001], and q12=q1×q2×p12/(p1×p2)=[0.000009,0.000001]. Conditional shared-SNP probabilities are q12/sum(q12)=[0.9,0.1]. This expectation does not call either package.</p>
+<p>Pinned R returns [0.5,0.5] in its main SNP posterior despite weighted H4 evidence: <strong>the actual maximum discrepancy is 0.4</strong>, while H0–H4 agree to 4.441e-16 in that small case. On the fixed 500-SNP index-weight example, the original-R discrepancies are 0.00286208 for H0–H4 and 0.0709902 for SNP.PP.H4. The default per-SNP ABFs still agree. The known R sort/weight association and omission of weights from its main SNP posterior explain why this is a corrected-mathematics comparison, not an unqualified parity claim.</p>
+<p>The weights are predeclared software checks, <code>1 + (one_based_index % 5)</code> and <code>1 + (one_based_index % 3)</code>, not biological priors. Fine-mapping prior weights are a different stage and are never automatically copied into coloc weights. The raw R outputs remain unchanged in <code>r_coloc.json</code>; the native, R and mathematical expectations are separate files.</p>
+<p>Shared q12 is not renormalized to a fixed total. Keyed SNP/weight alignment, explicit effect-prior SDs, stable positive H3 evaluation, and exact partial-zero support retain their existing inference semantics. <a href="upstream_differences.html">Upstream differences</a> records the broader counterexamples and supporting unit tests.</p>
+<h2 id="4-optional-end-to-end-native-susie">4. Optional end-to-end native SuSiE</h2>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python examples/check_example.py --native-pair --output-dir native-example-output
+</code></pre>
+<p>This path was executed with <strong>pycoloc 0.2.2rc2 + pyrsusie 0.2.3rc4</strong>, the selected A02-only candidate. It fits D1–D4 with the same recorded known-n settings and passes the native result objects directly to pycoloc. The backend identifies itself as pyrsusie-rust/0.2.3-rc.4 with pinned susieR 0.16.6 semantics.</p>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Dataset</th>
+<th style="text-align: right;">Max absolute PIP error</th>
+<th>Native / R iterations</th>
+<th>Native / R CS count</th>
+<th style="text-align: right;">Max absolute component logBF difference (diagnostic)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D1</td>
+<td style="text-align: right;">5.469e-10</td>
+<td>2 / 2</td>
+<td>1 / 1</td>
+<td style="text-align: right;">1.072e-7</td>
+</tr>
+<tr>
+<td>D2</td>
+<td style="text-align: right;">2.007e-10</td>
+<td>2 / 2</td>
+<td>1 / 1</td>
+<td style="text-align: right;">1.321e-8</td>
+</tr>
+<tr>
+<td>D3</td>
+<td style="text-align: right;">4.843e-10</td>
+<td>8 / 8</td>
+<td>2 / 2</td>
+<td style="text-align: right;">1.575e-7</td>
+</tr>
+<tr>
+<td>D4</td>
+<td style="text-align: right;">8.815e-10</td>
+<td>2 / 2</td>
+<td>1 / 1</td>
+<td style="text-align: right;">5.247e-8</td>
+</tr>
+</tbody>
+</table></div>
+<p>All four primary fits converge. All 2,000 PIPs pass atol=1e-5, rtol=0; alpha normalization, probability bounds and variance validity pass. Native CS members and original component IDs match the frozen R examples; actual returned coverage and purity remain in the check record. This is observed agreement on these cases, not a guarantee of equal CS across all inputs.</p>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Native-to-native colocalisation, compared with the official-R pair</th>
+<th style="text-align: right;">Max absolute H0–H4 difference</th>
+<th style="text-align: right;">Max absolute SNP.PP.H4 difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D1 / D2, component 0 / 0</td>
+<td style="text-align: right;">3.685e-13</td>
+<td style="text-align: right;">1.205e-10</td>
+</tr>
+<tr>
+<td>D3 / D4, component 0 / 0</td>
+<td style="text-align: right;">2.461e-12</td>
+<td style="text-align: right;">2.225e-11</td>
+</tr>
+<tr>
+<td>D3 / D4, component 1 / 0</td>
+<td style="text-align: right;">1.548e-10</td>
+<td style="text-align: right;">1.222e-9</td>
+</tr>
+</tbody>
+</table></div>
+<p>These downstream quantities are <strong>diagnostics</strong>, not additional PIP acceptance thresholds. Some entries in D1/D2's conditional SNP vector and D3/D4's additional-signal row exceed the tighter identical-fit comparison bounds. The full record retains those flags rather than claiming all-field parity. The model inputs and PIP criterion remain unchanged.</p>
+<p>The selected pyrsusie source excludes B01. Its separate fixed real-panel comparison to rc17 recorded 118 faster, 0 tied and 82 slower cases out of 200 using one warmup and seven full-call repetitions per case. That observed majority applies to the A02 package versus rc17, not an isolated all-200 incremental A01 ablation, a universal speed claim, or a pycoloc speed claim.</p>
+<h2 id="integrity-and-failure-behavior">Integrity and failure behavior</h2>
+<p>The final executed standalone check passed <strong>209 checks</strong>, including structural validity, independent R/math checks and separate native regression checks. The explicitly enabled native pair passed <strong>235 checks</strong> and retained 24 separate diagnostic entries. Download the <a href="assets/standalone-check.json">standalone check record</a> and <a href="assets/native-pair-check.json">native pair check record</a> for every field, actual parameters, environment/backend versions and errors. Before the native checkpoint was frozen, the 98 input/R/math checks passed independently. Five dedicated self-check tests passed: successful R-free/no-pyrsusie execution; a corrupted input file fails checksum verification; an altered expected H4 fails numerically even after its checksum is repaired; guarded standalone computation cannot import pyrsusie/rpy2 or spawn an external process; and changing only the caller version label does not fail. The complete installed-package test suite passed 213 tests. After adding the literal-default ABF supplement, the five affected public self-check tests were rerun and passed.</p>
+<p>A new caller version string is recorded, not treated as numerical failure. The runner never overwrites inputs, expected outputs, or R references. Check failures return a nonzero process exit code and a useful field/error message. Corrected-field differences are reported even when the intended mathematical checks pass.</p>
+<h2 id="separately-identified-real-region-evidence-and-limits">Separately identified real-region evidence and limits</h2>
+<p>The public synthetic example is not the private real-region validation panel. The release review separately accounts for the existing fixed 100 regions / 200 trait fits, using unchanged official-R outputs and final selected package source. Private inputs and outputs are not redistributed in this source archive. A PIP acceptance result is not a promise that every component BF, CS, or downstream colocalisation value is equal.</p>
+<p>These examples do not establish equivalence over every model or input. ABF assumes at most one causal variant per trait; SuSiE depends on LD/effect consistency, fitting settings and convergence. Missing CS is unavailable, not negative evidence for colocalisation. A nonconverged fit remains a limitation even when its numerical behavior is reproducible. pycoloc supports the documented summary-statistic and existing-fit interfaces; it is not the entire R coloc API. Local Linux/CPython checks do not establish remote CI success or universal platform coverage.</p></article>
+<footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
+</main>
+</div>
+</body>
+</html>

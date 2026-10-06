@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Auditable colocalisation in Python: summary-statistic ABFs, existing SuSiE fits, and an offline 500-SNP reference check.">
+<title>ColocResult schema 2 (pycoloc 0.1.1) · pycoloc</title>
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/site.js" defer></script>
+</head>
+<body class="pycoloc">
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="site-shell">
+<aside class="sidebar" aria-label="Documentation sidebar">
+<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
+<span class="version">0.2.2rc3 <span>release candidate</span></span>
+<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Start</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Run the 500-SNP check</a><a href="r_agreement.html">R agreement report</a><a href="https://github.com/LucaJiang/pycoloc">GitHub repository</a></div><div class="nav-group"><p class="nav-label">Use</p><a href="inputs.html">Inputs and alignment</a><a href="methods.html">Methods and priors</a><a href="api.html">API reference</a><a href="result_schema.html" aria-current="page">Result schema</a><a href="locus_plot.html">Locus plots and annotation</a></div><div class="nav-group"><p class="nav-label">Understand</p><a href="compatibility.html">Compatibility</a><a href="upstream_differences.html">Upstream differences</a><a href="reference_mapping.html">Reference mapping</a><a href="performance.html">Performance</a></div><div class="nav-group"><p class="nav-label">Maintain</p><a href="testing.html">Testing</a><a href="pages.html">Documentation and Pages</a><a href="release_notes.html">Release notes</a><a href="migration.html">Name migration</a></div></nav>
+<div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
+</aside>
+<main id="main" tabindex="-1">
+<div class="page-meta"><span>Colocalisation / Documentation</span><a href="result_schema.md">Markdown source</a></div>
+<article><details class="on-this-page"><summary>On this page</summary><div class="toc">
+<ul>
+<li><a href="#result-container-and-rows">Result container and rows</a></li>
+</ul>
+</div>
+</details><h1 id="colocresult-schema-2-pycoloc-011">ColocResult schema 2 (pycoloc 0.1.1)</h1>
+<p><code>metadata.result_schema_version</code> is the string <code>2</code>. Summary shape and all
+existing H0–H4, prior, SNP and component identifiers retain their definitions.
+<code>SNP.PP.H4</code> for ABF, and the pair-specific column named by
+<code>summary.snp_pp_column</code> for BF/SuSiE, is P(shared causal SNP=j | H4, data).
+It uses the exact q12 from hypothesis evidence. Each <code>.weighted</code> column is an
+identical alias; there is no implicit legacy/unweighted output mode.</p>
+<p>Computed summary rows add these diagnostics:</p>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>logU3</td>
+<td>Natural log of off-diagonal configuration evidence; −∞ for zero support</td>
+</tr>
+<tr>
+<td>logU4</td>
+<td>Natural log of shared configuration evidence; −∞ only for zero support</td>
+</tr>
+<tr>
+<td>h4_status</td>
+<td>defined, zero_shared_evidence, or posterior_underflow</td>
+</tr>
+</tbody>
+</table></div>
+<p>True U4=0 returns PP.H4=0 and all-NaN conditional SNP posteriors. Finite logU4
+with PP.H4 underflowing to zero retains a conditional distribution summing to 1.
+Partially-zero weights give exact zeros in the conditional when defined.
+An input side with zero total weight after intersection raises ValueError.</p>
+<p><code>result.status</code> continues to describe structural eligibility: ok,
+partially_trimmed, insufficient_overlap, no_overlap, or no_cs. Rows retained only
+as insufficient-overlap diagnostics do not claim log evidence or h4_status.
+These are not five-hypothesis posteriors. No-CS and no-overlap remain empty
+results, distinct from mathematical U4=0.</p>
+<p>Candidate tables should sort the main column for the selected summary row.
+Multiple pairs must retain their original idx1/idx2; never aggregate them into
+a region-level H4. A shared joint posterior, if needed, is PP.H4 times the main
+conditional SNP posterior, not the conditional alone.</p>
+<h2 id="result-container-and-rows">Result container and rows</h2>
+<p><code>ColocResult</code> exposes summary/results pandas DataFrames, priors, method, status,
+weights and metadata. Attribute access and result['summary'] are equivalent.
+as_dict() is shallow; nsnps is the common biological-SNP count (zero for empty
+summary). metadata.result_schema_version is "2". weights records common-SNP
+indexed weights. metadata retains convergence, original support and credible sets.</p>
+<p>ABF has one computed summary row. BF/SuSiE pair rows include nsnps, PP.H0.abf
+through PP.H4.abf, original idx1/idx2, corresponding idx1_r/idx2_r, hit1/hit2,
+overlap1/overlap2, status and snp_pp_column. Row order can change when input
+components/credible sets are returned in a different order; use component IDs.
+The pair's snp_pp_column names its main conditional posterior in results; never
+guess the column from a retained-set ordinal. With insufficient overlap,
+diagnostic rows are not valid five-hypothesis distributions.</p>
+<p>Result tables preserve SNP identifiers and relevant association/BF fields. No
+scalar H4 is synthesized from multiple signal pairs. Nonconverged inputs emit
+a warning and remain visible in metadata; no refit or hidden R execution occurs.</p></article>
+<footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
+</main>
+</div>
+</body>
+</html>

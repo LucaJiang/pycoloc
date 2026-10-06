@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Auditable colocalisation in Python: summary-statistic ABFs, existing SuSiE fits, and an offline 500-SNP reference check.">
+<title>Compatibility scope · pycoloc</title>
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/site.js" defer></script>
+</head>
+<body class="pycoloc">
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="site-shell">
+<aside class="sidebar" aria-label="Documentation sidebar">
+<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
+<span class="version">0.2.2rc3 <span>release candidate</span></span>
+<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Start</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Run the 500-SNP check</a><a href="r_agreement.html">R agreement report</a><a href="https://github.com/LucaJiang/pycoloc">GitHub repository</a></div><div class="nav-group"><p class="nav-label">Use</p><a href="inputs.html">Inputs and alignment</a><a href="methods.html">Methods and priors</a><a href="api.html">API reference</a><a href="result_schema.html">Result schema</a><a href="locus_plot.html">Locus plots and annotation</a></div><div class="nav-group"><p class="nav-label">Understand</p><a href="compatibility.html" aria-current="page">Compatibility</a><a href="upstream_differences.html">Upstream differences</a><a href="reference_mapping.html">Reference mapping</a><a href="performance.html">Performance</a></div><div class="nav-group"><p class="nav-label">Maintain</p><a href="testing.html">Testing</a><a href="pages.html">Documentation and Pages</a><a href="release_notes.html">Release notes</a><a href="migration.html">Name migration</a></div></nav>
+<div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
+</aside>
+<main id="main" tabindex="-1">
+<div class="page-meta"><span>Colocalisation / Documentation</span><a href="compatibility.md">Markdown source</a></div>
+<article><h1 id="compatibility-scope">Compatibility scope</h1>
+<p>Supported: beta/varbeta and P-value/MAF/N ABFs; cc and quant traits; known and
+estimated sdY; scalar base priors; both coloc weight vectors in every interface;
+all-pair BF computation; full posterior overlap and trimming; explicit null;
+existing SuSiE results with nonconsecutive CS indices; marginal regional plots.</p>
+<p>The algorithm reference is pinned coloc 6.0.3, official GitHub commit
+8f20f0bc5e60ffc99e4c2f787bd55fd30cfe7c45, source archive SHA256
+f6580ab471e1bd9f3acc45e23a73bb2ee16fe3c0a45e01cd8cc008854661b479.
+The archive hash in this document is checked against the project source lock
+during validation; consult the source mapping for provenance.</p>
+<p>The exported SusieResult contract is a mapping or object with <code>as_dict()</code>.
+Required consumption fields are <code>variant_ids</code>, <code>lbf_variable</code>, <code>sets</code> and
+<code>converged</code>; null_index is explicit when present. Additional arrays and metadata
+are allowed. pycoloc never imports prusie during ABF or fit consumption.</p>
+<p>Not implemented: raw-dataset automatic SuSiE fitting, runsusie retries,
+back-calculation of BF from alpha, finemap APIs, conditioning/masking,
+coloc.signals, sensitivity-analysis functions, vector base-prior legacy paths,
+or RDS import. The newer <code>plot_coloc_locus</code> interface supports explicitly supplied LD colors; <code>plot_coloc</code> remains a marginal-track plot. Unknown keyword arguments fail rather than silently
+being ignored. Runtime calls to R are absent. This is not a generic backend or
+workflow framework.</p>
+<p>Intentional changes are detailed in upstream_differences.md: keyed weights,
+explicit null support, stricter finite-value validation, position mismatch
+errors, stable H3 and log shrinkage calculations, uniform result objects,
+explicit nondefault effect-prior support on beta/varbeta, explicit rejection
+on P/MAF/N, and weighted main SNP posterior fields with equal .weighted aliases.
+These must not be described as exact parity on upstream-bug counterexamples.</p>
+<p>Version 0.1.1 uses ColocResult schema 2 (metadata.result_schema_version).
+Partial-zero weights are now legal for every coloc interface; they denote exact
+zero configuration support. The overlap diagnostic keeps its previous BF-only
+definition and is unaffected by coloc weights. See <a href="result_schema.html">result schema</a>.</p></article>
+<footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
+</main>
+</div>
+</body>
+</html>
