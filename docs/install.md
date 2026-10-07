@@ -1,13 +1,6 @@
 # Installation
 
-A local pycoloc wheel installs without a compiler:
-
-```sh
-python -m pip install ./pycoloc-0.2.2rc3-py3-none-any.whl
-```
-
-The release assets are prepared locally for review. To obtain the available source
-and the bundled example now:
+Install this release candidate and its bundled example from source:
 
 ```sh
 git clone https://github.com/LucaJiang/pycoloc.git

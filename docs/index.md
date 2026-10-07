@@ -48,13 +48,7 @@ Peak process RSS includes imports, inputs and full results, measured in a separa
 
 ## Installation
 
-Python ≥3.10. A local release wheel can be installed directly, with dependencies:
-
-```sh
-python -m pip install ./pycoloc-0.2.2rc3-py3-none-any.whl
-```
-
-The wheel is prepared locally; public downloads are not yet available. Source is available now:
+Install this release candidate from source with Python ≥3.10:
 
 ```sh
 git clone https://github.com/LucaJiang/pycoloc.git
