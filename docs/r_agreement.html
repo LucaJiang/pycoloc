@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Auditable colocalisation in Python: summary-statistic ABFs, existing SuSiE fits, and an offline 500-SNP reference check.">
-<title>Executed agreement with official R · pycoloc</title>
+<meta name="description" content="Bayesian colocalisation in Python: approximate Bayes factors, reusable SuSiE fits, numerical agreement and reproducible examples.">
+<title>Agreement with R coloc · pycoloc</title>
 <link rel="stylesheet" href="assets/site.css">
 <script src="assets/site.js" defer></script>
 </head>
@@ -14,13 +14,15 @@
 <aside class="sidebar" aria-label="Documentation sidebar">
 <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
 <span class="version">0.2.2rc3 <span>release candidate</span></span>
-<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Get started</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Offline example</a></div><div class="nav-group"><p class="nav-label">Use the package</p><a href="inputs.html">Inputs and priors</a><a href="api.html">API</a><a href="result_schema.html">Results</a><a href="locus_plot.html">Locus plots</a></div><div class="nav-group"><p class="nav-label">Understand and contribute</p><a href="r_agreement.html" aria-current="page">R agreement</a><a href="compatibility.html">Scope and limitations</a><a href="methods.html">Methods</a><a href="contributing.html">Contributing</a><a href="https://github.com/LucaJiang/pycoloc">GitHub</a></div></nav>
+<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Get started</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Offline example</a></div><div class="nav-group"><p class="nav-label">Use the package</p><a href="inputs.html">Inputs and priors</a><a href="api.html">API</a><a href="result_schema.html">Results</a><a href="locus_plot.html">Locus plots</a></div><div class="nav-group"><p class="nav-label">Understand and contribute</p><a href="r_agreement.html" aria-current="page">R agreement</a><a href="performance.html">Performance</a><a href="compatibility.html">Scope and limitations</a><a href="methods.html">Methods</a><a href="contributing.html">Contributing</a><a href="https://github.com/LucaJiang/pycoloc">GitHub</a></div></nav>
 <div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
 </aside>
 <main id="main" tabindex="-1">
 <div class="page-meta"><span>Colocalisation / Documentation</span><a href="r_agreement.md">Markdown source</a></div>
 <article><details class="on-this-page"><summary>On this page</summary><div class="toc">
 <ul>
+<li><a href="#fresh-four-layer-comparison">Fresh four-layer comparison</a></li>
+<li><a href="#historical-frozen-reference-execution">Historical frozen-reference execution</a></li>
 <li><a href="#reproduce-the-check">Reproduce the check</a></li>
 <li><a href="#public-fixture-not-new-biological-evidence">Public fixture, not new biological evidence</a></li>
 <li><a href="#1-direct-quantitative-abf-agreement">1. Direct quantitative ABF agreement</a></li>
@@ -32,7 +34,88 @@
 <li><a href="#reproducibility-appendix">Reproducibility appendix</a></li>
 </ul>
 </div>
-</details><h1 id="executed-agreement-with-official-r">Executed agreement with official R</h1>
+</details><h1 id="agreement-with-r-coloc">Agreement with R coloc</h1>
+<h2 id="fresh-four-layer-comparison">Fresh four-layer comparison</h2>
+<p>The new comparison uses pycoloc 0.2.2rc3 and prusie 0.2.3rc4 with pinned coloc 6.0.3 and susieR 0.16.6, executed in R 4.4.0 with OpenBLAS 0.3.20 and one thread. All 100 existing real regions and both complete 500-SNP teaching pairs are accounted for.</p>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Comparison</th>
+<th style="text-align: right;">Passing / total regions or pairs</th>
+<th style="text-align: right;">Max absolute H0–H4 error</th>
+<th style="text-align: right;">Max absolute conditional SNP error</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A: ABF, real</td>
+<td style="text-align: right;">100/100</td>
+<td style="text-align: right;">1.07e-14</td>
+<td style="text-align: right;">1.24e-14</td>
+</tr>
+<tr>
+<td>B: all BF rows, real</td>
+<td style="text-align: right;">100/100</td>
+<td style="text-align: right;">1.02e-11</td>
+<td style="text-align: right;">4.55e-15</td>
+</tr>
+<tr>
+<td>B: official-fit CS pairing, real</td>
+<td style="text-align: right;">100/100</td>
+<td style="text-align: right;">1.6e-14</td>
+<td style="text-align: right;">1.44e-15</td>
+</tr>
+<tr>
+<td>A: ABF, teaching</td>
+<td style="text-align: right;">2/2</td>
+<td style="text-align: right;">2.22e-16</td>
+<td style="text-align: right;">4.44e-16</td>
+</tr>
+<tr>
+<td>B: official-fit CS pairing, teaching</td>
+<td style="text-align: right;">2/2</td>
+<td style="text-align: right;">4.44e-16</td>
+<td style="text-align: right;">4.44e-16</td>
+</tr>
+<tr>
+<td>D: native fit then coloc, real</td>
+<td style="text-align: right;">52/100</td>
+<td style="text-align: right;">6.34e-09</td>
+<td style="text-align: right;">1.35e-07</td>
+</tr>
+<tr>
+<td>D: native fit then coloc, teaching</td>
+<td style="text-align: right;">0/2</td>
+<td style="text-align: right;">4.64e-10</td>
+<td style="text-align: right;">9.49e-10</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Comparison with susieR 0.16.6</th>
+<th style="text-align: right;">Passed cases</th>
+<th style="text-align: right;">Maximum absolute PIP error</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Real regions, 103–4162 SNPs</td>
+<td style="text-align: right;">200/200</td>
+<td style="text-align: right;">1.22e-08</td>
+</tr>
+<tr>
+<td>500-SNP teaching cases, converged</td>
+<td style="text-align: right;">6/6</td>
+<td style="text-align: right;">8.81e-10</td>
+</tr>
+</tbody>
+</table></div>
+<p>H0–H4 retains atol=1e-10, rtol=0; conditional SNP/logBF fields retain atol=1e-10, rtol=1e-10. IDs/order, original component pairs and unavailable states compare exactly. Layer B uses the same freshly computed official R fits on both sides, isolating pairing arithmetic. It checks 34 real no-CS states explicitly; these are unavailable posteriors, not H4=0.</p>
+<p>Layer C passes all 200 PIP checks (atol=1e-5, rtol=0), but layer D has 48 strict-field failures out of 100 real regions and both primary teaching pairs. Its maximum real conditional SNP error is 1.35e-07. No tolerance was relaxed, no SNP was dropped, and no fitting or result construction changed. Passing PIP checks alone does not establish equality of downstream posteriors. Nonconverged cases remain diagnostic.</p>
+<p><a href="assets/r_comparison_numerical.json">Full deidentified field checks</a>, <a href="assets/r_comparison_summary.json">summary</a> and <a href="assets/r_comparison_protocol.json">settings</a> retain the observed differences. The manual <a href="https://github.com/LucaJiang/pycoloc/tree/main/benchmarks">comparison scripts</a> regenerate the public example with configurable R/Python installations. <a href="performance.html">Performance</a> measures fitting and pairing separately. Independent weighted/alignment/effect-prior/H3/zero-weight oracles remain required for the <a href="upstream_differences.html">intentional corrections</a>.</p>
+<h2 id="historical-frozen-reference-execution">Historical frozen-reference execution</h2>
 <p><strong>The recorded pycoloc 0.2.2rc2 execution passed the stated unweighted ABF and identical-fit pairing checks on the complete 500-SNP upstream teaching fixture.</strong> Corrected weighted fields deliberately differ from pinned R and instead pass independent mathematical checks. This report separates those outcomes.</p>
 <h2 id="reproduce-the-check">Reproduce the check</h2>
 <p>Follow <a href="install.html">installation</a>, then run from the checkout:</p>

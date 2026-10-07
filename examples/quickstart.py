@@ -1,13 +1,20 @@
-"""Hand-written analytical API example; no biological/simulation claim."""
+"""Analyze the complete bundled 500-SNP synthetic teaching example."""
+import json
+from pathlib import Path
+
 import numpy as np
-from pycoloc import coloc_abf, plot_coloc
-d1=dict(snp=['a','b','c'],position=[100,200,300],chromosome='22',
-    beta=[.1,.5,-.2],varbeta=[.01,.02,.03],type='cc')
-d2=dict(d1,beta=[0.,.4,.1],type='quant',sdY=1.2)
-result=coloc_abf(d1,d2,p1=1e-4,p2=1e-4,p12=1e-5,
-    prior_weights1={'a':1.,'b':2.,'c':0.})
-assert np.isclose(result.results['SNP.PP.H4'].sum(),1.)
-assert result.results.loc[result.results.snp=='c','SNP.PP.H4'].item()==0.
-fig,axes=plot_coloc(result,d1,d2)
-assert len(axes)==2
-print(result.summary.to_string(index=False))
+from pycoloc import coloc_abf
+
+data = Path(__file__).resolve().parent / "data"
+metadata = json.loads((data / "metadata.json").read_text())
+with np.load(data / "inputs.npz", allow_pickle=False) as arrays:
+    datasets = [
+        dict(snp=metadata[key]["snp"], type=metadata[key]["type"],
+             N=metadata[key]["N"], sdY=metadata[key]["sdY"],
+             beta=arrays[key + "_beta"], varbeta=arrays[key + "_varbeta"])
+        for key in ("D1", "D2")
+    ]
+
+result = coloc_abf(*datasets)
+print(result.summary[[f"PP.H{i}.abf" for i in range(5)]])
+print(result.results[["snp", "SNP.PP.H4"]].nlargest(5, "SNP.PP.H4"))

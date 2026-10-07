@@ -1,6 +1,57 @@
-# Run the 500-SNP reference check
+# Analyze and validate the 500-SNP example
 
-The example executes `coloc_abf`, `coloc_bf_bf`, and `coloc_susie` on a fixed, redistributable **synthetic upstream teaching fixture**. Each of its four datasets contains 500 distinct SNP-like variables. It is software validation, not evidence from a new biological study.
+Analyze a complete **synthetic 500-SNP teaching fixture** from official coloc,
+then check the results against frozen R outputs. The four bundled datasets
+support ABF analysis, existing-fit pairing and optional native fine-mapping.
+
+## Analyze the data
+
+After [installation](install.md), run `python examples/quickstart.py` from the
+checkout. The script loads both complete 500-SNP quantitative datasets, calls
+`coloc_abf` and prints the hypothesis posteriors and leading conditional SNP
+probabilities. The [overview](index.md#quick-start) shows the code and its interpretation.
+
+## Fit once and reuse the result
+
+When several traits or genes share a region, fit each one once at the intended
+SNP support and settings. Keep those fits for subsequent pairing. After installing
+prusie, this example uses the same stored D1/D2 arrays as the ABF quick start:
+
+```python
+import json
+from pathlib import Path
+import numpy as np
+from prusie import susie_rss
+from pycoloc import coloc_susie
+
+data = Path("examples/data")
+metadata = json.loads((data / "metadata.json").read_text())
+fits = {}
+with np.load(data / "inputs.npz", allow_pickle=False) as arrays:
+    for key in ("D1", "D2"):
+        fits[key] = susie_rss(
+            z=arrays[key + "_beta"] / np.sqrt(arrays[key + "_varbeta"]),
+            R=arrays[key + "_LD"], n=metadata[key]["N"],
+            variant_ids=metadata[key]["snp"], L=10, max_iter=100,
+            tol=0.001, coverage=0.95, min_abs_corr=0.5, n_purity=500,
+            estimate_residual_variance=False,
+        )
+
+print({key: fit.converged for key, fit in fits.items()})
+paired = coloc_susie(fits["D1"], fits["D2"])
+print(paired.summary[["idx1", "idx2", "PP.H3.abf", "PP.H4.abf"]])
+```
+
+Reuse `fits` for other pairings without calling `susie_rss` again. The two native
+fits above converge on this fixture; inspect convergence and LD consistency for
+new data. Both LD axes must match the signed effects' SNP and allele order.
+Dense float64 LD stores about 8m² bytes per m-SNP matrix before fitting workspaces.
+There is no automatic allele harmonization or LD repair.
+
+Each summary row names original zero-based component IDs. Read its
+`snp_pp_column` to find the corresponding conditional SNP posterior. Missing CS
+returns `status='no_cs'`; it is unavailable evidence, not H4=0. Existing official
+R fits can also be consumed through the [documented result contract](compatibility.md).
 
 ## Run offline after installation
 
@@ -42,9 +93,9 @@ Two explicitly labelled diagnostics change one setting: D3_strict_purity uses mi
 
 ## Optional native fitting with prusie
 
-Install [prusie](https://github.com/LucaJiang/prusie) into the same activated
-environment, with its Rust toolchain, C linker and Python headers available.
-Starting in the pycoloc checkout:
+Install [prusie](https://github.com/LucaJiang/prusie) into the same environment,
+using a prepared wheel or its source instructions. A source build needs the
+pinned Rust toolchain, C linker and Python headers. From the pycoloc checkout:
 
 ```sh
 git clone https://github.com/LucaJiang/prusie.git ../prusie

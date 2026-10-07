@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Auditable colocalisation in Python: summary-statistic ABFs, existing SuSiE fits, and an offline 500-SNP reference check.">
-<title>Run the 500-SNP reference check · pycoloc</title>
+<meta name="description" content="Bayesian colocalisation in Python: approximate Bayes factors, reusable SuSiE fits, numerical agreement and reproducible examples.">
+<title>Analyze and validate the 500-SNP example · pycoloc</title>
 <link rel="stylesheet" href="assets/site.css">
 <script src="assets/site.js" defer></script>
 </head>
@@ -14,13 +14,15 @@
 <aside class="sidebar" aria-label="Documentation sidebar">
 <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
 <span class="version">0.2.2rc3 <span>release candidate</span></span>
-<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Get started</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html" aria-current="page">Offline example</a></div><div class="nav-group"><p class="nav-label">Use the package</p><a href="inputs.html">Inputs and priors</a><a href="api.html">API</a><a href="result_schema.html">Results</a><a href="locus_plot.html">Locus plots</a></div><div class="nav-group"><p class="nav-label">Understand and contribute</p><a href="r_agreement.html">R agreement</a><a href="compatibility.html">Scope and limitations</a><a href="methods.html">Methods</a><a href="contributing.html">Contributing</a><a href="https://github.com/LucaJiang/pycoloc">GitHub</a></div></nav>
+<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Get started</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html" aria-current="page">Offline example</a></div><div class="nav-group"><p class="nav-label">Use the package</p><a href="inputs.html">Inputs and priors</a><a href="api.html">API</a><a href="result_schema.html">Results</a><a href="locus_plot.html">Locus plots</a></div><div class="nav-group"><p class="nav-label">Understand and contribute</p><a href="r_agreement.html">R agreement</a><a href="performance.html">Performance</a><a href="compatibility.html">Scope and limitations</a><a href="methods.html">Methods</a><a href="contributing.html">Contributing</a><a href="https://github.com/LucaJiang/pycoloc">GitHub</a></div></nav>
 <div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
 </aside>
 <main id="main" tabindex="-1">
 <div class="page-meta"><span>Colocalisation / Documentation</span><a href="example.md">Markdown source</a></div>
 <article><details class="on-this-page"><summary>On this page</summary><div class="toc">
 <ul>
+<li><a href="#analyze-the-data">Analyze the data</a></li>
+<li><a href="#fit-once-and-reuse-the-result">Fit once and reuse the result</a></li>
 <li><a href="#run-offline-after-installation">Run offline after installation</a></li>
 <li><a href="#what-the-check-does">What the check does</a></li>
 <li><a href="#the-data-and-model">The data and model</a></li>
@@ -29,8 +31,51 @@
 <li><a href="#deliberate-failure-tests">Deliberate failure tests</a></li>
 </ul>
 </div>
-</details><h1 id="run-the-500-snp-reference-check">Run the 500-SNP reference check</h1>
-<p>The example executes <code>coloc_abf</code>, <code>coloc_bf_bf</code>, and <code>coloc_susie</code> on a fixed, redistributable <strong>synthetic upstream teaching fixture</strong>. Each of its four datasets contains 500 distinct SNP-like variables. It is software validation, not evidence from a new biological study.</p>
+</details><h1 id="analyze-and-validate-the-500-snp-example">Analyze and validate the 500-SNP example</h1>
+<p>Analyze a complete <strong>synthetic 500-SNP teaching fixture</strong> from official coloc,
+then check the results against frozen R outputs. The four bundled datasets
+support ABF analysis, existing-fit pairing and optional native fine-mapping.</p>
+<h2 id="analyze-the-data">Analyze the data</h2>
+<p>After <a href="install.html">installation</a>, run <code>python examples/quickstart.py</code> from the
+checkout. The script loads both complete 500-SNP quantitative datasets, calls
+<code>coloc_abf</code> and prints the hypothesis posteriors and leading conditional SNP
+probabilities. The <a href="index.html#quick-start">overview</a> shows the code and its interpretation.</p>
+<h2 id="fit-once-and-reuse-the-result">Fit once and reuse the result</h2>
+<p>When several traits or genes share a region, fit each one once at the intended
+SNP support and settings. Keep those fits for subsequent pairing. After installing
+prusie, this example uses the same stored D1/D2 arrays as the ABF quick start:</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-python">import json
+from pathlib import Path
+import numpy as np
+from prusie import susie_rss
+from pycoloc import coloc_susie
+
+data = Path(&quot;examples/data&quot;)
+metadata = json.loads((data / &quot;metadata.json&quot;).read_text())
+fits = {}
+with np.load(data / &quot;inputs.npz&quot;, allow_pickle=False) as arrays:
+    for key in (&quot;D1&quot;, &quot;D2&quot;):
+        fits[key] = susie_rss(
+            z=arrays[key + &quot;_beta&quot;] / np.sqrt(arrays[key + &quot;_varbeta&quot;]),
+            R=arrays[key + &quot;_LD&quot;], n=metadata[key][&quot;N&quot;],
+            variant_ids=metadata[key][&quot;snp&quot;], L=10, max_iter=100,
+            tol=0.001, coverage=0.95, min_abs_corr=0.5, n_purity=500,
+            estimate_residual_variance=False,
+        )
+
+print({key: fit.converged for key, fit in fits.items()})
+paired = coloc_susie(fits[&quot;D1&quot;], fits[&quot;D2&quot;])
+print(paired.summary[[&quot;idx1&quot;, &quot;idx2&quot;, &quot;PP.H3.abf&quot;, &quot;PP.H4.abf&quot;]])
+</code></pre>
+<p>Reuse <code>fits</code> for other pairings without calling <code>susie_rss</code> again. The two native
+fits above converge on this fixture; inspect convergence and LD consistency for
+new data. Both LD axes must match the signed effects' SNP and allele order.
+Dense float64 LD stores about 8m² bytes per m-SNP matrix before fitting workspaces.
+There is no automatic allele harmonization or LD repair.</p>
+<p>Each summary row names original zero-based component IDs. Read its
+<code>snp_pp_column</code> to find the corresponding conditional SNP posterior. Missing CS
+returns <code>status='no_cs'</code>; it is unavailable evidence, not H4=0. Existing official
+R fits can also be consumed through the <a href="compatibility.html">documented result contract</a>.</p>
 <h2 id="run-offline-after-installation">Run offline after installation</h2>
 <p>Follow <a href="install.html">installation</a> to clone the repository, create an environment
 and install the package. From that checkout:</p>
@@ -58,9 +103,9 @@ frozen files in <code>examples/data/</code>.</p>
 <p>The literal default ABF calls pass only the two datasets: p1=p2=1e-4 and p12=1e-5. A second pair of ABF calls explicitly uses p12=5e-6, matching the SuSiE pairing priors. Both use the standard quantitative effect-prior SD <code>0.15 × sdY</code>. It requires no LD. Frozen SuSiE fits use known-n z-RSS, <code>z=beta/sqrt(varbeta)</code>, L=10, max_iter=100, tol=0.001, coverage=0.95, min_abs_corr=0.5 and full 500-variable purity. Prior variance uses <code>optim</code>; residual variance remains fixed. All arguments are recorded in <code>examples/data/parameters.json</code>.</p>
 <p>Two explicitly labelled diagnostics change one setting: D3_strict_purity uses min_abs_corr=1 and actually returns no CS; D3_one_iteration uses max_iter=1 and actually fails to converge. They do not change the primary fit protocol.</p>
 <h2 id="optional-native-fitting-with-prusie">Optional native fitting with prusie</h2>
-<p>Install <a href="https://github.com/LucaJiang/prusie">prusie</a> into the same activated
-environment, with its Rust toolchain, C linker and Python headers available.
-Starting in the pycoloc checkout:</p>
+<p>Install <a href="https://github.com/LucaJiang/prusie">prusie</a> into the same environment,
+using a prepared wheel or its source instructions. A source build needs the
+pinned Rust toolchain, C linker and Python headers. From the pycoloc checkout:</p>
 <pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">git clone https://github.com/LucaJiang/prusie.git ../prusie
 python -m pip install ../prusie
 </code></pre>

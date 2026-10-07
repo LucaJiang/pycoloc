@@ -23,3 +23,38 @@ jobs:
       - run: python tools/build_docs.py --check
       - run: python tools/check_docs.py
       - run: python -m build
+      - name: Inspect wheel and source payloads
+        run: python tools/check_artifacts.py dist/*.whl dist/*.tar.gz --output artifact-checks.json
+      - name: Rebuild the wheel from the source distribution
+        shell: bash
+        run: |
+          mkdir -p artifact-work/source artifact-work/rebuilt
+          tar -xzf dist/pycoloc-*.tar.gz -C artifact-work/source
+          python -m build --wheel artifact-work/source/pycoloc-* --outdir artifact-work/rebuilt
+          python tools/check_artifacts.py artifact-work/rebuilt/*.whl
+      - name: Install and test each wheel outside the checkout
+        shell: bash
+        run: |
+          for kind in original rebuilt; do
+            if [ "$kind" = original ]; then wheel_dir=dist; else wheel_dir=artifact-work/rebuilt; fi
+            python -m venv "artifact-work/$kind-env"
+            py="$PWD/artifact-work/$kind-env/bin/python"
+            "$py" -m pip install -c requirements-dev.lock "$wheel_dir"/*.whl pytest numba gffutils
+            mkdir -p "artifact-work/$kind-check"
+            cp -R tests examples "artifact-work/$kind-check/"
+            (
+              cd "artifact-work/$kind-check"
+              unset PYTHONPATH
+              "$py" -c 'import pathlib, sys, pycoloc; assert pathlib.Path(pycoloc.__file__).resolve().is_relative_to(pathlib.Path(sys.prefix).resolve()); print(pycoloc.__version__, pycoloc.__file__)'
+              "$py" -m pytest tests
+              "$py" examples/quickstart.py
+              "$py" examples/check_example.py --output-dir example-output
+            )
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pycoloc-python312-local-artifacts
+          path: |
+            dist/*
+            artifact-work/rebuilt/*.whl
+            artifact-checks.json

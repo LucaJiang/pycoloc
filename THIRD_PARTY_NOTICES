@@ -10,14 +10,13 @@ under GNU GPL version 3 or later; upstream licensing is not re-labelled.
 
 Source files consulted: R/claudia.R, R/susie.R, R/check.R. Comments identify
 Claudia Giambartolomei, Chris Wallace and Vincent Plagnol for core ABF functions.
-The package includes no vendored susieR code. Official susieR 0.14.2
-(BSD 3-clause) is used only outside this package for reference validation.
+The package includes no vendored susieR source code. Official susieR 0.16.6
+(BSD 3-clause), commit 8e56a8e038e989856d106d9ca5175cc664fea9d2, is used
+outside this package to produce the separately identified reference outputs.
 
 NumPy, SciPy, pandas, matplotlib and optional Numba are separately distributed
 dependencies under their respective licenses; no dependency source is vendored.
 
-Current integration validation uses official susieR0.16.6, commit
-8e56a8e038e989856d106d9ca5175cc664fea9d2, only outside this package.
 Optional gffutils supplies local annotation indexing under its own license.
 
 Public teaching fixture: examples/data contains a portable conversion of the complete synthetic coloc_test_data D1-D4 from coloc 6.0.3 commit 8f20f0bc5e60ffc99e4c2f787bd55fd30cfe7c45. Attribution: Chris Wallace and coloc contributors. Its upstream unversioned GPL declaration and GPL-3 text are retained in examples/data/README.md, LICENSE.GPL-3 and upstream/coloc_DESCRIPTION. Frozen susieR0.16.6 reference outputs are separately identified by examples/data/reference.lock.json. No private study data are bundled.

@@ -4,6 +4,7 @@ include docs/.nojekyll
 recursive-include examples *.py *.md *.json *.csv *.tsv *.npz *.R *.txt
 recursive-include tests *.py
 recursive-include tools *.py *.json *.txt
+recursive-include benchmarks *.py *.R *.c *.md
 recursive-include .github *.yml
 recursive-include examples/data *
 include .github/workflows/ci.yml

@@ -1,10 +1,13 @@
 # Installation
 
-Install from the [GitHub source](https://github.com/LucaJiang/pycoloc). No PyPI
-release or public prebuilt wheel is provided. The package declares Python ≥3.10
-with NumPy ≥1.24, SciPy ≥1.10, pandas ≥2 and matplotlib ≥3.7. Executed checks
-cover CPython 3.12 on Linux x86-64; other platforms need compatible dependencies
-and their own validation. pycoloc itself is pure Python.
+A local pycoloc wheel installs without a compiler:
+
+```sh
+python -m pip install ./pycoloc-0.2.2rc3-py3-none-any.whl
+```
+
+The release assets are prepared locally for review. To obtain the available source
+and the bundled example now:
 
 ```sh
 git clone https://github.com/LucaJiang/pycoloc.git
@@ -12,12 +15,18 @@ cd pycoloc
 python -m venv .venv
 . .venv/bin/activate
 python -m pip install .
-python examples/check_example.py --output-dir example-output
+python examples/quickstart.py
 ```
 
-Keep the checkout to run the [bundled example](example.md). Installation can
-download dependencies; the check runs offline afterward. R and prusie are not
-needed for ABF, BF pairing, consuming existing fits, or plotting.
+The package requires Python ≥3.10, NumPy ≥1.24, SciPy ≥1.10, pandas ≥2 and
+matplotlib ≥3.7. Executed checks cover CPython 3.12 on Linux x86-64. Keep the
+checkout for examples and frozen reference data; installation can download
+dependencies, then the examples run offline.
+
+ABF, BF pairing and consuming existing SuSiE fits require only pycoloc's
+Python dependencies. For native fine-mapping, install
+[prusie](https://github.com/LucaJiang/prusie) separately and follow the
+[fit-reuse example](example.md#fit-once-and-reuse-the-result).
 
 ## Optional features
 
@@ -25,11 +34,9 @@ From the activated environment and checkout:
 
 ```sh
 python -m pip install '.[jit]'         # Numba hypothesis kernel
-python -m pip install '.[annotation]'  # Local GTF/GFF3 indexing with gffutils
+python -m pip install '.[annotation]'  # Local GTF/GFF3 indexing
 ```
 
-Numba's first compilation takes additional time. Prepared annotation models
-render without the annotation extra. For native fine-mapping, install
-[prusie](https://github.com/LucaJiang/prusie) separately and follow the
-[optional example](example.md#optional-native-fitting-with-prusie).
-Tests and package-building commands are in [contributing](contributing.md).
+Numba compilation contributes to the first call; measure it separately from
+warm calls. Prepared annotation models render without gffutils. Validation and
+package-building commands are in [contributing](contributing.md).

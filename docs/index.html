@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Auditable colocalisation in Python: summary-statistic ABFs, existing SuSiE fits, and an offline 500-SNP reference check.">
-<title>Bayesian colocalisation · pycoloc</title>
+<meta name="description" content="Bayesian colocalisation in Python: approximate Bayes factors, reusable SuSiE fits, numerical agreement and reproducible examples.">
+<title>pycoloc · pycoloc</title>
 <link rel="stylesheet" href="assets/site.css">
 <script src="assets/site.js" defer></script>
 </head>
@@ -14,71 +14,218 @@
 <aside class="sidebar" aria-label="Documentation sidebar">
 <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
 <span class="version">0.2.2rc3 <span>release candidate</span></span>
-<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Get started</p><a href="index.html" aria-current="page">Overview</a><a href="install.html">Install</a><a href="example.html">Offline example</a></div><div class="nav-group"><p class="nav-label">Use the package</p><a href="inputs.html">Inputs and priors</a><a href="api.html">API</a><a href="result_schema.html">Results</a><a href="locus_plot.html">Locus plots</a></div><div class="nav-group"><p class="nav-label">Understand and contribute</p><a href="r_agreement.html">R agreement</a><a href="compatibility.html">Scope and limitations</a><a href="methods.html">Methods</a><a href="contributing.html">Contributing</a><a href="https://github.com/LucaJiang/pycoloc">GitHub</a></div></nav>
+<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Get started</p><a href="index.html" aria-current="page">Overview</a><a href="install.html">Install</a><a href="example.html">Offline example</a></div><div class="nav-group"><p class="nav-label">Use the package</p><a href="inputs.html">Inputs and priors</a><a href="api.html">API</a><a href="result_schema.html">Results</a><a href="locus_plot.html">Locus plots</a></div><div class="nav-group"><p class="nav-label">Understand and contribute</p><a href="r_agreement.html">R agreement</a><a href="performance.html">Performance</a><a href="compatibility.html">Scope and limitations</a><a href="methods.html">Methods</a><a href="contributing.html">Contributing</a><a href="https://github.com/LucaJiang/pycoloc">GitHub</a></div></nav>
 <div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
 </aside>
 <main id="main" tabindex="-1">
 <div class="page-meta"><span>Colocalisation / Documentation</span><a href="index.md">Markdown source</a></div>
 <article><details class="on-this-page"><summary>On this page</summary><div class="toc">
 <ul>
+<li><a href="#numerical-agreement">Numerical agreement</a></li>
+<li><a href="#performance">Performance</a></li>
+<li><a href="#installation">Installation</a></li>
 <li><a href="#quick-start">Quick start</a></li>
-<li><a href="#choose-your-input">Choose your input</a></li>
-<li><a href="#read-the-result-in-context">Read the result in context</a></li>
-<li><a href="#reference">Reference</a></li>
+<li><a href="#methods-and-scope">Methods and scope</a></li>
+<li><a href="#documentation-and-reproducibility">Documentation and reproducibility</a></li>
+<li><a href="#citation-and-license">Citation and license</a></li>
 </ul>
 </div>
-</details><h1 id="bayesian-colocalisation">Bayesian colocalisation</h1>
-<p class="intro">Compare association signals with Bayesian colocalisation in Python. Start with summary statistics or existing SuSiE fits, then inspect the hypotheses, shared-variant probabilities, and model assumptions.</p>
-
-<div class="cards">
-<a class="card" href="install.html"><span>01 / Start</span><strong>Install pycoloc</strong><small>Pure Python with NumPy and SciPy. R is not a runtime requirement.</small></a>
-<a class="card" href="example.html"><span>02 / Verify</span><strong>Run the 500-SNP check</strong><small>Frozen public teaching data, official-R expectations, and useful failure messages.</small></a>
-<a class="card" href="r_agreement.html"><span>03 / Understand</span><strong>Read the R agreement report</strong><small>Executed comparisons, absolute errors, and intentional corrected-field differences.</small></a>
-</div>
-
-<h2 id="quick-start">Quick start</h2>
-<p>Follow <a href="install.html">installation</a> to clone the repository and install its dependencies, then run from the checkout:</p>
-<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python examples/check_example.py --output-dir example-output
-</code></pre>
-<p>Once dependencies are installed, the check needs no network, R, private study files, or prusie. It calls real public APIs on the bundled upstream <strong>synthetic teaching fixture</strong>. It checks file integrity and numerical results, writes a machine-readable record, and exits nonzero on a substantive mismatch.</p>
-<h2 id="choose-your-input">Choose your input</h2>
+</details><h1 id="pycoloc">pycoloc</h1>
+<p>Bayesian colocalisation in Python.</p>
+<p>Compare two traits using approximate Bayes factors or SuSiE-derived component
+Bayes factors, with numerical validation against R coloc. pycoloc implements
+established colocalisation methods using NumPy/SciPy and an optional Numba kernel.</p>
+<ul>
+<li><strong>Numerical agreement:</strong> supported ABF and identical-BF/fit comparisons pass in all 100 real regions.</li>
+<li><strong>Measured BF pairing:</strong> 2.91× paired geometric-mean speedup on 99 mutually converged regions.</li>
+<li><strong>Lower peak process RSS:</strong> ABF median 97.7 MiB versus 259 MiB for R, with lower peaks in all 100 cases.</li>
+</ul>
+<h2 id="numerical-agreement">Numerical agreement</h2>
+<p>New calls compare pycoloc 0.2.2rc3 with coloc 6.0.3 on all 100 fixed real regions, using matched inputs.</p>
 <div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
 <thead>
 <tr>
-<th>Input you have</th>
-<th>Public function</th>
+<th>Comparison</th>
+<th style="text-align: right;">Passing / total regions or pairs</th>
+<th style="text-align: right;">Max absolute H0–H4 error</th>
+<th style="text-align: right;">Max absolute conditional SNP error</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ABF</td>
+<td style="text-align: right;">100/100</td>
+<td style="text-align: right;">1.07e-14</td>
+<td style="text-align: right;">1.24e-14</td>
+</tr>
+<tr>
+<td>Same component BFs</td>
+<td style="text-align: right;">100/100</td>
+<td style="text-align: right;">1.02e-11</td>
+<td style="text-align: right;">4.55e-15</td>
+</tr>
+<tr>
+<td>Same official SuSiE fits</td>
+<td style="text-align: right;">100/100</td>
+<td style="text-align: right;">1.6e-14</td>
+<td style="text-align: right;">1.44e-15</td>
+</tr>
+</tbody>
+</table></div>
+<p>No-CS states are checked explicitly. The complete 500-SNP teaching pairs also pass these comparisons. Native fitting followed by colocalisation has separate, stricter-field discrepancies in 48/100 real regions; see <a href="r_agreement.html">R agreement</a> and <a href="upstream_differences.html">intentional mathematical corrections</a>.</p>
+<h2 id="performance">Performance</h2>
+<p>Complete calls with one numerical thread against coloc 6.0.3 in R 4.4.0 / OpenBLAS 0.3.20. The fixed panel contains 100 real regions, 103–4162 SNPs each. Tables include all ABF cases and converged BF/CS pairings with available output.</p>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Task</th>
+<th style="text-align: right;">Comparable cases</th>
+<th style="text-align: right;">Median time, R → Python (ms)</th>
+<th style="text-align: right;">Paired speedup¹</th>
+<th style="text-align: right;">Faster / tied / slower</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ABF</td>
+<td style="text-align: right;">100/100</td>
+<td style="text-align: right;">4.33 → 4.29</td>
+<td style="text-align: right;">0.928×</td>
+<td style="text-align: right;">35 / 0 / 65</td>
+</tr>
+<tr>
+<td>All component BFs</td>
+<td style="text-align: right;">99/100</td>
+<td style="text-align: right;">40.3 → 13.5</td>
+<td style="text-align: right;">2.91×</td>
+<td style="text-align: right;">99 / 0 / 0</td>
+</tr>
+<tr>
+<td>Existing-fit CS pairing</td>
+<td style="text-align: right;">65/100</td>
+<td style="text-align: right;">8.49 → 4.2</td>
+<td style="text-align: right;">1.81×</td>
+<td style="text-align: right;">64 / 0 / 1</td>
+</tr>
+</tbody>
+</table></div>
+<p>¹ Geometric mean of per-case speedups; seven retained repetitions after warmup. Speedup pairs each case; the displayed time columns are separate across-case medians.</p>
+<p>ABF was slower in 65/100 cases. Across all 100 CS-pairing calls, including 34 no-CS regions and one nonconverged region, there were 64 faster and 36 slower calls; geometric-mean speedup was 0.812×.</p>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Task</th>
+<th style="text-align: right;">Median peak process RSS, R → Python (MiB)</th>
+<th style="text-align: right;">Lower / tied / higher in Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ABF</td>
+<td style="text-align: right;">259 → 97.7</td>
+<td style="text-align: right;">100 / 0 / 0</td>
+</tr>
+<tr>
+<td>All component BFs</td>
+<td style="text-align: right;">260 → 97.5</td>
+<td style="text-align: right;">99 / 0 / 0</td>
+</tr>
+<tr>
+<td>Existing-fit CS pairing</td>
+<td style="text-align: right;">260 → 96.9</td>
+<td style="text-align: right;">65 / 0 / 0</td>
+</tr>
+</tbody>
+</table></div>
+<p><img alt="Runtime and peak process RSS ratios for every measured real case, including slower and higher-memory cases." src="assets/r_comparison.svg" /></p>
+<p>Peak process RSS includes imports, inputs and full results, measured in a separate fresh process. <a href="performance.html">Methods, all cases, repeat variability and public-fixture results</a> give the comparison scope.</p>
+<h2 id="installation">Installation</h2>
+<p>Python ≥3.10. A local release wheel can be installed directly, with dependencies:</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python -m pip install ./pycoloc-0.2.2rc3-py3-none-any.whl
+</code></pre>
+<p>The wheel is prepared locally; public downloads are not yet available. Source is available now:</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">git clone https://github.com/LucaJiang/pycoloc.git
+cd pycoloc
+python -m venv .venv
+. .venv/bin/activate
+python -m pip install .
+</code></pre>
+<p>Keep the checkout for the bundled data. See <a href="install.html">installation</a> for
+optional Numba and annotation support.</p>
+<h2 id="quick-start">Quick start</h2>
+<p>Run from the checkout. The bundled data are the complete <strong>synthetic 500-SNP
+coloc teaching fixture</strong>, with stored quantitative-trait sample sizes and sdY.</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-python">import json
+from pathlib import Path
+
+import numpy as np
+from pycoloc import coloc_abf
+
+data = Path(&quot;examples/data&quot;)
+metadata = json.loads((data / &quot;metadata.json&quot;).read_text())
+with np.load(data / &quot;inputs.npz&quot;, allow_pickle=False) as arrays:
+    datasets = [
+        dict(snp=metadata[key][&quot;snp&quot;], type=metadata[key][&quot;type&quot;],
+             N=metadata[key][&quot;N&quot;], sdY=metadata[key][&quot;sdY&quot;],
+             beta=arrays[key + &quot;_beta&quot;], varbeta=arrays[key + &quot;_varbeta&quot;])
+        for key in (&quot;D1&quot;, &quot;D2&quot;)
+    ]
+
+result = coloc_abf(*datasets)
+print(result.summary[[f&quot;PP.H{i}.abf&quot; for i in range(5)]])
+print(result.results[[&quot;snp&quot;, &quot;SNP.PP.H4&quot;]].nlargest(5, &quot;SNP.PP.H4&quot;))
+</code></pre>
+<p><code>PP.H4.abf</code> is support for a shared causal variant. H0 means neither trait is
+associated; H1/H2 mean only one is associated; H3 means different causal variants.
+<code>SNP.PP.H4</code> ranks variants conditional on H4, so interpret it alongside H4 support;
+it is not a fine-mapping PIP. This example returns H4 ≈0.99917 and ranks s105 first.</p>
+<h2 id="methods-and-scope">Methods and scope</h2>
+<p>The APIs support variant prior weights and existing SuSiE fits; the package also provides locus plots. Fit each trait once and reuse it for subsequent pairings.</p>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Function</th>
 <th>Interpretation</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Two sets of beta and variance, or P values with required metadata</td>
+<td>Beta/SE² or P values with required metadata</td>
 <td><code>coloc_abf</code></td>
-<td>Single causal variant per trait; no LD required</td>
+<td>At most one causal variant per trait; no LD required</td>
 </tr>
 <tr>
-<td>Full component log Bayes-factor matrices</td>
+<td>Full component log-BF rows</td>
 <td><code>coloc_bf_bf</code></td>
-<td>A result for each component pair</td>
+<td>Posterior for each component pair</td>
 </tr>
 <tr>
-<td>Existing SuSiE results with credible sets</td>
+<td>Existing SuSiE fits</td>
 <td><code>coloc_susie</code></td>
-<td>Pairs the original credible-set component rows</td>
+<td>Pairs original credible-set components; keeps every SNP column</td>
 </tr>
 </tbody>
 </table></div>
-<p>Both coloc prior-weight vectors follow explicit SNP identities. An existing fit is consumed directly; fine-mapping is never run implicitly. Read <a href="inputs.html">inputs and alignment</a> before preparing an analysis.</p>
-<h2 id="read-the-result-in-context">Read the result in context</h2>
-<p><code>PP.H0.abf</code> through <code>PP.H4.abf</code> describe the five colocalisation hypotheses for one comparison. <code>SNP.PP.H4</code> is conditional on H4: it is not the unconditional probability of sharing a causal SNP. A multiple-signal result has one row per component pair, without an invented region-wide H4.</p>
-<div class="callout"><p><strong>Agreement has a defined scope.</strong> Unweighted paths with explicitly recorded priors are checked against pinned official R. Corrected weighted SNP posteriors, stable H3, and several input semantics deliberately differ where the reference is inconsistent. The report preserves those differences and checks independent mathematical expectations.</p></div>
-
-<p>The <a href="result_schema.html">result schema</a>, <a href="methods.html">methods and priors</a>, and <a href="upstream_differences.html">upstream differences</a> explain how to interpret computed, missing, and unavailable results. <a href="locus_plot.html">Locus plotting</a> adds association tracks and local annotation without changing inference.</p>
-<h2 id="reference">Reference</h2>
-<p>The algorithm reference is official coloc 6.0.3; the example's SuSiE fits use
-susieR 0.16.6. See <a href="compatibility.html">compatibility</a> for supported scope and
-<a href="reference_mapping.html">source mapping</a> for pinned identities.
-Maintained by Wenxin Jiang. Source: <a href="https://github.com/LucaJiang/pycoloc">GitHub</a>.</p></article>
+<p>Each pair-specific H4 in a multiple-signal analysis describes that comparison;
+those rows do not define a region-wide posterior. Fine-mapping with
+<a href="https://github.com/LucaJiang/prusie">prusie</a> is optional. ABF and existing-fit
+pairing run directly without a fine-mapping dependency. For SuSiE, signed LD r,
+SNP/effect-allele alignment and convergence matter; see <a href="inputs.html">inputs</a>
+and the <a href="example.html#fit-once-and-reuse-the-result">fit-reuse example</a>.</p>
+<h2 id="documentation-and-reproducibility">Documentation and reproducibility</h2>
+<p>Read the <a href="https://lucajiang.github.io/pycoloc/">documentation site</a>,
+<a href="api.html">API</a>, <a href="result_schema.html">results</a> and <a href="locus_plot.html">locus plots</a>.
+Run the offline frozen-reference check after installation:</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python examples/check_example.py --output-dir example-output
+</code></pre>
+<p><a href="https://github.com/LucaJiang/pycoloc/tree/main/benchmarks/README.md">Comparison scripts</a>, input provenance and per-field checks
+are linked from the <a href="r_agreement.html">agreement report</a>.</p>
+<h2 id="citation-and-license">Citation and license</h2>
+<p>Maintained by Wenxin Jiang. Cite the original <a href="methods.html">coloc methods</a>
+and identify the pycoloc version used; package citation metadata is in <a href="https://github.com/LucaJiang/pycoloc/blob/main/CITATION.cff">CITATION.cff</a>.
+GPL-3.0-or-later; see <a href="https://github.com/LucaJiang/pycoloc/blob/main/LICENSE">LICENSE</a> and <a href="https://github.com/LucaJiang/pycoloc/blob/main/THIRD_PARTY_NOTICES">third-party notices</a>
+for the retained upstream code and teaching-data terms.</p></article>
 <footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
 </main>
 </div>

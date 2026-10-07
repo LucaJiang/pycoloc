@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Auditable colocalisation in Python: summary-statistic ABFs, existing SuSiE fits, and an offline 500-SNP reference check.">
-<title>Performance and resource use · pycoloc</title>
+<meta name="description" content="Bayesian colocalisation in Python: approximate Bayes factors, reusable SuSiE fits, numerical agreement and reproducible examples.">
+<title>Runtime and peak process RSS · pycoloc</title>
 <link rel="stylesheet" href="assets/site.css">
 <script src="assets/site.js" defer></script>
 </head>
@@ -14,25 +14,234 @@
 <aside class="sidebar" aria-label="Documentation sidebar">
 <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
 <span class="version">0.2.2rc3 <span>release candidate</span></span>
-<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Get started</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Offline example</a></div><div class="nav-group"><p class="nav-label">Use the package</p><a href="inputs.html">Inputs and priors</a><a href="api.html">API</a><a href="result_schema.html">Results</a><a href="locus_plot.html">Locus plots</a></div><div class="nav-group"><p class="nav-label">Understand and contribute</p><a href="r_agreement.html">R agreement</a><a href="compatibility.html">Scope and limitations</a><a href="methods.html">Methods</a><a href="contributing.html">Contributing</a><a href="https://github.com/LucaJiang/pycoloc">GitHub</a></div></nav>
+<nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Get started</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Offline example</a></div><div class="nav-group"><p class="nav-label">Use the package</p><a href="inputs.html">Inputs and priors</a><a href="api.html">API</a><a href="result_schema.html">Results</a><a href="locus_plot.html">Locus plots</a></div><div class="nav-group"><p class="nav-label">Understand and contribute</p><a href="r_agreement.html">R agreement</a><a href="performance.html" aria-current="page">Performance</a><a href="compatibility.html">Scope and limitations</a><a href="methods.html">Methods</a><a href="contributing.html">Contributing</a><a href="https://github.com/LucaJiang/pycoloc">GitHub</a></div></nav>
 <div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
 </aside>
 <main id="main" tabindex="-1">
 <div class="page-meta"><span>Colocalisation / Documentation</span><a href="performance.md">Markdown source</a></div>
-<article><h1 id="performance-and-resource-use">Performance and resource use</h1>
-<p>The NumPy hypothesis implementation is O(m) and avoids an m×m configuration
-matrix. Optional Numba accelerates the numerical hypothesis kernel; report
-first compilation separately from warmed calls. R and fine-mapping are never
-invoked implicitly. Independent-region process concurrency is controlled by the
-caller, who must budget total library threads and memory.</p>
-<p>LD heatmap thinning affects only visualization. It reindexes both matrix axes
-by one explicit SNP permutation, records omissions, and preserves association
-tracks and inference inputs. Stored SNP order need not be genomic order.
-Whole-genome GTF indexing can take substantial time and disk space; rendering
-prepared local annotation avoids rebuilding the index. Cache identities retain
-source, release, build, indexer/schema and content hashes.</p>
-<p>No fine-mapping timing establishes an independent pycoloc speed claim. The
-package supplies no whole-host utilization guarantee or hidden worker pool.</p></article>
+<article><details class="on-this-page"><summary>On this page</summary><div class="toc">
+<ul>
+<li><a href="#new-fixed-r-measurements">New fixed-R measurements</a><ul>
+<li><a href="#public-500-snp-fixture">Public 500-SNP fixture</a></li>
+<li><a href="#complete-records-and-counterexamples">Complete records and counterexamples</a></li>
+</ul>
+</li>
+<li><a href="#reproduce-a-full-call-comparison">Reproduce a full-call comparison</a></li>
+<li><a href="#implementation-scope">Implementation scope</a></li>
+</ul>
+</div>
+</details><h1 id="runtime-and-peak-process-rss">Runtime and peak process RSS</h1>
+<h2 id="new-fixed-r-measurements">New fixed-R measurements</h2>
+<p>These full-call measurements use pycoloc 0.2.2rc3 and prusie 0.2.3rc4, R 4.4.0 with OpenBLAS 0.3.20, coloc 6.0.3 and susieR 0.16.6. Each backend uses one numerical thread. The fixed real panel has 100 regions, 200 traits and 103–4162 SNPs per region. It consists of previously selected association windows from one disease/cell-type pairing; it is not a random sample of all loci.</p>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Task</th>
+<th style="text-align: right;">Comparable cases</th>
+<th style="text-align: right;">Median time, R → Python (ms)</th>
+<th style="text-align: right;">Paired speedup¹</th>
+<th style="text-align: right;">Faster / tied / slower</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ABF</td>
+<td style="text-align: right;">100/100</td>
+<td style="text-align: right;">4.33 → 4.29</td>
+<td style="text-align: right;">0.928×</td>
+<td style="text-align: right;">35 / 0 / 65</td>
+</tr>
+<tr>
+<td>All component BFs</td>
+<td style="text-align: right;">99/100</td>
+<td style="text-align: right;">40.3 → 13.5</td>
+<td style="text-align: right;">2.91×</td>
+<td style="text-align: right;">99 / 0 / 0</td>
+</tr>
+<tr>
+<td>Existing-fit CS pairing</td>
+<td style="text-align: right;">65/100</td>
+<td style="text-align: right;">8.49 → 4.2</td>
+<td style="text-align: right;">1.81×</td>
+<td style="text-align: right;">64 / 0 / 1</td>
+</tr>
+</tbody>
+</table></div>
+<p>¹ Geometric mean of per-case median R / median Python runtime. The two displayed time columns are separate medians across cases, so their ratio need not equal the paired summary.</p>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Task</th>
+<th style="text-align: right;">Median peak process RSS, R → Python (MiB)</th>
+<th style="text-align: right;">Lower / tied / higher in Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ABF</td>
+<td style="text-align: right;">259 → 97.7</td>
+<td style="text-align: right;">100 / 0 / 0</td>
+</tr>
+<tr>
+<td>All component BFs</td>
+<td style="text-align: right;">260 → 97.5</td>
+<td style="text-align: right;">99 / 0 / 0</td>
+</tr>
+<tr>
+<td>Existing-fit CS pairing</td>
+<td style="text-align: right;">260 → 96.9</td>
+<td style="text-align: right;">65 / 0 / 0</td>
+</tr>
+</tbody>
+</table></div>
+<p>The primary subset requires both calls to succeed and converge, with an available pairing result. Every excluded state remains in the complete table. ABF includes all successful comparisons. Fitting is excluded on both sides of the BF/CS pairing comparisons.</p>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Task / subset</th>
+<th style="text-align: right;">Count</th>
+<th>Speedup median [Q1, Q3]; range</th>
+<th style="text-align: right;">Relative repeat IQR, R / Python (median)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ABF / primary comparable</td>
+<td style="text-align: right;">100</td>
+<td>0.939 [0.814, 1.07]; 0.541–1.61</td>
+<td style="text-align: right;">0.152 / 0.0579</td>
+</tr>
+<tr>
+<td>ABF / all measured</td>
+<td style="text-align: right;">100</td>
+<td>0.939 [0.814, 1.07]; 0.541–1.61</td>
+<td style="text-align: right;">0.152 / 0.0579</td>
+</tr>
+<tr>
+<td>All component BFs / primary comparable</td>
+<td style="text-align: right;">99</td>
+<td>2.89 [2.59, 3.23]; 2.11–4.58</td>
+<td style="text-align: right;">0.12 / 0.0119</td>
+</tr>
+<tr>
+<td>All component BFs / all measured</td>
+<td style="text-align: right;">100</td>
+<td>2.88 [2.59, 3.23]; 2.11–4.58</td>
+<td style="text-align: right;">0.119 / 0.0119</td>
+</tr>
+<tr>
+<td>Existing-fit CS pairing / primary comparable</td>
+<td style="text-align: right;">65</td>
+<td>1.89 [1.64, 2.16]; 0.726–2.8</td>
+<td style="text-align: right;">0.117 / 0.0465</td>
+</tr>
+<tr>
+<td>Existing-fit CS pairing / all measured</td>
+<td style="text-align: right;">100</td>
+<td>1.62 [0.217, 2.02]; 0.0874–2.8</td>
+<td style="text-align: right;">0.122 / 0.0326</td>
+</tr>
+</tbody>
+</table></div>
+<p>Relative repeat IQR is (Q3−Q1)/median across the seven retained times. A runtime ratio below one favors R; ties use exact median equality. These are observed counts without a significance or minimum-percentage threshold.</p>
+<h3 id="public-500-snp-fixture">Public 500-SNP fixture</h3>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Task</th>
+<th style="text-align: right;">Comparable cases</th>
+<th style="text-align: right;">Median time, R → Python (ms)</th>
+<th style="text-align: right;">Paired speedup¹</th>
+<th style="text-align: right;">Faster / tied / slower</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ABF</td>
+<td style="text-align: right;">2/2</td>
+<td style="text-align: right;">4.17 → 4.84</td>
+<td style="text-align: right;">0.855×</td>
+<td style="text-align: right;">0 / 0 / 2</td>
+</tr>
+<tr>
+<td>All component BFs</td>
+<td style="text-align: right;">2/2</td>
+<td style="text-align: right;">180 → 48.2</td>
+<td style="text-align: right;">3.73×</td>
+<td style="text-align: right;">2 / 0 / 0</td>
+</tr>
+<tr>
+<td>Existing-fit CS pairing</td>
+<td style="text-align: right;">2/2</td>
+<td style="text-align: right;">8.59 → 4.98</td>
+<td style="text-align: right;">1.73×</td>
+<td style="text-align: right;">2 / 0 / 0</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Task</th>
+<th style="text-align: right;">Median peak process RSS, R → Python (MiB)</th>
+<th style="text-align: right;">Lower / tied / higher in Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ABF</td>
+<td style="text-align: right;">259 → 99.2</td>
+<td style="text-align: right;">2 / 0 / 0</td>
+</tr>
+<tr>
+<td>All component BFs</td>
+<td style="text-align: right;">263 → 99</td>
+<td style="text-align: right;">2 / 0 / 0</td>
+</tr>
+<tr>
+<td>Existing-fit CS pairing</td>
+<td style="text-align: right;">260 → 97</td>
+<td style="text-align: right;">2 / 0 / 0</td>
+</tr>
+</tbody>
+</table></div>
+<p>These are the full existing synthetic teaching datasets, separately reported from the real panel. D1–D4 are the fine-mapping timing panel; D1/D2 and D3/D4 are the pairing panel. The three additional diagnostic fits are numerically checked but not timed.</p>
+<h3 id="complete-records-and-counterexamples">Complete records and counterexamples</h3>
+<p>The per-case table (<a href="assets/r_comparison_cases.tsv">TSV</a>, <a href="assets/r_comparison_cases.json">JSON</a>), <a href="assets/r_comparison_repeats.json">all retained repeats</a>, <a href="assets/r_comparison_summary.json">summary</a> and <a href="assets/r_comparison_protocol.json">parameters/protocol</a> preserve all workloads and statuses. Per-repeat rows link to separate numerical validation and separate case/backend memory measurements; those quantities are not measured inside every timing repetition. Private genotypes, association files, variant IDs and input paths are not redistributed.</p>
+<ul>
+<li><strong>ABF:</strong> 65/100 slower primary cases (first IDs: region02, region03, region04, region05, region07, region08, region09, region11); 0/100 higher-RSS cases (first IDs: none). Lowest speed ratio: region49, 0.541×; lowest memory ratio: region24, 2.61×. Paired memory ratio median 2.66 [Q1 2.64, Q3 2.67], range 2.61–2.7; median per-case RSS reduction 62.4%. Summed case medians: R 0.447 s, Python 0.481 s.</li>
+<li><strong>All component BFs:</strong> 0/99 slower primary cases (first IDs: none); 0/99 higher-RSS cases (first IDs: none). Lowest speed ratio: region08, 2.11×; lowest memory ratio: region48, 2.62×. Paired memory ratio median 2.67 [Q1 2.66, Q3 2.67], range 2.62–2.75; median per-case RSS reduction 62.5%. Summed case medians: R 4.1 s, Python 1.41 s.</li>
+<li><strong>Existing-fit CS pairing:</strong> 1/65 slower primary cases (first IDs: region45); 0/65 higher-RSS cases (first IDs: none). Lowest speed ratio: region45, 0.726×; lowest memory ratio: region08, 2.58×. Paired memory ratio median 2.68 [Q1 2.67, Q3 2.69], range 2.58–2.71; median per-case RSS reduction 62.7%. Summed case medians: R 0.626 s, Python 0.364 s.</li>
+</ul>
+<p>An OS peak includes imports, inputs, the full return and native allocations; it is not incremental algorithm memory. BF/CS consumers load matched complete BF matrices, variant IDs, original CS/member IDs and convergence metadata, without the unused coefficient arrays of an upstream fitting workspace. Fine-mapping retains its full standard result. Runtime and memory conclusions apply to this panel and environment.</p>
+<p>All formal calls ran sequentially in one reserved measurement window. The audit recorded 0 pressure-contaminated attempts and 0 process-failed attempts. The predeclared rule retains contaminated attempts and repeats both backends; all original records remain available. Shared-host load monitoring is best effort. The default NumPy coloc path was measured; no fresh Numba compilation or warm-JIT performance claim is made.</p>
+<h2 id="reproduce-a-full-call-comparison">Reproduce a full-call comparison</h2>
+<p>The <a href="https://github.com/LucaJiang/pycoloc/tree/main/benchmarks">bounded comparison scripts</a>
+run the full <code>coloc_abf</code>, <code>coloc_bf_bf</code> or <code>coloc_susie</code> API against coloc 6.0.3.
+Inputs are loaded before the clock; checks, preprocessing and ordinary result
+construction remain inside it. Each backend has one warmup and at least seven
+retained repeats. Small calls are batched identically. Backend order is alternated
+between cases; numerical library threads are fixed to one.</p>
+<p>A separate fresh process performs one complete call per case/backend for
+<strong>peak process RSS</strong> in MiB. The OS high-water mark includes the interpreter,
+imports, loaded inputs, native allocations and the returned object. Numerical
+serialization happens after capture. This metric is distinct from SuSiE-RSS,
+the statistical summary-data model.</p>
+<p>Report median R time / median Python time for each case and paired distributions,
+including slower cases, variability and convergence states. Memory ratios are
+reported separately; runtime gains do not imply smaller process RSS. Only
+measurements with a stated R version, optimized BLAS, thread count and matched
+inputs support a comparison with R.</p>
+<h2 id="implementation-scope">Implementation scope</h2>
+<p>The stable H3 numerical reduction uses O(m) work and no m×m configuration matrix.
+The full API also validates, aligns and sorts SNPs and constructs pandas tables;
+its complexity is not described by that reduction alone. Optional Numba compiles
+only the H3 reduction, not input preparation or full result construction. Its
+first call includes compilation and must be separated from warm calls.</p>
+<p>LD is unnecessary for ABF in either Python or R. Dense LD for upstream
+fine-mapping costs O(m²) storage. Plot-only LD thinning leaves analysis inputs
+and association tracks unchanged. See <a href="locus_plot.html">locus plots</a> for rendering
+and annotation details, and <a href="r_agreement.html">agreement</a> for numerical scope.</p></article>
 <footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
 </main>
 </div>

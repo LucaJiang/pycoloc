@@ -1,4 +1,31 @@
-# Executed agreement with official R
+# Agreement with R coloc
+
+## Fresh four-layer comparison
+
+The new comparison uses pycoloc 0.2.2rc3 and prusie 0.2.3rc4 with pinned coloc 6.0.3 and susieR 0.16.6, executed in R 4.4.0 with OpenBLAS 0.3.20 and one thread. All 100 existing real regions and both complete 500-SNP teaching pairs are accounted for.
+
+| Comparison | Passing / total regions or pairs | Max absolute H0–H4 error | Max absolute conditional SNP error |
+| --- | ---: | ---: | ---: |
+| A: ABF, real | 100/100 | 1.07e-14 | 1.24e-14 |
+| B: all BF rows, real | 100/100 | 1.02e-11 | 4.55e-15 |
+| B: official-fit CS pairing, real | 100/100 | 1.6e-14 | 1.44e-15 |
+| A: ABF, teaching | 2/2 | 2.22e-16 | 4.44e-16 |
+| B: official-fit CS pairing, teaching | 2/2 | 4.44e-16 | 4.44e-16 |
+| D: native fit then coloc, real | 52/100 | 6.34e-09 | 1.35e-07 |
+| D: native fit then coloc, teaching | 0/2 | 4.64e-10 | 9.49e-10 |
+
+| Comparison with susieR 0.16.6 | Passed cases | Maximum absolute PIP error |
+| --- | ---: | ---: |
+| Real regions, 103–4162 SNPs | 200/200 | 1.22e-08 |
+| 500-SNP teaching cases, converged | 6/6 | 8.81e-10 |
+
+H0–H4 retains atol=1e-10, rtol=0; conditional SNP/logBF fields retain atol=1e-10, rtol=1e-10. IDs/order, original component pairs and unavailable states compare exactly. Layer B uses the same freshly computed official R fits on both sides, isolating pairing arithmetic. It checks 34 real no-CS states explicitly; these are unavailable posteriors, not H4=0.
+
+Layer C passes all 200 PIP checks (atol=1e-5, rtol=0), but layer D has 48 strict-field failures out of 100 real regions and both primary teaching pairs. Its maximum real conditional SNP error is 1.35e-07. No tolerance was relaxed, no SNP was dropped, and no fitting or result construction changed. Passing PIP checks alone does not establish equality of downstream posteriors. Nonconverged cases remain diagnostic.
+
+[Full deidentified field checks](assets/r_comparison_numerical.json), [summary](assets/r_comparison_summary.json) and [settings](assets/r_comparison_protocol.json) retain the observed differences. The manual [comparison scripts](https://github.com/LucaJiang/pycoloc/tree/main/benchmarks) regenerate the public example with configurable R/Python installations. [Performance](performance.md) measures fitting and pairing separately. Independent weighted/alignment/effect-prior/H3/zero-weight oracles remain required for the [intentional corrections](upstream_differences.md).
+
+## Historical frozen-reference execution
 
 **The recorded pycoloc 0.2.2rc2 execution passed the stated unweighted ABF and identical-fit pairing checks on the complete 500-SNP upstream teaching fixture.** Corrected weighted fields deliberately differ from pinned R and instead pass independent mathematical checks. This report separates those outcomes.
 

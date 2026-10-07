@@ -3,7 +3,7 @@
   "mark": "C",
   "tagline": "Bayesian colocalisation",
   "section": "Colocalisation / Documentation",
-  "description": "Auditable colocalisation in Python: summary-statistic ABFs, existing SuSiE fits, and an offline 500-SNP reference check.",
+  "description": "Bayesian colocalisation in Python: approximate Bayes factors, reusable SuSiE fits, numerical agreement and reproducible examples.",
   "navigation": [
     [
       "Get started",
@@ -49,6 +49,10 @@
         [
           "R agreement",
           "r_agreement.html"
+        ],
+        [
+          "Performance",
+          "performance.html"
         ],
         [
           "Scope and limitations",
