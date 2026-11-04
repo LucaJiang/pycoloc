@@ -15,7 +15,7 @@
     "V2_calls": 104,
     "native_fit_calls": 206,
     "reused_R_records": 514,
-    "verified_files": 2372
+    "verified_files": 2376
   },
   "same_input_comparisons": {
     "real/abf": {
