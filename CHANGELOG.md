@@ -2,10 +2,15 @@
 
 ## 0.2.2 — 2026-11-04
 
-- Finalize 0.2.2 with prusie 0.3.1 integration and refreshed comparisons against coloc 6.0.3 and susieR 0.16.6.
-- Add Python 3.10/3.13 installed-wheel CI, lint checks and GitHub Release packages.
-- Simplify documentation checks and consolidate license notices; inference is unchanged.
-- Distribute through GitHub only; the PyPI project named pycoloc is unrelated.
+- First final release. The inference code is unchanged from 0.2.2rc3.
+- Tested with prusie 0.3.1: its fit results go directly into `coloc_susie`,
+  including refined, nonconverged and no-credible-set fits.
+- New comparison with R: pycoloc after prusie 0.3.1 fits versus coloc after
+  susieR 0.16.6 fits, on 100 real regions and the toy example.
+- Distributed as a wheel and sdist on GitHub Releases. pycoloc is not on PyPI;
+  the PyPI package named `pycoloc` is a different project.
+- CI tests the installed wheel on Python 3.10 and 3.13, runs Ruff and builds the
+  documentation. The third-party notice is now `THIRD_PARTY_NOTICES.md`.
 
 ## 0.2.2rc3
 

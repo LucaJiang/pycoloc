@@ -7,7 +7,7 @@ authors = [{name = "Wenxin Jiang"}]
 maintainers = [{name = "Wenxin Jiang"}]
 name = "pycoloc"
 version = "0.2.2"
-description = "Auditable Bayesian colocalisation with variant-specific priors"
+description = "Bayesian colocalisation of two traits, following the R package coloc"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "GPL-3.0-or-later"

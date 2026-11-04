@@ -24,6 +24,7 @@
 <li><a href="#tests-and-packages">Tests and packages</a></li>
 <li><a href="#documentation">Documentation</a></li>
 <li><a href="#scientific-checks-and-provenance">Scientific checks and provenance</a></li>
+<li><a href="#releases">Releases</a></li>
 </ul>
 </div>
 </details><h1 id="contributing">Contributing</h1>
@@ -48,7 +49,7 @@ H3, NumPy/Numba parity, runtime independence, plotting and local miniature
 GTF/GFF3 indexing. Install the JIT and annotation extras for the full suite.
 <code>tests/test_example.py</code> includes checksum and numerical failure controls and
 verifies standalone execution without R or prusie. Optional native integration
-is documented in the <a href="example.html#optional-native-fitting-with-prusie">example guide</a>.</p>
+is documented in the <a href="example.html#fitting-with-prusie">example guide</a>.</p>
 <h2 id="documentation">Documentation</h2>
 <p>Markdown in <code>docs/</code> is the source for the committed static HTML. From the
 repository root:</p>
@@ -80,8 +81,14 @@ See <a href="reference_mapping.html">source mapping</a> for implementation respo
 <p>Retain GPL and third-party notices with code and data. Cite the statistical
 methods as well as the software version. Tests use redistributable analytical
 inputs and the fixed synthetic toy example; they do not need private study
-data or an R installation. The workflow in <code>.github/workflows/ci.yml</code> runs local
-build/test/doc commands on GitHub; consult the actual workflow run for CI status.</p></article>
+data or an R installation. <code>.github/workflows/ci.yml</code> runs these commands on
+GitHub for every push.</p>
+<h2 id="releases">Releases</h2>
+<p>Update the version in <code>pyproject.toml</code>, <code>src/pycoloc/__init__.py</code> and
+<code>CITATION.cff</code>, add a <code>## X.Y.Z — date</code> section to <code>CHANGELOG.md</code>, and push an
+annotated tag <code>vX.Y.Z</code> once CI passes on that commit. <code>.github/workflows/release.yml</code>
+then builds the wheel and sdist, tests the wheel, and creates the GitHub Release
+with the changelog section as its notes and a <code>SHA256SUMS</code> file.</p></article>
 <footer><p>pycoloc 0.2.2 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
 </main>
 </div>

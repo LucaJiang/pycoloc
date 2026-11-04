@@ -49,7 +49,7 @@ print(paired.summary[["idx1", "idx2", "PP.H3.abf", "PP.H4.abf"]])
 ```
 
 Reuse `fits` for other pairings without calling `susie_rss` again. The two native
-fits above converge on this fixture; inspect convergence and LD consistency for
+fits above converge on these data; inspect convergence and LD consistency for
 new data. Both LD axes must match the signed effects' SNP and allele order.
 Dense float64 LD stores about 8m² bytes per m-SNP matrix before fitting workspaces.
 There is no automatic allele harmonization or LD repair.
@@ -59,76 +59,90 @@ Each summary row names original zero-based component IDs. Read its
 returns `status='no_cs'`; it is unavailable evidence, not H4=0. Existing official
 R fits can also be consumed through the [documented result contract](compatibility.md).
 
-## Run offline after installation
+## Check an installation against R
 
-Follow [installation](install.md) to clone the repository, create an environment
-and install the package. From that checkout:
+From a clone, after [installation](install.md):
 
 ```sh
-python examples/check_example.py --help
 python examples/check_example.py --output-dir example-output
 ```
 
-Installation may download dependencies. Once installed, the check runs offline
-without R or external study data. It imports the installed package and uses the
-frozen files in `examples/data/`.
+The check runs offline, without R, using the installed package and the stored
+files in `examples/data/`. It:
 
-## What the check does
+1. verifies the SHA256 checksums of the inputs and stored results;
+2. checks the 500 variant IDs, the effect and variance arrays, and that each LD
+   matrix is symmetric with a unit diagonal and matches the variant order;
+3. runs ABF for D1/D2 and D3/D4 and compares with coloc 6.0.3, once with the
+   default priors and once with p12 = 5 × 10⁻⁶ (the SuSiE default);
+4. pairs the stored susieR fits with `coloc_susie`, and their full component rows
+   with `coloc_bf_bf`, and compares H0–H4, `SNP.PP.H4`, component IDs and leads;
+5. checks that a fit without credible sets is reported as unavailable and that a
+   nonconverged fit is passed through with a warning;
+6. checks the corrected weighted and partial-zero cases against exact calculations,
+   keeping the raw R values for comparison;
+7. compares with a stored pycoloc result, as a regression check.
 
-1. Verify SHA256 checksums of the input, official-reference and native-checkpoint files.
-2. Validate the 500 unique IDs, effect/variance arrays, signed LD order, symmetry and diagonal.
-3. Execute unweighted quantitative ABF comparisons for D1/D2 and D3/D4 against official coloc 6.0.3, both with literal public defaults and with the separately recorded common prior settings.
-4. Consume the frozen official SuSiE fits and compare component-pair H0–H4, SNP posteriors, IDs, leads and probability validity. Call BF pairing separately on the same full component rows.
-5. Check no-CS as unavailable and propagate an explicitly nonconverged frozen fit with its warning.
-6. Check corrected weighted and partial-zero behavior against independently enumerated mathematical expectations, preserving the raw R differences as diagnostics.
-7. Compare against a separate frozen pycoloc regression checkpoint. It is labelled as native output and never used as an independent R or mathematical oracle.
+It writes the per-field differences to `report.json` and the results to
+`actual_results.json`, exits with a nonzero status if a check fails, and never
+rewrites the stored results. [Agreement with R](r_agreement.md) discusses the
+differences.
 
-The command writes field-level numerical differences to `report.json` and results to
-`actual_results.json`. It exits nonzero for an unsuccessful software check and never
-updates frozen expectations. The [R agreement report](r_agreement.md) explains the
-observed differences, including the intentional weighted-field corrections.
+## The data
 
-## The data and model
+D1–D4 are exported unchanged from coloc's `coloc_test_data.rda`. Each has
+N = 1000, quantitative beta/varbeta and its stored sdY. The simulated causal
+variant is s105 in D1, D2 and D4, and s105 and s89 in D3. Positions are indices,
+not genomic coordinates, and genome build, ancestry and effect alleles are not
+defined.
 
-All stored D1, D2, D3 and D4 data were exported from coloc's pinned `coloc_test_data.rda`, unchanged and without outcome-based selection. Each has N=1000, quantitative beta/varbeta and its actual stored sdY. The stored causal labels identify s105 in D1/D2/D4, and s105 plus s89 in D3; these are synthetic variable identities. Positions are indices, not genomic coordinates. Build, ancestry, effect alleles and counting alleles are unavailable and explicitly null. Do not convert these into biological claims.
+The arrays are stored as float64 NPZ (loaded with `allow_pickle=False`), with
+TSV/JSON copies and a variant manifest for both LD axes. LD is the signed
+correlation r. The bundle is about 9 MB, mostly the four 500 × 500 LD matrices.
 
-The bundle supplies numeric float64 NPZ with `allow_pickle=False`, portable TSV/JSON, and a variant manifest that maps both LD axes. LD values are signed correlation r. The full input bundle is about 9 MB, with four complete 500×500 matrices. No human study data or annotation database is included.
+ABF uses the default priors p1 = p2 = 10⁻⁴ and p12 = 10⁻⁵, plus a second run with
+p12 = 5 × 10⁻⁶, and the quantitative effect prior SD 0.15 × sdY. The stored SuSiE
+fits use summary statistics with known n, `z = beta / sqrt(varbeta)`, L = 10,
+max_iter = 100, tol = 0.001, coverage = 0.95, min_abs_corr = 0.5 and purity over
+all 500 variants; the prior variance is estimated with `optim` and the residual
+variance is fixed. `examples/data/parameters.json` records every argument.
 
-The literal default ABF calls pass only the two datasets: p1=p2=1e-4 and p12=1e-5. A second pair of ABF calls explicitly uses p12=5e-6, matching the SuSiE pairing priors. Both use the standard quantitative effect-prior SD `0.15 × sdY`. It requires no LD. Frozen SuSiE fits use known-n z-RSS, `z=beta/sqrt(varbeta)`, L=10, max_iter=100, tol=0.001, coverage=0.95, min_abs_corr=0.5 and full 500-variable purity. Prior variance uses `optim`; residual variance remains fixed. All arguments are recorded in `examples/data/parameters.json`.
+Two extra D3 fits each change one setting: min_abs_corr = 1 gives no credible
+set, and max_iter = 1 gives a nonconverged fit.
 
-Two explicitly labelled diagnostics change one setting: D3_strict_purity uses min_abs_corr=1 and actually returns no CS; D3_one_iteration uses max_iter=1 and actually fails to converge. They do not change the primary fit protocol.
-
-## Optional native fitting with prusie
-
-Install prusie 0.3.1 from PyPI into the same environment:
+## Fitting with prusie
 
 ```sh
-python -m pip install prusie==0.3.1
-```
-
-Then run:
-
-```sh
+pip install prusie==0.3.1
 python examples/check_example.py --native-pair --output-dir native-example-output
 ```
 
-This additionally calls `prusie.susie_rss` for D1–D4 with the same known-n parameters and passes those native result objects to `coloc_susie`. It compares PIPs with the frozen R fits and checks input, model and probability validity. It records convergence, iterations and downstream colocalisation differences separately. An end-to-end result combines fine-mapping and colocalisation numerical behavior; it is a distinct comparison from pairing identical frozen fits.
+This also fits D1–D4 with `prusie.susie_rss` using the same settings, compares the
+PIPs with the stored susieR fits, and passes the prusie results to `coloc_susie`.
+Convergence, iteration counts and the colocalisation differences are reported
+separately. prusie is imported only when `--native-pair` is given.
 
-The optional import is made only when this flag is present. pycoloc does not install or invoke prusie implicitly. Consult the agreement report for the actual pair of package versions tested.
+## Where the stored results come from
 
-## Frozen reference provenance and regeneration
+`examples/data/` contains the attribution and licence (`README.md`,
+`LICENSE.GPL-3`), the pinned sources and data hashes (`reference.lock.json`,
+`checksums.json`) and the R environment (`reference_environment.json`). The
+references are coloc 6.0.3 at commit `8f20f0bc5e60ffc99e4c2f787bd55fd30cfe7c45`
+and susieR 0.16.6 at commit `8e56a8e038e989856d106d9ca5175cc664fea9d2`.
 
-The bundle's `README.md`, `LICENSE.GPL-3`, `reference.lock.json`, `reference_environment.json` and `checksums.json` contain attribution, redistribution terms, pinned archives/data hashes, and actual R/dependency versions. coloc is 6.0.3 at commit `8f20f0bc5e60ffc99e4c2f787bd55fd30cfe7c45`; susieR is 0.16.6 at `8e56a8e038e989856d106d9ca5175cc664fea9d2`. No floating R reference is used.
+To regenerate the references into a new directory, follow `examples/data/README.md`
+with R 4.4.0: verify the hash of the original RDA file, run `export_reference.R`
+and convert its output with `convert_exports.py`. `examples/data/default_abf/`
+holds the separate results and script for the two default-prior ABF calls.
 
-Reference regeneration is optional and writes a new directory. Follow the exact recipe in `examples/data/README.md` with the locked R 4.4.0 environment. The original generator is preserved for inspection and is **not run**. The separate `examples/data/default_abf/` supplement contains its own frozen R results, checksums and regeneration script for the two literal default-prior calls. Verify the original RDA hash, execute `export_reference.R`, then convert its output with `convert_exports.py`. Never replace the shipped expectations as a way to make a failed check pass.
-
-## Deliberate failure tests
-
-From the checkout, install the test extra and run:
+## Tests of the check itself
 
 ```sh
-python -m pip install -c requirements-dev.lock '.[test]'
-python -m pytest tests/test_example.py -q
+pip install '.[test]'
+pytest tests/test_example.py -q
 ```
 
-Tests run the CLI with no executable search path, reject a changed input checksum, and alter an expected H4 value while repairing that file's checksum to verify that a real numerical mismatch also fails. A separate import/process guard proves the standalone numerical path does not import prusie/rpy2 or spawn an external computation.
+These tests change an input file and, separately, an expected H4 value (with a
+matching checksum) and confirm that the check fails in both cases. They also
+confirm that the standalone check neither imports prusie or rpy2 nor starts an
+external process.

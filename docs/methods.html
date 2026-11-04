@@ -19,7 +19,12 @@
 </aside>
 <main id="main" tabindex="-1">
 <div class="page-meta"><span>Colocalisation / Documentation</span><a href="methods.md">Markdown source</a></div>
-<article><h1 id="methods-and-parameters">Methods and parameters</h1>
+<article><details class="on-this-page"><summary>On this page</summary><div class="toc">
+<ul>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+</details><h1 id="methods-and-parameters">Methods and parameters</h1>
 <p>The ABF uses a normal effect prior with standard deviation 0.2 for log odds
 ratios, or 0.15 × sdY for quantitative beta estimates. For P-value input the
 quantitative prior SD is 0.15, using variance 1 / (2 N f (1−f)); case-control
@@ -92,7 +97,26 @@ or PNG without a GUI.
 An outlined diamond marks the shared candidate chosen from the corrected main
 SNP posterior for that exact row. It is absent when shared support is undefined.
 Component leads continue to identify the maximum component BF separately.</p>
-<p>See <a href="performance.html">performance and resource use</a> for JIT, annotation and plotting costs.</p></article>
+<p>See <a href="performance.html">performance and resource use</a> for JIT, annotation and plotting costs.</p>
+<h2 id="references">References</h2>
+<ul>
+<li>Giambartolomei C, et al. (2014). Bayesian test for colocalisation between pairs of
+  genetic association studies using summary statistics. <em>PLoS Genetics</em> 10(5):
+  e1004383. <a href="https://doi.org/10.1371/journal.pgen.1004383">doi:10.1371/journal.pgen.1004383</a></li>
+<li>Wallace C (2020). Eliciting priors and relaxing the single causal variant
+  assumption in colocalisation analyses. <em>PLoS Genetics</em> 16(4): e1008720.
+  <a href="https://doi.org/10.1371/journal.pgen.1008720">doi:10.1371/journal.pgen.1008720</a></li>
+<li>Wallace C (2021). A more accurate method for colocalisation analysis allowing for
+  multiple causal variants. <em>PLoS Genetics</em> 17(9): e1009440.
+  <a href="https://doi.org/10.1371/journal.pgen.1009440">doi:10.1371/journal.pgen.1009440</a></li>
+<li>Wakefield J (2009). Bayes factors for genome-wide association studies: comparison
+  with P-values. <em>Genetic Epidemiology</em> 33(1): 79–86.
+  <a href="https://doi.org/10.1002/gepi.20359">doi:10.1002/gepi.20359</a></li>
+<li>Wang G, Sarkar A, Carbonetto P, Stephens M (2020). A simple new approach to
+  variable selection in regression, with application to genetic fine mapping.
+  <em>Journal of the Royal Statistical Society: Series B</em> 82(5): 1273–1300.
+  <a href="https://doi.org/10.1111/rssb.12388">doi:10.1111/rssb.12388</a></li>
+</ul></article>
 <footer><p>pycoloc 0.2.2 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
 </main>
 </div>

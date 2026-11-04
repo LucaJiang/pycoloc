@@ -83,3 +83,22 @@ SNP posterior for that exact row. It is absent when shared support is undefined.
 Component leads continue to identify the maximum component BF separately.
 
 See [performance and resource use](performance.md) for JIT, annotation and plotting costs.
+
+## References
+
+- Giambartolomei C, et al. (2014). Bayesian test for colocalisation between pairs of
+  genetic association studies using summary statistics. *PLoS Genetics* 10(5):
+  e1004383. [doi:10.1371/journal.pgen.1004383](https://doi.org/10.1371/journal.pgen.1004383)
+- Wallace C (2020). Eliciting priors and relaxing the single causal variant
+  assumption in colocalisation analyses. *PLoS Genetics* 16(4): e1008720.
+  [doi:10.1371/journal.pgen.1008720](https://doi.org/10.1371/journal.pgen.1008720)
+- Wallace C (2021). A more accurate method for colocalisation analysis allowing for
+  multiple causal variants. *PLoS Genetics* 17(9): e1009440.
+  [doi:10.1371/journal.pgen.1009440](https://doi.org/10.1371/journal.pgen.1009440)
+- Wakefield J (2009). Bayes factors for genome-wide association studies: comparison
+  with P-values. *Genetic Epidemiology* 33(1): 79–86.
+  [doi:10.1002/gepi.20359](https://doi.org/10.1002/gepi.20359)
+- Wang G, Sarkar A, Carbonetto P, Stephens M (2020). A simple new approach to
+  variable selection in regression, with application to genetic fine mapping.
+  *Journal of the Royal Statistical Society: Series B* 82(5): 1273–1300.
+  [doi:10.1111/rssb.12388](https://doi.org/10.1111/rssb.12388)

@@ -1,109 +1,96 @@
-# Numerical agreement with R
+# Agreement with R
 
-pycoloc **0.2.2** was evaluated against coloc **6.0.3**, using identical inputs
-for 100 frozen real regions and the synthetic 500-SNP D1–D4 toy example from
-coloc's `coloc_test_data`. The native fitting comparison uses **prusie 0.3.1**
-from PyPI against susieR **0.16.6**.
+pycoloc 0.2.2 was compared with coloc 6.0.3 on 100 real regions and on the
+500-variant D1–D4 toy example from coloc's `coloc_test_data`. Each region has a
+GWAS trait and an eQTL trait, with 103–4162 variants. For the fitting comparison,
+prusie 0.3.1 was compared with susieR 0.16.6.
 
-The Python calculations were rerun. R outputs were reused after verification of
-the recorded input hashes; their recorded environment is R 4.4.0 with OpenBLAS
-0.3.20. No new R fitting, runtime or memory measurements were made.
+The Python results are new. The R results are the stored outputs of an earlier
+run (R 4.4.0, OpenBLAS 0.3.20), reused after checking that their inputs match.
 
-## Identical-input comparisons
+## Same inputs
 
-These comparisons separate colocalisation arithmetic from differences in fitting.
-ABF uses the same association inputs. Full-BF pairing uses all supplied component
-rows; existing-fit pairing selects original credible-set component IDs from the
-same official R fits and retains every SNP column.
+These comparisons give both packages identical inputs, so they test the
+colocalisation arithmetic alone. ABF uses the same summary statistics. Bayes-factor
+pairing uses all component rows of the same Bayes-factor matrices. Credible-set
+pairing uses the same susieR fits and selects their credible-set components.
 
-The table summarizes the **largest absolute difference within each region**,
-then takes the median, 95th percentile and maximum across those regional values.
-All 100 regions are accounted for; no-CS results have no numeric posterior rows.
+Each region contributes its largest absolute difference; the table summarises
+those values across regions.
 
-| Comparison / field | Cases with values | Median | 95th percentile | Maximum |
-| --- | ---: | ---: | ---: | ---: |
-| ABF: H0-H4 | 100 | 3.33e-16 | 2.74e-15 | 1.07e-14 |
-| ABF: SNP.PP.H4 | 100 | 5.97e-16 | 5.12e-15 | 1.24e-14 |
-| Full component BFs: H0-H4 | 100 | 8.64e-16 | 1.07e-14 | 1.02e-11 |
-| Full component BFs: SNP.PP.H4 | 100 | 4.72e-16 | 6.73e-16 | 4.55e-15 |
-| Same official fits: H0-H4 | 66 | 4.44e-16 | 7.36e-15 | 1.6e-14 |
-| Same official fits: SNP.PP.H4 | 66 | 3.47e-16 | 4.82e-16 | 1.44e-15 |
+| Comparison | Field | Regions | Median | 95th percentile | Maximum |
+| --- | --- | ---: | ---: | ---: | ---: |
+| ABF | H0–H4 | 100 | 3.3 × 10⁻¹⁶ | 2.7 × 10⁻¹⁵ | 1.1 × 10⁻¹⁴ |
+| ABF | `SNP.PP.H4` | 100 | 6.0 × 10⁻¹⁶ | 5.1 × 10⁻¹⁵ | 1.2 × 10⁻¹⁴ |
+| All component Bayes factors | H0–H4 | 100 | 8.6 × 10⁻¹⁶ | 1.1 × 10⁻¹⁴ | 1.0 × 10⁻¹¹ |
+| All component Bayes factors | `SNP.PP.H4` | 100 | 4.7 × 10⁻¹⁶ | 6.7 × 10⁻¹⁶ | 4.6 × 10⁻¹⁵ |
+| Same susieR fits | H0–H4 | 66 | 4.4 × 10⁻¹⁶ | 7.4 × 10⁻¹⁵ | 1.6 × 10⁻¹⁴ |
+| Same susieR fits | `SNP.PP.H4` | 66 | 3.5 × 10⁻¹⁶ | 4.8 × 10⁻¹⁶ | 1.4 × 10⁻¹⁵ |
 
-The largest full-BF hypothesis difference is in region25 (1.02×10⁻¹¹).
-The largest ABF logBF differences are 3.13×10⁻¹³ for trait 1 (region01) and
-5.12×10⁻¹³ for trait 2 (region08). With the same inputs and component rows,
-these differences reflect floating-point evaluation of the same calculations.
+The other 34 regions have no credible set for at least one trait, so there is no
+pair to compare; both packages report this. The largest Bayes-factor pairing
+difference is in region25 (1.0 × 10⁻¹¹). The largest ABF log Bayes factor
+differences are 3.1 × 10⁻¹³ (region01, trait 1) and 5.1 × 10⁻¹³ (region08, trait 2).
 
-## Native fitting followed by colocalisation
+## Fitting, then colocalisation
 
-Each trait was fitted with the recorded case parameters, including the recorded
-component count, sample size and a 100-iteration limit. Native fits were passed
-directly to `pycoloc.coloc_susie`; the reference pairs official susieR fits through
-`coloc.susie`. Component IDs determine pair identity; CS return order is immaterial.
+Each trait was fitted with the recorded settings of its case, including the
+number of components, sample size and a limit of 100 iterations. The prusie
+results went directly into `pycoloc.coloc_susie`; the susieR results went into
+`coloc.susie`. Signal pairs are matched by their original component IDs, so the
+order in which credible sets are returned does not matter.
 
-Among 100 real regions, 99 have mutually converged fits: 65 return posterior
-pairs and 34 have no CS for at least one trait. The 199 mutually converged trait
-fits supply the alpha comparison below.
+Both fits converged in 99 regions. Of these, 65 give at least one pair of
+credible sets and 34 have no credible set for at least one trait.
 
-| Comparison / field | Cases with values | Median | 95th percentile | Maximum |
-| --- | ---: | ---: | ---: | ---: |
-| Native fit → coloc: H0-H4 | 65 | 1.77e-11 | 4e-09 | 9.7e-09 |
-| Native fit → coloc: SNP.PP.H4 | 65 | 3.23e-10 | 1.03e-08 | 7.47e-08 |
-| Native fit: alpha | 199 | 3.79e-10 | 3.68e-09 | 1.28e-08 |
+| Comparison | Field | Cases | Median | 95th percentile | Maximum |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Colocalisation | H0–H4 | 65 regions | 1.8 × 10⁻¹¹ | 4.0 × 10⁻⁹ | 9.7 × 10⁻⁹ |
+| Colocalisation | `SNP.PP.H4` | 65 regions | 3.2 × 10⁻¹⁰ | 1.0 × 10⁻⁸ | 7.5 × 10⁻⁸ |
+| Fit | `alpha` | 199 traits | 3.8 × 10⁻¹⁰ | 3.7 × 10⁻⁹ | 1.3 × 10⁻⁸ |
 
-The largest hypothesis difference occurs in region32; the largest conditional
-SNP difference occurs in region08. The largest alpha difference is in
-region16/gwas. CS component IDs and membership agree for all 206 fitted cases,
-including the toy diagnostics. These downstream differences arise when separately
-fitted component Bayes factors enter pairing; they do not reflect different CS
-membership on this panel.
+The largest differences are in region32 (H0–H4), region08 (`SNP.PP.H4`) and the
+GWAS trait of region16 (`alpha`). The two implementations return the same
+credible-set components and members in every fitted case, so the remaining
+differences come from the separately computed Bayes factors.
 
-**region25/gwas** did not converge in either implementation after 100 iterations.
-Its region is recorded separately and is excluded from the native distributions
-above. The intentional **D3_one_iteration** toy diagnostic also remains
-nonconverged in both implementations after one iteration.
+The GWAS fit of region25 reaches the 100-iteration limit in both implementations
+and is left out of the table above; its largest `alpha` difference is 4.4 × 10⁻¹⁰.
 
-## The 500-SNP toy example
+## Toy example
 
-D1/D2 and D3/D4 retain all 500 SNPs in their original order. All four primary
-native fits converge. Across the two primary native pairs, the largest absolute
-H0–H4 difference is 9.14×10⁻¹⁰ and the largest conditional SNP difference is
-3.66×10⁻¹⁰. The strict-purity D3 diagnostic returns no CS in both implementations;
-its posterior is unavailable, not zero.
+D1/D2 and D3/D4 keep all 500 variants in their original order, and all four fits
+converge. Across the two pairs, the largest H0–H4 difference is 9.1 × 10⁻¹⁰ and
+the largest `SNP.PP.H4` difference is 3.7 × 10⁻¹⁰. Two extra checks behave the
+same in both implementations: a D3 fit stopped after one iteration stays
+nonconverged, and a D3 fit with a strict purity threshold returns no credible set,
+so its posterior is unavailable rather than zero.
 
-The toy data are synthetic, with stored N=1000 and sdY. Positions are indices;
-genome build, ancestry and effect alleles are unavailable. D3 contains two signals,
-so its ABF comparison illustrates software behavior rather than validating a
-single-causal-variant model for those data.
+The toy data are simulated, with N = 1000 and stored sdY. Positions are indices,
+and genome build, ancestry and effect alleles are not defined. D3 contains two
+signals, so ABF on D3 shows software behaviour rather than a valid
+single-causal-variant analysis.
 
-## Intentional differences from upstream
+## Deliberate differences
 
-Corrected weighted and partial-zero behavior is checked against independent
-mathematical expectations. For example, two equal BFs with weights [9,1] and
-[1,1] yield conditional shared probabilities [0.9,0.1]; pinned R's main SNP
-posterior is [0.5,0.5]. The full explanation and other scientific corrections
-remain in [upstream differences](upstream_differences.md).
+For a few inputs pycoloc corrects coloc on purpose. For example, two equal Bayes
+factors with prior weights [9, 1] and [1, 1] give conditional shared probabilities
+[0.9, 0.1] in pycoloc, while coloc 6.0.3 reports [0.5, 0.5] for its main
+`SNP.PP.H4`. These cases are checked against exact calculations instead of R; see
+[differences from coloc](upstream_differences.md).
 
-The numerical scales reported here describe reproducibility of these computations;
-they are not statistical evidence for colocalisation. Interpret H4 alongside the
-model assumptions, allele/LD alignment and convergence, and interpret SNP.PP.H4
-conditional on H4.
+## Reproduce
 
-## Reproduce the bundled comparisons
-
-After [installation](install.md), run from the checkout:
+From a clone, after [installation](install.md):
 
 ```sh
 python examples/check_example.py --output-dir example-output
-python -m pip install prusie==0.3.1
+pip install prusie==0.3.1
 python examples/check_example.py --native-pair --output-dir native-example-output
 ```
 
-The first command needs neither R nor prusie. See the [example guide](example.md)
-for parameters and frozen reference provenance, and [comparison scripts](https://github.com/LucaJiang/pycoloc/tree/main/benchmarks)
-for the full-BF interface. [Numerical distributions and largest cases](assets/numerical_v022.json)
-include every field, original alpha layer and individually identified
-nonconverged case without redistributing private study inputs.
-
-[Runtime and peak process RSS](performance.md) retain their original measured
-pycoloc 0.2.2rc3 identity. Inference code is unchanged in 0.2.2.
+The first command needs neither R nor prusie. The [example guide](example.md)
+lists the parameters and where the stored R results come from. Per-field
+distributions, every `alpha` layer and the nonconverged cases are in
+[numerical_v022.json](assets/numerical_v022.json); the real-region inputs are not
+redistributed. Runtime and memory are on the [performance](performance.md) page.

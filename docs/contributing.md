@@ -26,7 +26,7 @@ H3, NumPy/Numba parity, runtime independence, plotting and local miniature
 GTF/GFF3 indexing. Install the JIT and annotation extras for the full suite.
 `tests/test_example.py` includes checksum and numerical failure controls and
 verifies standalone execution without R or prusie. Optional native integration
-is documented in the [example guide](example.md#optional-native-fitting-with-prusie).
+is documented in the [example guide](example.md#fitting-with-prusie).
 
 ## Documentation
 
@@ -67,5 +67,13 @@ See [source mapping](reference_mapping.md) for implementation responsibilities.
 Retain GPL and third-party notices with code and data. Cite the statistical
 methods as well as the software version. Tests use redistributable analytical
 inputs and the fixed synthetic toy example; they do not need private study
-data or an R installation. The workflow in `.github/workflows/ci.yml` runs local
-build/test/doc commands on GitHub; consult the actual workflow run for CI status.
+data or an R installation. `.github/workflows/ci.yml` runs these commands on
+GitHub for every push.
+
+## Releases
+
+Update the version in `pyproject.toml`, `src/pycoloc/__init__.py` and
+`CITATION.cff`, add a `## X.Y.Z — date` section to `CHANGELOG.md`, and push an
+annotated tag `vX.Y.Z` once CI passes on that commit. `.github/workflows/release.yml`
+then builds the wheel and sdist, tests the wheel, and creates the GitHub Release
+with the changelog section as its notes and a `SHA256SUMS` file.

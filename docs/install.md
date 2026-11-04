@@ -1,53 +1,46 @@
 # Installation
 
-Install pycoloc **0.2.2** with Python ≥3.10 from the GitHub Release wheel:
+pycoloc 0.2.2 requires Python 3.10 or newer, NumPy ≥1.24, SciPy ≥1.10, pandas ≥2
+and matplotlib ≥3.7. It is pure Python, so one wheel works on every platform.
+
+## From the GitHub Release
 
 ```sh
-python -m pip install https://github.com/LucaJiang/pycoloc/releases/download/v0.2.2/pycoloc-0.2.2-py3-none-any.whl
+pip install https://github.com/LucaJiang/pycoloc/releases/download/v0.2.2/pycoloc-0.2.2-py3-none-any.whl
 ```
 
-Or install the tagged source:
+or from the tagged source:
 
 ```sh
-python -m pip install "git+https://github.com/LucaJiang/pycoloc.git@v0.2.2"
+pip install "git+https://github.com/LucaJiang/pycoloc.git@v0.2.2"
 ```
 
-pycoloc is not published on PyPI. The PyPI project named `pycoloc` is unrelated:
-`pip install pycoloc` installs that other package. This GitHub repository is private;
-access to its source and Release assets requires authorization. For the wheel path,
-download the asset while signed in and install the local file if pip cannot authenticate.
+pycoloc is not on PyPI. The PyPI package named `pycoloc` is a different project,
+so `pip install pycoloc` will not install this one.
 
-## Build from source and run the examples
+## From a clone
+
+Clone the repository if you want the examples and the stored R results:
 
 ```sh
 git clone --branch v0.2.2 https://github.com/LucaJiang/pycoloc.git
 cd pycoloc
 python -m venv .venv
 . .venv/bin/activate
-python -m pip install .
+pip install .
 python examples/quickstart.py
 ```
 
-The package requires Python ≥3.10, NumPy ≥1.24, SciPy ≥1.10, pandas ≥2 and
-matplotlib ≥3.7. Keep the checkout for examples and frozen reference data.
-Once dependencies are installed, the examples run offline.
+The examples run offline.
 
-## Optional features
+## Optional dependencies
 
-For native fine-mapping, install prusie from PyPI (the integration is checked with 0.3.1):
+| Purpose | Command |
+| --- | --- |
+| Fit SuSiE models in Python (prusie 0.3.1 is tested) | `pip install prusie` |
+| Numba kernel for the H3 sum | `pip install '.[jit]'` |
+| Build gene annotation from GFF/GTF files with gffutils | `pip install '.[annotation]'` |
 
-```sh
-python -m pip install prusie
-```
-
-ABF and pairing existing fits do not require prusie. See the
-[fit-reuse example](example.md#fit-once-and-reuse-the-result).
-From a checkout, install optional Numba or annotation support with:
-
-```sh
-python -m pip install '.[jit]'
-python -m pip install '.[annotation]'
-```
-
-Numba compiles on first use. Prepared annotation models render without gffutils.
-See [contributing](contributing.md) for tests and package builds.
+ABF and colocalisation of existing fits do not need prusie. Numba compiles on the
+first call. Annotation models that are already prepared render without gffutils.
+See [contributing](contributing.md) for running the tests and building packages.

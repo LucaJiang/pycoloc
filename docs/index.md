@@ -1,79 +1,87 @@
-# pycoloc
+# pycoloc: Bayesian colocalisation in Python
 
-Bayesian colocalisation in Python.
+pycoloc asks whether two traits share a causal variant in a region. It implements
+the methods of the R package [coloc](https://github.com/chr1swallace/coloc):
+single-variant colocalisation with approximate Bayes factors (ABF), and
+colocalisation of SuSiE fine-mapping results, which compares every pair of
+credible-set signals. Given the same inputs, it reproduces coloc 6.0.3 to about
+10⁻¹⁴.
 
-Compare two traits using approximate Bayes factors or SuSiE-derived component
-Bayes factors, with numerical validation against R coloc. pycoloc implements
-established colocalisation methods using NumPy/SciPy and an optional Numba kernel.
+## Features
 
-- **Numerical agreement:** ABF and identical-BF/fit comparisons cover all 100 real regions.
-- **Measured BF pairing:** 2.91× paired geometric-mean speedup on 99 mutually converged regions.
-- **Lower peak process RSS:** ABF median 97.7 MiB versus 259 MiB for R, with lower peaks in all 100 cases.
+- **ABF colocalisation** (`coloc_abf`) from effect estimates and their variances,
+  or from P values, MAF and sample size; quantitative and case-control traits; the
+  standard p1, p2 and p12 priors, with optional variant-specific prior weights.
+- **SuSiE colocalisation** (`coloc_susie`, `coloc_bf_bf`) from the per-component
+  log Bayes factors of an existing fit. It accepts [prusie](https://github.com/LucaJiang/prusie)
+  results directly, and exported susieR fits through a documented result format.
+- **Results** as one `ColocResult`: posterior support for H0–H4 for each signal pair,
+  per-variant `SNP.PP.H4`, original credible-set component IDs and convergence
+  metadata. Missing credible sets are reported as unavailable rather than H4 = 0.
+- **Locus plots** of both association tracks with LD colouring and local gene annotation.
+- **Corrections** to a few upstream edge cases, such as variant-weighted `SNP.PP.H4`;
+  see [differences from coloc](upstream_differences.md).
 
-## Numerical agreement
+## Agreement with R
 
-Fresh pycoloc 0.2.2 calculations use the same inputs as frozen coloc 6.0.3 outputs
-on 100 real regions. The largest absolute H0–H4 differences are 1.07×10⁻¹⁴ for
-ABF, 1.02×10⁻¹¹ for full component-BF pairing and 1.60×10⁻¹⁴ for pairing the same
-official SuSiE fits.
+The comparison uses 100 real regions (103–4162 variants, a GWAS trait and an eQTL
+trait in each) and coloc's 500-variant toy example. Each row reports the largest
+absolute difference from the R result across all regions.
 
-With prusie 0.3.1 fitting each trait first, 99 regions have mutually converged
-fits; 65 yield posterior pairs and 34 have no CS. Across the 65 numeric
-comparisons, regional maximum H0–H4 differences have median 1.77×10⁻¹¹,
-95th percentile 4.00×10⁻⁹ and maximum 9.70×10⁻⁹. The largest conditional SNP
-difference is 7.47×10⁻⁸. CS membership agrees; region25's nonconverged fit is
-reported separately. See [R agreement](r_agreement.md) for distributions,
-toy-example results and the [intentional scientific corrections](upstream_differences.md).
+| Comparison with R | Regions | H0–H4 | `SNP.PP.H4` |
+| --- | ---: | ---: | ---: |
+| ABF, same summary statistics | 100 | 1.1 × 10⁻¹⁴ | 1.2 × 10⁻¹⁴ |
+| Pairing the same component Bayes factors | 100 | 1.0 × 10⁻¹¹ | 4.6 × 10⁻¹⁵ |
+| Pairing the same susieR fits | 66 | 1.6 × 10⁻¹⁴ | 1.4 × 10⁻¹⁵ |
+| prusie 0.3.1 fit → pycoloc vs susieR 0.16.6 fit → coloc | 65 | 9.7 × 10⁻⁹ | 7.5 × 10⁻⁸ |
+
+The last row includes fitting. Both implementations found the same credible sets
+in every region; 34 regions have no credible set for at least one trait, and one
+region (the GWAS fit of region25) reaches the 100-iteration limit in both
+implementations and is
+reported separately. [Agreement with R](r_agreement.md) gives the full distributions.
 
 ## Performance
 
-Measured pycoloc **0.2.2rc3** complete calls with one numerical thread against coloc 6.0.3 in R 4.4.0 / OpenBLAS 0.3.20. The fixed panel contains 100 real regions, 103–4162 SNPs each. Tables include all ABF cases and converged BF/CS pairings with available output.
+Runtime and peak memory against coloc 6.0.3 in R 4.4.0 with OpenBLAS, one thread,
+on the same 100 regions. These were measured with pycoloc 0.2.2rc3; the inference
+code has not changed since.
 
-| Task | Comparable cases | Median time, R → Python (ms) | Paired speedup¹ | Faster / tied / slower |
-| --- | ---: | ---: | ---: | ---: |
-| ABF | 100/100 | 4.33 → 4.29 | 0.928× | 35 / 0 / 65 |
-| All component BFs | 99/100 | 40.3 → 13.5 | 2.91× | 99 / 0 / 0 |
-| Existing-fit CS pairing | 65/100 | 8.49 → 4.2 | 1.81× | 64 / 0 / 1 |
+| Task | Regions | Median time, R → pycoloc | Speedup¹ | Regions faster | Median peak RSS, R → pycoloc |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| ABF | 100 | 4.33 → 4.29 ms | 0.93× | 35 | 259 → 98 MiB |
+| Pairing all component Bayes factors | 99 | 40.3 → 13.5 ms | 2.91× | 99 | 260 → 98 MiB |
+| Pairing credible sets of existing fits | 65 | 8.49 → 4.20 ms | 1.81× | 64 | 260 → 97 MiB |
 
-¹ Geometric mean of per-case speedups; seven retained repetitions after warmup. Speedup pairs each case; the displayed time columns are separate across-case medians.
+¹ Geometric mean of the per-region R/pycoloc time ratio.
 
-ABF was slower in 65/100 cases. Across all 100 CS-pairing calls, including 34 no-CS regions and one nonconverged region, there were 64 faster and 36 slower calls; geometric-mean speedup was 0.812×.
-
-| Task | Median peak process RSS, R → Python (MiB) | Lower / tied / higher in Python |
-| --- | ---: | ---: |
-| ABF | 259 → 97.7 | 100 / 0 / 0 |
-| All component BFs | 260 → 97.5 | 99 / 0 / 0 |
-| Existing-fit CS pairing | 260 → 96.9 | 65 / 0 / 0 |
-
-![Runtime and peak process RSS ratios for every measured real case, including slower and higher-memory cases.](assets/r_comparison.svg)
-
-Peak process RSS includes imports, inputs and full results, measured in a separate fresh process. [Methods, all cases, repeat variability and public-fixture results](performance.md) give the comparison scope.
+ABF takes a few milliseconds in both and is slightly slower in pycoloc for most
+regions. Peak RSS is measured for a fresh process, so it mostly reflects the
+Python and R runtimes rather than the algorithm. See [performance](performance.md).
 
 ## Installation
 
-Install pycoloc **0.2.2** with Python ≥3.10 from the GitHub Release wheel:
+pycoloc requires Python 3.10 or newer. Install the 0.2.2 wheel from the GitHub Release:
 
 ```sh
-python -m pip install https://github.com/LucaJiang/pycoloc/releases/download/v0.2.2/pycoloc-0.2.2-py3-none-any.whl
+pip install https://github.com/LucaJiang/pycoloc/releases/download/v0.2.2/pycoloc-0.2.2-py3-none-any.whl
 ```
 
-Or install the tagged source:
+or install from the tagged source:
 
 ```sh
-python -m pip install "git+https://github.com/LucaJiang/pycoloc.git@v0.2.2"
+pip install "git+https://github.com/LucaJiang/pycoloc.git@v0.2.2"
 ```
 
-pycoloc is not published on PyPI. The PyPI project named `pycoloc` is unrelated:
-`pip install pycoloc` installs that other package. This GitHub repository is private;
-access to its source and Release assets requires authorization. For the wheel path,
-download the asset while signed in and install the local file if pip cannot authenticate.
-
-Keep a checkout for the bundled offline example data.
+pycoloc is not on PyPI. The PyPI package named `pycoloc` is a different project,
+so `pip install pycoloc` will not install this one. To fit SuSiE models in Python,
+also run `pip install prusie`. See [installation](install.md) for the optional
+Numba and annotation extras.
 
 ## Quick start
 
-Run from the checkout. The bundled data are the complete **synthetic 500-SNP
-coloc toy example**, with stored quantitative-trait sample sizes and sdY.
+The example data are coloc's simulated `coloc_test_data` (four quantitative traits,
+500 variants), included in the repository. Clone it and run from the checkout:
 
 ```python
 import json
@@ -102,44 +110,38 @@ print(result.summary[[f"PP.H{i}.abf" for i in range(5)]])
 print(result.results[["snp", "SNP.PP.H4"]].nlargest(5, "SNP.PP.H4"))
 ```
 
-`PP.H4.abf` is support for a shared causal variant. H0 means neither trait is
-associated; H1/H2 mean only one is associated; H3 means different causal variants.
-`SNP.PP.H4` ranks variants conditional on H4, so interpret it alongside H4 support;
-it is not a fine-mapping PIP. This example returns H4 ≈0.99917 and ranks s105 first.
+H0 means neither trait has an association in the region, H1 and H2 that only one
+does, H3 that both do with different causal variants, and H4 that they share one.
+Here `PP.H4.abf` ≈ 0.999 and s105 has the highest `SNP.PP.H4`. `SNP.PP.H4` ranks
+variants given that H4 is true; it is not a fine-mapping PIP.
 
-## Methods and scope
+To colocalise SuSiE fits instead, fit each trait once with prusie and pass the
+results to `coloc_susie`; the [example](example.md#fit-once-and-reuse-the-result)
+shows this on the same data.
 
-The APIs support variant prior weights and existing SuSiE fits; the package also provides locus plots. Fit each trait once and reuse it for subsequent pairings.
+## Which function to use
 
-| Input | Function | Interpretation |
+| Input | Function | Assumption |
 | --- | --- | --- |
-| Beta/SE² or P values with required metadata | `coloc_abf` | At most one causal variant per trait; no LD required |
-| Full component log-BF rows | `coloc_bf_bf` | Posterior for each component pair |
-| Existing SuSiE fits | `coloc_susie` | Pairs original credible-set components; keeps every SNP column |
+| Effect estimates and variances, or P values with MAF and N | `coloc_abf` | At most one causal variant per trait; no LD needed |
+| Per-component log Bayes factors | `coloc_bf_bf` | One posterior per pair of components |
+| Existing SuSiE fits | `coloc_susie` | One posterior per pair of credible sets |
 
-Each pair-specific H4 in a multiple-signal analysis describes that comparison;
-those rows do not define a region-wide posterior. Fine-mapping with
-[prusie](https://github.com/LucaJiang/prusie) is optional. ABF and existing-fit
-pairing run directly without a fine-mapping dependency. For SuSiE, signed LD r,
-SNP/effect-allele alignment and convergence matter; see [inputs](inputs.md)
-and the [fit-reuse example](example.md#fit-once-and-reuse-the-result).
+With several signals, each row's H4 describes one pair of signals, not the whole
+region. SuSiE colocalisation needs signed LD that matches the effect alleles, and
+fits that converged; see [inputs](inputs.md).
 
-## Documentation and reproducibility
+## Documentation
 
-Read the [documentation site](https://lucajiang.github.io/pycoloc/),
-[API](api.md), [results](result_schema.md) and [locus plots](locus_plot.md).
-Run the offline frozen-reference check after installation:
-
-```sh
-python examples/check_example.py --output-dir example-output
-```
-
-[Comparison scripts](https://github.com/LucaJiang/pycoloc/tree/main/benchmarks/README.md), input provenance and per-field checks
-are linked from the [agreement report](r_agreement.md).
+These pages cover the
+[API](api.md), [result tables](result_schema.md), [locus plots](locus_plot.md)
+and [methods](methods.md). To check an installation against the stored R
+results, run `python examples/check_example.py --output-dir example-output`
+from the checkout.
 
 ## Citation and license
 
-Maintained by Wenxin Jiang. Cite the original [coloc methods](methods.md)
-and identify the pycoloc version used; package citation metadata is in [CITATION.cff](https://github.com/LucaJiang/pycoloc/blob/main/CITATION.cff).
-GPL-3.0-or-later; see [LICENSE](https://github.com/LucaJiang/pycoloc/blob/main/LICENSE) and [third-party notices](https://github.com/LucaJiang/pycoloc/blob/main/THIRD_PARTY_NOTICES.md)
-for the retained upstream code and example-data terms.
+Please cite the original coloc papers listed in [methods](methods.md) and the
+pycoloc version you used ([CITATION.cff](https://github.com/LucaJiang/pycoloc/blob/main/CITATION.cff)). pycoloc is maintained by
+Wenxin Jiang and licensed under GPL-3.0-or-later ([LICENSE](https://github.com/LucaJiang/pycoloc/blob/main/LICENSE)); upstream
+attribution and example-data terms are in [THIRD_PARTY_NOTICES.md](https://github.com/LucaJiang/pycoloc/blob/main/THIRD_PARTY_NOTICES.md).
