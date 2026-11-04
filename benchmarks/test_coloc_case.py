@@ -1,7 +1,7 @@
 """Integrity and false-pass regression checks for the comparison adapter."""
-from copy import deepcopy
 import importlib.util
 import json
+from copy import deepcopy
 from pathlib import Path
 
 import numpy as np

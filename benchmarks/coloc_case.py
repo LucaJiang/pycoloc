@@ -12,12 +12,13 @@ import hashlib
 import importlib.metadata
 import json
 import os
-from pathlib import Path
 import platform
 import resource
 import time
+from pathlib import Path
 
 import numpy as np
+
 import pycoloc
 from pycoloc import coloc_abf, coloc_bf_bf, coloc_susie
 

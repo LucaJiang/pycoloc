@@ -1,16 +1,20 @@
 """Small analytical plot illustration; not a real locus or simulated study."""
 import argparse
 from pathlib import Path
+
 import matplotlib
+
 matplotlib.use('Agg')
 import numpy as np
-from pycoloc import coloc_abf, LDMatrix, plot_coloc_locus
+
+from pycoloc import LDMatrix, coloc_abf, plot_coloc_locus
 from pycoloc.annotation import ExonModel, GeneModel, RegionAnnotation
 
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--output-prefix',type=Path,required=True)
 args=parser.parse_args()
-ids=['a','b','c'];positions=[100,200,300]
+ids=['a','b','c']
+positions=[100,200,300]
 trait1=dict(snp=ids,position=positions,chromosome='22',beta=[.1,.5,-.2],
             varbeta=[.01,.02,.03],type='cc')
 trait2=dict(trait1,beta=[0.,.4,.1],type='quant',sdY=1.2)

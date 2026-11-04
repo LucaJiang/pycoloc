@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 
 import numpy as np
+
 from pycoloc import coloc_abf
 
 data = Path(__file__).resolve().parent / "data"

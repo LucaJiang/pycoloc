@@ -7,17 +7,17 @@ needed unless --native-pair is explicitly requested. No expectation is regenerat
 from __future__ import annotations
 
 import argparse
-from decimal import Decimal, localcontext
 import hashlib
 import importlib.metadata
 import json
 import platform
-from pathlib import Path
-import sys
 import warnings
+from decimal import Decimal, localcontext
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
+
 import pycoloc
 from pycoloc import coloc_abf, coloc_bf_bf, coloc_susie
 
@@ -150,7 +150,8 @@ def decimal_oracle(logbf1, logbf2, w1=None, w2=None):
     """
     with localcontext() as ctx:
         ctx.prec = 80
-        D = lambda x: Decimal(str(x))
+        def D(x):
+            return Decimal(str(x))
         m = len(logbf1)
         w1 = [1] * m if w1 is None else w1
         w2 = [1] * m if w2 is None else w2
