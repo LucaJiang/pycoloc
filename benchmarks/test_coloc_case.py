@@ -1,4 +1,5 @@
 """Integrity and false-pass regression checks for the comparison adapter."""
+
 import importlib.util
 import json
 from copy import deepcopy
@@ -32,7 +33,9 @@ def test_comparison_rejects_wrong_order_probabilities_missing_columns_and_pairs(
     path = tmp_path / "exchange"
     runner.export_fixture(ROOT / "examples/data", path, ["D3", "D4"])
     result = runner.run_case(runner.load_case(path / "case.json", "susie"), "susie")
-    reference = json.loads((ROOT / "examples/data/r_coloc.json").read_text())["cases"]["susie_D3_D4"]["result"]
+    reference = json.loads((ROOT / "examples/data/r_coloc.json").read_text())["cases"][
+        "susie_D3_D4"
+    ]["result"]
     assert runner.compare_result(result, reference)["passed"]
     changed = deepcopy(reference)
     changed["results"] = changed["results"][::-1]

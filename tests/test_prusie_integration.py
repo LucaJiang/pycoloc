@@ -17,12 +17,19 @@ DATA = Path(__file__).resolve().parents[1] / "examples/data"
 def fit(dataset, **overrides):
     meta = json.loads((DATA / "metadata.json").read_text())[dataset]
     parameters = json.loads((DATA / "parameters.json").read_text())[dataset]
-    params = {k: v for k, v in parameters.items() if k not in {"dataset", "input_kind", "n", "z_definition"}}
+    params = {
+        k: v
+        for k, v in parameters.items()
+        if k not in {"dataset", "input_kind", "n", "z_definition"}
+    }
     params.update(overrides)
     with np.load(DATA / "inputs.npz", allow_pickle=False) as arrays:
         return prusie.susie_rss(
             z=arrays[dataset + "_beta"] / np.sqrt(arrays[dataset + "_varbeta"]),
-            R=arrays[dataset + "_LD"], n=meta["N"], variant_ids=meta["snp"], **params,
+            R=arrays[dataset + "_LD"],
+            n=meta["N"],
+            variant_ids=meta["snp"],
+            **params,
         )
 
 
@@ -32,8 +39,12 @@ def test_native_results_preserve_full_rows_and_component_ids(refine):
     assert left.converged and right.converged
     actual = coloc_susie(left, right)
     ids1, ids2 = np.asarray(left.sets["cs_index"]), np.asarray(right.sets["cs_index"])
-    expected = coloc_bf_bf(left.lbf_variable[ids1], right.lbf_variable[ids2],
-                           snps1=left.variant_ids, snps2=right.variant_ids)
+    expected = coloc_bf_bf(
+        left.lbf_variable[ids1],
+        right.lbf_variable[ids2],
+        snps1=left.variant_ids,
+        snps2=right.variant_ids,
+    )
     assert actual.status == "ok"
     assert len(actual.results) == 500
     assert actual.summary.idx1.tolist() == ids1[expected.summary.idx1].tolist()
