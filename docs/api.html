@@ -13,7 +13,7 @@
 <div class="site-shell">
 <aside class="sidebar" aria-label="Documentation sidebar">
 <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
-<span class="version">0.2.2rc3 <span>release candidate</span></span>
+<span class="version">0.2.2</span>
 <nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Get started</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Offline example</a></div><div class="nav-group"><p class="nav-label">Use the package</p><a href="inputs.html">Inputs and priors</a><a href="api.html" aria-current="page">API</a><a href="result_schema.html">Results</a><a href="locus_plot.html">Locus plots</a></div><div class="nav-group"><p class="nav-label">Understand and contribute</p><a href="r_agreement.html">R agreement</a><a href="performance.html">Performance</a><a href="compatibility.html">Scope and limitations</a><a href="methods.html">Methods</a><a href="contributing.html">Contributing</a><a href="https://github.com/LucaJiang/pycoloc">GitHub</a></div></nav>
 <div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
 </aside>
@@ -121,7 +121,7 @@ shared positions raise rather than silently changing the analysis support.</p>
 <h3 id="references">References</h3>
 <p>coloc 6.0.3, claudia.R: process.dataset, combine_abf_weighted, coloc.abf.</p>
 <h3 id="examples">Examples</h3>
-<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-pycon">&gt;&gt;&gt; d = dict(snp=['a', 'b'], beta=[0.2, 0.0], varbeta=[0.01, 0.01], type='cc')
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-pycon">&gt;&gt;&gt; d = dict(snp=[&quot;a&quot;, &quot;b&quot;], beta=[0.2, 0.0], varbeta=[0.01, 0.01], type=&quot;cc&quot;)
 &gt;&gt;&gt; coloc_abf(d, d).nsnps
 2
 </code></pre>
@@ -167,7 +167,7 @@ insufficient-overlap and partial trimming are distinct result statuses.</p>
 <h3 id="references_1">References</h3>
 <p>coloc 6.0.3 susie.R: coloc.bf_bf and logbf_to_pp.</p>
 <h3 id="examples_1">Examples</h3>
-<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-pycon">&gt;&gt;&gt; r = coloc_bf_bf([1., 3.], [2., 4.], snps1=['a', 'b'], snps2=['a', 'b'])
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-pycon">&gt;&gt;&gt; r = coloc_bf_bf([1.0, 3.0], [2.0, 4.0], snps1=[&quot;a&quot;, &quot;b&quot;], snps2=[&quot;a&quot;, &quot;b&quot;])
 &gt;&gt;&gt; r.summary.idx1.tolist()
 [0]
 </code></pre>
@@ -596,7 +596,7 @@ this panel. Return the axis with <code>ld_metadata</code> and an optional colorb
 </tr>
 </tbody>
 </table></div></article>
-<footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
+<footer><p>pycoloc 0.2.2 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
 </main>
 </div>
 </body>

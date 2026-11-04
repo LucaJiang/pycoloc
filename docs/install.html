@@ -13,7 +13,7 @@
 <div class="site-shell">
 <aside class="sidebar" aria-label="Documentation sidebar">
 <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
-<span class="version">0.2.2rc3 <span>release candidate</span></span>
+<span class="version">0.2.2</span>
 <nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Get started</p><a href="index.html">Overview</a><a href="install.html" aria-current="page">Install</a><a href="example.html">Offline example</a></div><div class="nav-group"><p class="nav-label">Use the package</p><a href="inputs.html">Inputs and priors</a><a href="api.html">API</a><a href="result_schema.html">Results</a><a href="locus_plot.html">Locus plots</a></div><div class="nav-group"><p class="nav-label">Understand and contribute</p><a href="r_agreement.html">R agreement</a><a href="performance.html">Performance</a><a href="compatibility.html">Scope and limitations</a><a href="methods.html">Methods</a><a href="contributing.html">Contributing</a><a href="https://github.com/LucaJiang/pycoloc">GitHub</a></div></nav>
 <div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
 </aside>
@@ -21,12 +21,23 @@
 <div class="page-meta"><span>Colocalisation / Documentation</span><a href="install.md">Markdown source</a></div>
 <article><details class="on-this-page"><summary>On this page</summary><div class="toc">
 <ul>
+<li><a href="#build-from-source-and-run-the-examples">Build from source and run the examples</a></li>
 <li><a href="#optional-features">Optional features</a></li>
 </ul>
 </div>
 </details><h1 id="installation">Installation</h1>
-<p>Install this release candidate and its bundled example from source:</p>
-<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">git clone https://github.com/LucaJiang/pycoloc.git
+<p>Install pycoloc <strong>0.2.2</strong> with Python ≥3.10 from the GitHub Release wheel:</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python -m pip install https://github.com/LucaJiang/pycoloc/releases/download/v0.2.2/pycoloc-0.2.2-py3-none-any.whl
+</code></pre>
+<p>Or install the tagged source:</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python -m pip install &quot;git+https://github.com/LucaJiang/pycoloc.git@v0.2.2&quot;
+</code></pre>
+<p>pycoloc is not published on PyPI. The PyPI project named <code>pycoloc</code> is unrelated:
+<code>pip install pycoloc</code> installs that other package. This GitHub repository is private;
+access to its source and Release assets requires authorization. For the wheel path,
+download the asset while signed in and install the local file if pip cannot authenticate.</p>
+<h2 id="build-from-source-and-run-the-examples">Build from source and run the examples</h2>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">git clone --branch v0.2.2 https://github.com/LucaJiang/pycoloc.git
 cd pycoloc
 python -m venv .venv
 . .venv/bin/activate
@@ -34,22 +45,21 @@ python -m pip install .
 python examples/quickstart.py
 </code></pre>
 <p>The package requires Python ≥3.10, NumPy ≥1.24, SciPy ≥1.10, pandas ≥2 and
-matplotlib ≥3.7. Executed checks cover CPython 3.12 on Linux x86-64. Keep the
-checkout for examples and frozen reference data; installation can download
-dependencies, then the examples run offline.</p>
-<p>ABF, BF pairing and consuming existing SuSiE fits require only pycoloc's
-Python dependencies. For native fine-mapping, install
-<a href="https://github.com/LucaJiang/prusie">prusie</a> separately and follow the
-<a href="example.html#fit-once-and-reuse-the-result">fit-reuse example</a>.</p>
+matplotlib ≥3.7. Keep the checkout for examples and frozen reference data.
+Once dependencies are installed, the examples run offline.</p>
 <h2 id="optional-features">Optional features</h2>
-<p>From the activated environment and checkout:</p>
-<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python -m pip install '.[jit]'         # Numba hypothesis kernel
-python -m pip install '.[annotation]'  # Local GTF/GFF3 indexing
+<p>For native fine-mapping, install prusie from PyPI (the integration is checked with 0.3.1):</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python -m pip install prusie
 </code></pre>
-<p>Numba compilation contributes to the first call; measure it separately from
-warm calls. Prepared annotation models render without gffutils. Validation and
-package-building commands are in <a href="contributing.html">contributing</a>.</p></article>
-<footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
+<p>ABF and pairing existing fits do not require prusie. See the
+<a href="example.html#fit-once-and-reuse-the-result">fit-reuse example</a>.
+From a checkout, install optional Numba or annotation support with:</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python -m pip install '.[jit]'
+python -m pip install '.[annotation]'
+</code></pre>
+<p>Numba compiles on first use. Prepared annotation models render without gffutils.
+See <a href="contributing.html">contributing</a> for tests and package builds.</p></article>
+<footer><p>pycoloc 0.2.2 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
 </main>
 </div>
 </body>

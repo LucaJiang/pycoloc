@@ -13,7 +13,7 @@
 <div class="site-shell">
 <aside class="sidebar" aria-label="Documentation sidebar">
 <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
-<span class="version">0.2.2rc3 <span>release candidate</span></span>
+<span class="version">0.2.2</span>
 <nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Get started</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Offline example</a></div><div class="nav-group"><p class="nav-label">Use the package</p><a href="inputs.html">Inputs and priors</a><a href="api.html">API</a><a href="result_schema.html">Results</a><a href="locus_plot.html" aria-current="page">Locus plots</a></div><div class="nav-group"><p class="nav-label">Understand and contribute</p><a href="r_agreement.html">R agreement</a><a href="performance.html">Performance</a><a href="compatibility.html">Scope and limitations</a><a href="methods.html">Methods</a><a href="contributing.html">Contributing</a><a href="https://github.com/LucaJiang/pycoloc">GitHub</a></div></nav>
 <div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
 </aside>
@@ -35,18 +35,29 @@ Plotting does not alter inference results.</p>
 
 # All input objects and metadata are supplied by the caller.
 annotation = prepare_region_annotation(
-    local_gtf, chromosome=chromosome, start=start, end=end,
-    genome_build=&quot;GRCh38&quot;, version=annotation_version,
-    cache_dir=&quot;annotation-index&quot;, source_name=&quot;GENCODE&quot;,
+    local_gtf,
+    chromosome=chromosome,
+    start=start,
+    end=end,
+    genome_build=&quot;GRCh38&quot;,
+    version=annotation_version,
+    cache_dir=&quot;annotation-index&quot;,
+    source_name=&quot;GENCODE&quot;,
 )
-ld1 = LDMatrix(r1, ids1, positions1, kind=&quot;r&quot;, panel=&quot;Trait 1 reference&quot;,
-               provenance=provenance1)
-ld2 = LDMatrix(r2, ids2, positions2, kind=&quot;r&quot;, panel=&quot;Trait 2 reference&quot;,
-               provenance=provenance2)
+ld1 = LDMatrix(r1, ids1, positions1, kind=&quot;r&quot;, panel=&quot;Trait 1 reference&quot;, provenance=provenance1)
+ld2 = LDMatrix(r2, ids2, positions2, kind=&quot;r&quot;, panel=&quot;Trait 2 reference&quot;, provenance=provenance2)
 fig, axes = plot_coloc_locus(
-    result, dataset1, dataset2, region=(chromosome, start, end, &quot;GRCh38&quot;),
-    annotation=annotation, target_gene=target_gene, signal_pair=signal_pair,
-    gwas_ld=ld1, eqtl_ld=ld2, heatmap_ld=ld2, output_prefix=&quot;figures/locus&quot;,
+    result,
+    dataset1,
+    dataset2,
+    region=(chromosome, start, end, &quot;GRCh38&quot;),
+    annotation=annotation,
+    target_gene=target_gene,
+    signal_pair=signal_pair,
+    gwas_ld=ld1,
+    eqtl_ld=ld2,
+    heatmap_ld=ld2,
+    output_prefix=&quot;figures/locus&quot;,
 )
 </code></pre>
 <p>Supply your existing result, association data and actual LD in this example;
@@ -189,7 +200,7 @@ of the discrete association colors. <code>heatmap_cmap</code> (composite) or <co
 colorbar</strong> remain vector. Unresolved text outside the canvas raises a layout
 error before any output is saved; increase width/font spacing or shorten labels.</p>
 <p>For an executable, explicitly analytical illustration without a local annotation file, run <code>python examples/locus_analytical.py --output-prefix figures/analytical</code>. It creates SVG/PDF/PNG and a metadata sidecar from hand-written inputs, not a biological locus or simulated study.</p></article>
-<footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
+<footer><p>pycoloc 0.2.2 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
 </main>
 </div>
 </body>

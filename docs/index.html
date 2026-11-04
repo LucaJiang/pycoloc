@@ -13,7 +13,7 @@
 <div class="site-shell">
 <aside class="sidebar" aria-label="Documentation sidebar">
 <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
-<span class="version">0.2.2rc3 <span>release candidate</span></span>
+<span class="version">0.2.2</span>
 <nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Get started</p><a href="index.html" aria-current="page">Overview</a><a href="install.html">Install</a><a href="example.html">Offline example</a></div><div class="nav-group"><p class="nav-label">Use the package</p><a href="inputs.html">Inputs and priors</a><a href="api.html">API</a><a href="result_schema.html">Results</a><a href="locus_plot.html">Locus plots</a></div><div class="nav-group"><p class="nav-label">Understand and contribute</p><a href="r_agreement.html">R agreement</a><a href="performance.html">Performance</a><a href="compatibility.html">Scope and limitations</a><a href="methods.html">Methods</a><a href="contributing.html">Contributing</a><a href="https://github.com/LucaJiang/pycoloc">GitHub</a></div></nav>
 <div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
 </aside>
@@ -36,45 +36,24 @@
 Bayes factors, with numerical validation against R coloc. pycoloc implements
 established colocalisation methods using NumPy/SciPy and an optional Numba kernel.</p>
 <ul>
-<li><strong>Numerical agreement:</strong> supported ABF and identical-BF/fit comparisons pass in all 100 real regions.</li>
+<li><strong>Numerical agreement:</strong> ABF and identical-BF/fit comparisons cover all 100 real regions.</li>
 <li><strong>Measured BF pairing:</strong> 2.91× paired geometric-mean speedup on 99 mutually converged regions.</li>
 <li><strong>Lower peak process RSS:</strong> ABF median 97.7 MiB versus 259 MiB for R, with lower peaks in all 100 cases.</li>
 </ul>
 <h2 id="numerical-agreement">Numerical agreement</h2>
-<p>New calls compare pycoloc 0.2.2rc3 with coloc 6.0.3 on all 100 fixed real regions, using matched inputs.</p>
-<div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
-<thead>
-<tr>
-<th>Comparison</th>
-<th style="text-align: right;">Passing / total regions or pairs</th>
-<th style="text-align: right;">Max absolute H0–H4 error</th>
-<th style="text-align: right;">Max absolute conditional SNP error</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ABF</td>
-<td style="text-align: right;">100/100</td>
-<td style="text-align: right;">1.07e-14</td>
-<td style="text-align: right;">1.24e-14</td>
-</tr>
-<tr>
-<td>Same component BFs</td>
-<td style="text-align: right;">100/100</td>
-<td style="text-align: right;">1.02e-11</td>
-<td style="text-align: right;">4.55e-15</td>
-</tr>
-<tr>
-<td>Same official SuSiE fits</td>
-<td style="text-align: right;">100/100</td>
-<td style="text-align: right;">1.6e-14</td>
-<td style="text-align: right;">1.44e-15</td>
-</tr>
-</tbody>
-</table></div>
-<p>No-CS states are checked explicitly. The complete 500-SNP teaching pairs also pass these comparisons. Native fitting followed by colocalisation has separate, stricter-field discrepancies in 48/100 real regions; see <a href="r_agreement.html">R agreement</a> and <a href="upstream_differences.html">intentional mathematical corrections</a>.</p>
+<p>Fresh pycoloc 0.2.2 calculations use the same inputs as frozen coloc 6.0.3 outputs
+on 100 real regions. The largest absolute H0–H4 differences are 1.07×10⁻¹⁴ for
+ABF, 1.02×10⁻¹¹ for full component-BF pairing and 1.60×10⁻¹⁴ for pairing the same
+official SuSiE fits.</p>
+<p>With prusie 0.3.1 fitting each trait first, 99 regions have mutually converged
+fits; 65 yield posterior pairs and 34 have no CS. Across the 65 numeric
+comparisons, regional maximum H0–H4 differences have median 1.77×10⁻¹¹,
+95th percentile 4.00×10⁻⁹ and maximum 9.70×10⁻⁹. The largest conditional SNP
+difference is 7.47×10⁻⁸. CS membership agrees; region25's nonconverged fit is
+reported separately. See <a href="r_agreement.html">R agreement</a> for distributions,
+toy-example results and the <a href="upstream_differences.html">intentional scientific corrections</a>.</p>
 <h2 id="performance">Performance</h2>
-<p>Complete calls with one numerical thread against coloc 6.0.3 in R 4.4.0 / OpenBLAS 0.3.20. The fixed panel contains 100 real regions, 103–4162 SNPs each. Tables include all ABF cases and converged BF/CS pairings with available output.</p>
+<p>Measured pycoloc <strong>0.2.2rc3</strong> complete calls with one numerical thread against coloc 6.0.3 in R 4.4.0 / OpenBLAS 0.3.20. The fixed panel contains 100 real regions, 103–4162 SNPs each. Tables include all ABF cases and converged BF/CS pairings with available output.</p>
 <div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
 <thead>
 <tr>
@@ -140,18 +119,20 @@ established colocalisation methods using NumPy/SciPy and an optional Numba kerne
 <p><img alt="Runtime and peak process RSS ratios for every measured real case, including slower and higher-memory cases." src="assets/r_comparison.svg" /></p>
 <p>Peak process RSS includes imports, inputs and full results, measured in a separate fresh process. <a href="performance.html">Methods, all cases, repeat variability and public-fixture results</a> give the comparison scope.</p>
 <h2 id="installation">Installation</h2>
-<p>Install this release candidate from source with Python ≥3.10:</p>
-<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">git clone https://github.com/LucaJiang/pycoloc.git
-cd pycoloc
-python -m venv .venv
-. .venv/bin/activate
-python -m pip install .
+<p>Install pycoloc <strong>0.2.2</strong> with Python ≥3.10 from the GitHub Release wheel:</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python -m pip install https://github.com/LucaJiang/pycoloc/releases/download/v0.2.2/pycoloc-0.2.2-py3-none-any.whl
 </code></pre>
-<p>Keep the checkout for the bundled data. See <a href="install.html">installation</a> for
-optional Numba and annotation support.</p>
+<p>Or install the tagged source:</p>
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python -m pip install &quot;git+https://github.com/LucaJiang/pycoloc.git@v0.2.2&quot;
+</code></pre>
+<p>pycoloc is not published on PyPI. The PyPI project named <code>pycoloc</code> is unrelated:
+<code>pip install pycoloc</code> installs that other package. This GitHub repository is private;
+access to its source and Release assets requires authorization. For the wheel path,
+download the asset while signed in and install the local file if pip cannot authenticate.</p>
+<p>Keep a checkout for the bundled offline example data.</p>
 <h2 id="quick-start">Quick start</h2>
 <p>Run from the checkout. The bundled data are the complete <strong>synthetic 500-SNP
-coloc teaching fixture</strong>, with stored quantitative-trait sample sizes and sdY.</p>
+coloc toy example</strong>, with stored quantitative-trait sample sizes and sdY.</p>
 <pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-python">import json
 from pathlib import Path
 
@@ -162,9 +143,14 @@ data = Path(&quot;examples/data&quot;)
 metadata = json.loads((data / &quot;metadata.json&quot;).read_text())
 with np.load(data / &quot;inputs.npz&quot;, allow_pickle=False) as arrays:
     datasets = [
-        dict(snp=metadata[key][&quot;snp&quot;], type=metadata[key][&quot;type&quot;],
-             N=metadata[key][&quot;N&quot;], sdY=metadata[key][&quot;sdY&quot;],
-             beta=arrays[key + &quot;_beta&quot;], varbeta=arrays[key + &quot;_varbeta&quot;])
+        dict(
+            snp=metadata[key][&quot;snp&quot;],
+            type=metadata[key][&quot;type&quot;],
+            N=metadata[key][&quot;N&quot;],
+            sdY=metadata[key][&quot;sdY&quot;],
+            beta=arrays[key + &quot;_beta&quot;],
+            varbeta=arrays[key + &quot;_varbeta&quot;],
+        )
         for key in (&quot;D1&quot;, &quot;D2&quot;)
     ]
 
@@ -221,9 +207,9 @@ are linked from the <a href="r_agreement.html">agreement report</a>.</p>
 <h2 id="citation-and-license">Citation and license</h2>
 <p>Maintained by Wenxin Jiang. Cite the original <a href="methods.html">coloc methods</a>
 and identify the pycoloc version used; package citation metadata is in <a href="https://github.com/LucaJiang/pycoloc/blob/main/CITATION.cff">CITATION.cff</a>.
-GPL-3.0-or-later; see <a href="https://github.com/LucaJiang/pycoloc/blob/main/LICENSE">LICENSE</a> and <a href="https://github.com/LucaJiang/pycoloc/blob/main/THIRD_PARTY_NOTICES">third-party notices</a>
-for the retained upstream code and teaching-data terms.</p></article>
-<footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
+GPL-3.0-or-later; see <a href="https://github.com/LucaJiang/pycoloc/blob/main/LICENSE">LICENSE</a> and <a href="https://github.com/LucaJiang/pycoloc/blob/main/THIRD_PARTY_NOTICES.md">third-party notices</a>
+for the retained upstream code and example-data terms.</p></article>
+<footer><p>pycoloc 0.2.2 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
 </main>
 </div>
 </body>

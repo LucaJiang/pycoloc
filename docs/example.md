@@ -1,6 +1,6 @@
 # Analyze and validate the 500-SNP example
 
-Analyze a complete **synthetic 500-SNP teaching fixture** from official coloc,
+Analyze a complete **synthetic 500-SNP toy example** from official coloc,
 then check the results against frozen R outputs. The four bundled datasets
 support ABF analysis, existing-fit pairing and optional native fine-mapping.
 
@@ -31,9 +31,15 @@ with np.load(data / "inputs.npz", allow_pickle=False) as arrays:
     for key in ("D1", "D2"):
         fits[key] = susie_rss(
             z=arrays[key + "_beta"] / np.sqrt(arrays[key + "_varbeta"]),
-            R=arrays[key + "_LD"], n=metadata[key]["N"],
-            variant_ids=metadata[key]["snp"], L=10, max_iter=100,
-            tol=0.001, coverage=0.95, min_abs_corr=0.5, n_purity=500,
+            R=arrays[key + "_LD"],
+            n=metadata[key]["N"],
+            variant_ids=metadata[key]["snp"],
+            L=10,
+            max_iter=100,
+            tol=0.001,
+            coverage=0.95,
+            min_abs_corr=0.5,
+            n_purity=500,
             estimate_residual_variance=False,
         )
 
@@ -77,9 +83,10 @@ frozen files in `examples/data/`.
 6. Check corrected weighted and partial-zero behavior against independently enumerated mathematical expectations, preserving the raw R differences as diagnostics.
 7. Compare against a separate frozen pycoloc regression checkpoint. It is labelled as native output and never used as an independent R or mathematical oracle.
 
-The command prints `PASS` or `FAIL`, field-level maximum absolute errors, and the thresholds used. It writes `report.json` and `actual_results.json` to your output directory and exits with a nonzero code for a substantive failure. A package version change is recorded transparently; its string alone cannot cause a numerical failure. Output inside the frozen data directory is rejected. The runner never updates its expected results.
-
-The [executed R agreement report](r_agreement.md) explains which differences are expected and why. A final `PASS` means the stated checks passed; it does **not** mean every upstream field was identical.
+The command writes field-level numerical differences to `report.json` and results to
+`actual_results.json`. It exits nonzero for an unsuccessful software check and never
+updates frozen expectations. The [R agreement report](r_agreement.md) explains the
+observed differences, including the intentional weighted-field corrections.
 
 ## The data and model
 
@@ -93,13 +100,10 @@ Two explicitly labelled diagnostics change one setting: D3_strict_purity uses mi
 
 ## Optional native fitting with prusie
 
-Install [prusie](https://github.com/LucaJiang/prusie) into the same environment,
-using a prepared wheel or its source instructions. A source build needs the
-pinned Rust toolchain, C linker and Python headers. From the pycoloc checkout:
+Install prusie 0.3.1 from PyPI into the same environment:
 
 ```sh
-git clone https://github.com/LucaJiang/prusie.git ../prusie
-python -m pip install ../prusie
+python -m pip install prusie==0.3.1
 ```
 
 Then run:
@@ -108,7 +112,7 @@ Then run:
 python examples/check_example.py --native-pair --output-dir native-example-output
 ```
 
-This additionally calls `prusie.susie_rss` for D1–D4 with the same known-n parameters and passes those native result objects to `coloc_susie`. It checks PIP absolute error ≤1e-5 with zero relative tolerance, input/model and probability validity. It records convergence, iterations and downstream colocalisation differences separately. An end-to-end result combines fine-mapping and colocalisation numerical behavior; it is a distinct comparison from pairing identical frozen fits.
+This additionally calls `prusie.susie_rss` for D1–D4 with the same known-n parameters and passes those native result objects to `coloc_susie`. It compares PIPs with the frozen R fits and checks input, model and probability validity. It records convergence, iterations and downstream colocalisation differences separately. An end-to-end result combines fine-mapping and colocalisation numerical behavior; it is a distinct comparison from pairing identical frozen fits.
 
 The optional import is made only when this flag is present. pycoloc does not install or invoke prusie implicitly. Consult the agreement report for the actual pair of package versions tested.
 

@@ -28,7 +28,7 @@ Counterexamples and regression tests are in [upstream differences](upstream_diff
 The R source was read locally from the locked archive, not a floating branch or
 third-party Python implementation. The source archive SHA256 is
 f6580ab471e1bd9f3acc45e23a73bb2ee16fe3c0a45e01cd8cc008854661b479.
-The current public teaching-fit exports use [susieR 0.16.6](https://github.com/stephenslab/susieR/tree/8e56a8e038e989856d106d9ca5175cc664fea9d2), commit
+The current toy-example fit exports use [susieR 0.16.6](https://github.com/stephenslab/susieR/tree/8e56a8e038e989856d106d9ca5175cc664fea9d2), commit
 `8e56a8e038e989856d106d9ca5175cc664fea9d2`. Its exact archive/data hashes and
 R/dependency environment are in `examples/data/reference.lock.json` and
 `reference_environment.json`. Methods cited by upstream: Giambartolomei et al., PLoS Genetics,

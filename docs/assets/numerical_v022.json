@@ -1,0 +1,3032 @@
+{
+  "pycoloc": "0.2.2",
+  "prusie": "0.3.1",
+  "R_coloc": "6.0.3",
+  "R_susieR": "0.16.6",
+  "evidence": "Fresh installed Python calls; reused frozen official R outputs after input hash verification. No new runtime or memory measurements.",
+  "distribution_definition": "For each case and field, take the largest absolute difference over its available component pairs and SNPs; summarize those case maxima. Empty/no-CS results do not supply numeric posterior rows.",
+  "counts": {
+    "real_regions": 100,
+    "real_traits": 200,
+    "toy_primary_datasets": 4,
+    "toy_primary_pairs": 2,
+    "toy_diagnostic_pairs": 2,
+    "V1_calls": 308,
+    "V2_calls": 104,
+    "native_fit_calls": 206,
+    "reused_R_records": 514,
+    "verified_files": 2372
+  },
+  "same_input_comparisons": {
+    "real/abf": {
+      "case_count": 100,
+      "numeric_case_count": 100,
+      "fields": {
+        "H0-H4": {
+          "per_case_maximum_distribution": {
+            "n": 100,
+            "max": 1.0658141036401503e-14,
+            "median": 3.3306690738754696e-16,
+            "p90": 1.1102230246251565e-15,
+            "p95": 2.73600586631062e-15,
+            "p99": 7.910339050454255e-15
+          },
+          "largest_cases": [
+            {
+              "case_id": "region88",
+              "maximum_absolute_error": 1.0658141036401503e-14
+            },
+            {
+              "case_id": "region47",
+              "maximum_absolute_error": 7.882583474838611e-15
+            },
+            {
+              "case_id": "region67",
+              "maximum_absolute_error": 3.3306690738754696e-15
+            },
+            {
+              "case_id": "region87",
+              "maximum_absolute_error": 2.7755575615628914e-15
+            },
+            {
+              "case_id": "region89",
+              "maximum_absolute_error": 2.7755575615628914e-15
+            },
+            {
+              "case_id": "region54",
+              "maximum_absolute_error": 2.733924198139448e-15
+            },
+            {
+              "case_id": "region01",
+              "maximum_absolute_error": 2.6645352591003757e-15
+            },
+            {
+              "case_id": "region100",
+              "maximum_absolute_error": 2.42861286636753e-15
+            },
+            {
+              "case_id": "region20",
+              "maximum_absolute_error": 2.3314683517128287e-15
+            },
+            {
+              "case_id": "region66",
+              "maximum_absolute_error": 1.1102230246251565e-15
+            }
+          ]
+        },
+        "SNP.PP.H4": {
+          "per_case_maximum_distribution": {
+            "n": 100,
+            "max": 1.2378986724570495e-14,
+            "median": 5.967448757360216e-16,
+            "p90": 2.689515277154444e-15,
+            "p95": 5.118128143521971e-15,
+            "p99": 1.166455820822421e-14
+          },
+          "largest_cases": [
+            {
+              "case_id": "region25",
+              "maximum_absolute_error": 1.2378986724570495e-14
+            },
+            {
+              "case_id": "region08",
+              "maximum_absolute_error": 1.1657341758564144e-14
+            },
+            {
+              "case_id": "region85",
+              "maximum_absolute_error": 5.88418203051333e-15
+            },
+            {
+              "case_id": "region100",
+              "maximum_absolute_error": 5.4817261840867104e-15
+            },
+            {
+              "case_id": "region07",
+              "maximum_absolute_error": 5.329070518200751e-15
+            },
+            {
+              "case_id": "region88",
+              "maximum_absolute_error": 5.10702591327572e-15
+            },
+            {
+              "case_id": "region79",
+              "maximum_absolute_error": 4.163336342344337e-15
+            },
+            {
+              "case_id": "region29",
+              "maximum_absolute_error": 3.6914915568786455e-15
+            },
+            {
+              "case_id": "region63",
+              "maximum_absolute_error": 3.1086244689504383e-15
+            },
+            {
+              "case_id": "region15",
+              "maximum_absolute_error": 2.914335439641036e-15
+            }
+          ]
+        },
+        "lABF.df1": {
+          "per_case_maximum_distribution": {
+            "n": 100,
+            "max": 3.126388037344441e-13,
+            "median": 4.796163466380676e-14,
+            "p90": 5.684341886080802e-14,
+            "p95": 5.684341886080802e-14,
+            "p99": 5.940137270954568e-14
+          },
+          "largest_cases": [
+            {
+              "case_id": "region01",
+              "maximum_absolute_error": 3.126388037344441e-13
+            },
+            {
+              "case_id": "region08",
+              "maximum_absolute_error": 5.684341886080802e-14
+            },
+            {
+              "case_id": "region10",
+              "maximum_absolute_error": 5.684341886080802e-14
+            },
+            {
+              "case_id": "region11",
+              "maximum_absolute_error": 5.684341886080802e-14
+            },
+            {
+              "case_id": "region15",
+              "maximum_absolute_error": 5.684341886080802e-14
+            },
+            {
+              "case_id": "region21",
+              "maximum_absolute_error": 5.684341886080802e-14
+            },
+            {
+              "case_id": "region22",
+              "maximum_absolute_error": 5.684341886080802e-14
+            },
+            {
+              "case_id": "region33",
+              "maximum_absolute_error": 5.684341886080802e-14
+            },
+            {
+              "case_id": "region40",
+              "maximum_absolute_error": 5.684341886080802e-14
+            },
+            {
+              "case_id": "region42",
+              "maximum_absolute_error": 5.684341886080802e-14
+            }
+          ]
+        },
+        "lABF.df2": {
+          "per_case_maximum_distribution": {
+            "n": 100,
+            "max": 5.115907697472721e-13,
+            "median": 4.973799150320701e-14,
+            "p90": 4.547473508864641e-13,
+            "p95": 4.831690603168681e-13,
+            "p99": 5.115907697472721e-13
+          },
+          "largest_cases": [
+            {
+              "case_id": "region08",
+              "maximum_absolute_error": 5.115907697472721e-13
+            },
+            {
+              "case_id": "region100",
+              "maximum_absolute_error": 5.115907697472721e-13
+            },
+            {
+              "case_id": "region43",
+              "maximum_absolute_error": 4.831690603168681e-13
+            },
+            {
+              "case_id": "region47",
+              "maximum_absolute_error": 4.831690603168681e-13
+            },
+            {
+              "case_id": "region59",
+              "maximum_absolute_error": 4.831690603168681e-13
+            },
+            {
+              "case_id": "region79",
+              "maximum_absolute_error": 4.831690603168681e-13
+            },
+            {
+              "case_id": "region88",
+              "maximum_absolute_error": 4.831690603168681e-13
+            },
+            {
+              "case_id": "region24",
+              "maximum_absolute_error": 4.689582056016661e-13
+            },
+            {
+              "case_id": "region23",
+              "maximum_absolute_error": 4.547473508864641e-13
+            },
+            {
+              "case_id": "region25",
+              "maximum_absolute_error": 4.547473508864641e-13
+            }
+          ]
+        },
+        "PP.H0.abf": {
+          "per_case_maximum_distribution": {
+            "n": 100,
+            "max": 6.106226635438361e-16,
+            "median": 1.0695691697348566e-25,
+            "p90": 4.2327252813834744e-17,
+            "p95": 2.2759572004815678e-16,
+            "p99": 5.556666238248911e-16
+          },
+          "largest_cases": [
+            {
+              "case_id": "region32",
+              "maximum_absolute_error": 6.106226635438361e-16
+            },
+            {
+              "case_id": "region46",
+              "maximum_absolute_error": 5.551115123125783e-16
+            },
+            {
+              "case_id": "region19",
+              "maximum_absolute_error": 4.3021142204224816e-16
+            },
+            {
+              "case_id": "region81",
+              "maximum_absolute_error": 3.608224830031759e-16
+            },
+            {
+              "case_id": "region74",
+              "maximum_absolute_error": 3.3306690738754696e-16
+            },
+            {
+              "case_id": "region76",
+              "maximum_absolute_error": 2.220446049250313e-16
+            },
+            {
+              "case_id": "region68",
+              "maximum_absolute_error": 1.1102230246251565e-16
+            },
+            {
+              "case_id": "region70",
+              "maximum_absolute_error": 1.1102230246251565e-16
+            },
+            {
+              "case_id": "region75",
+              "maximum_absolute_error": 1.1102230246251565e-16
+            },
+            {
+              "case_id": "region82",
+              "maximum_absolute_error": 1.1102230246251565e-16
+            }
+          ]
+        },
+        "PP.H1.abf": {
+          "per_case_maximum_distribution": {
+            "n": 100,
+            "max": 1.1102230246251565e-15,
+            "median": 4.955142741437657e-20,
+            "p90": 3.3306690738754696e-16,
+            "p95": 4.440892098500626e-16,
+            "p99": 5.331846075762344e-16
+          },
+          "largest_cases": [
+            {
+              "case_id": "region66",
+              "maximum_absolute_error": 1.1102230246251565e-15
+            },
+            {
+              "case_id": "region27",
+              "maximum_absolute_error": 5.273559366969494e-16
+            },
+            {
+              "case_id": "region06",
+              "maximum_absolute_error": 4.718447854656915e-16
+            },
+            {
+              "case_id": "region07",
+              "maximum_absolute_error": 4.718447854656915e-16
+            },
+            {
+              "case_id": "region10",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "region16",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "region33",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "region69",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "region02",
+              "maximum_absolute_error": 3.3306690738754696e-16
+            },
+            {
+              "case_id": "region28",
+              "maximum_absolute_error": 3.3306690738754696e-16
+            }
+          ]
+        },
+        "PP.H2.abf": {
+          "per_case_maximum_distribution": {
+            "n": 100,
+            "max": 4.218847493575595e-15,
+            "median": 8.300922883092143e-20,
+            "p90": 3.3306690738754696e-16,
+            "p95": 4.440892098500626e-16,
+            "p99": 2.7899904608830258e-15
+          },
+          "largest_cases": [
+            {
+              "case_id": "region88",
+              "maximum_absolute_error": 4.218847493575595e-15
+            },
+            {
+              "case_id": "region87",
+              "maximum_absolute_error": 2.7755575615628914e-15
+            },
+            {
+              "case_id": "region67",
+              "maximum_absolute_error": 2.2343238370581275e-15
+            },
+            {
+              "case_id": "region14",
+              "maximum_absolute_error": 4.718447854656915e-16
+            },
+            {
+              "case_id": "region18",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "region39",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "region76",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "region100",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "region92",
+              "maximum_absolute_error": 3.608224830031759e-16
+            },
+            {
+              "case_id": "region64",
+              "maximum_absolute_error": 3.3306690738754696e-16
+            }
+          ]
+        },
+        "PP.H3.abf": {
+          "per_case_maximum_distribution": {
+            "n": 100,
+            "max": 1.0658141036401503e-14,
+            "median": 2.220446049250313e-16,
+            "p90": 7.27196081129478e-16,
+            "p95": 2.6680047060523293e-15,
+            "p99": 7.910339050454255e-15
+          },
+          "largest_cases": [
+            {
+              "case_id": "region88",
+              "maximum_absolute_error": 1.0658141036401503e-14
+            },
+            {
+              "case_id": "region47",
+              "maximum_absolute_error": 7.882583474838611e-15
+            },
+            {
+              "case_id": "region67",
+              "maximum_absolute_error": 3.3306690738754696e-15
+            },
+            {
+              "case_id": "region89",
+              "maximum_absolute_error": 2.7755575615628914e-15
+            },
+            {
+              "case_id": "region54",
+              "maximum_absolute_error": 2.733924198139448e-15
+            },
+            {
+              "case_id": "region01",
+              "maximum_absolute_error": 2.6645352591003757e-15
+            },
+            {
+              "case_id": "region87",
+              "maximum_absolute_error": 2.3314683517128287e-15
+            },
+            {
+              "case_id": "region66",
+              "maximum_absolute_error": 1.1102230246251565e-15
+            },
+            {
+              "case_id": "region69",
+              "maximum_absolute_error": 1.1102230246251565e-15
+            },
+            {
+              "case_id": "region84",
+              "maximum_absolute_error": 7.771561172376096e-16
+            }
+          ]
+        },
+        "PP.H4.abf": {
+          "per_case_maximum_distribution": {
+            "n": 100,
+            "max": 2.42861286636753e-15,
+            "median": 8.890457814381136e-18,
+            "p90": 3.4416913763379947e-16,
+            "p95": 5.551115123125783e-16,
+            "p99": 2.3324397968593764e-15
+          },
+          "largest_cases": [
+            {
+              "case_id": "region100",
+              "maximum_absolute_error": 2.42861286636753e-15
+            },
+            {
+              "case_id": "region20",
+              "maximum_absolute_error": 2.3314683517128287e-15
+            },
+            {
+              "case_id": "region67",
+              "maximum_absolute_error": 7.667477763817487e-16
+            },
+            {
+              "case_id": "region33",
+              "maximum_absolute_error": 7.494005416219807e-16
+            },
+            {
+              "case_id": "region32",
+              "maximum_absolute_error": 5.551115123125783e-16
+            },
+            {
+              "case_id": "region72",
+              "maximum_absolute_error": 5.551115123125783e-16
+            },
+            {
+              "case_id": "region02",
+              "maximum_absolute_error": 5.134781488891349e-16
+            },
+            {
+              "case_id": "region54",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "region73",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "region97",
+              "maximum_absolute_error": 4.440892098500626e-16
+            }
+          ]
+        }
+      }
+    },
+    "real/bf": {
+      "case_count": 100,
+      "numeric_case_count": 100,
+      "fields": {
+        "H0-H4": {
+          "per_case_maximum_distribution": {
+            "n": 100,
+            "max": 1.0242806602889232e-11,
+            "median": 8.638922910364499e-16,
+            "p90": 7.105427357601002e-15,
+            "p95": 1.0741407763248385e-14,
+            "p99": 9.143485968366376e-13
+          },
+          "largest_cases": [
+            {
+              "case_id": "region25",
+              "maximum_absolute_error": 1.0242806602889232e-11
+            },
+            {
+              "case_id": "region03",
+              "maximum_absolute_error": 8.201217482906031e-13
+            },
+            {
+              "case_id": "region67",
+              "maximum_absolute_error": 1.5987211554602254e-14
+            },
+            {
+              "case_id": "region06",
+              "maximum_absolute_error": 1.4765966227514582e-14
+            },
+            {
+              "case_id": "region53",
+              "maximum_absolute_error": 1.2323475573339238e-14
+            },
+            {
+              "case_id": "region02",
+              "maximum_absolute_error": 1.0658141036401503e-14
+            },
+            {
+              "case_id": "region45",
+              "maximum_absolute_error": 1.0436096431476471e-14
+            },
+            {
+              "case_id": "region100",
+              "maximum_absolute_error": 7.993605777301127e-15
+            },
+            {
+              "case_id": "region04",
+              "maximum_absolute_error": 7.438494264988549e-15
+            },
+            {
+              "case_id": "region15",
+              "maximum_absolute_error": 7.105427357601002e-15
+            }
+          ]
+        },
+        "SNP.PP.H4": {
+          "per_case_maximum_distribution": {
+            "n": 100,
+            "max": 4.551914400963142e-15,
+            "median": 4.718447854656915e-16,
+            "p90": 5.023759186428836e-16,
+            "p95": 6.730727086790008e-16,
+            "p99": 1.4743761767022238e-15
+          },
+          "largest_cases": [
+            {
+              "case_id": "region31",
+              "maximum_absolute_error": 4.551914400963142e-15
+            },
+            {
+              "case_id": "region65",
+              "maximum_absolute_error": 1.4432899320127035e-15
+            },
+            {
+              "case_id": "region72",
+              "maximum_absolute_error": 1.1102230246251565e-15
+            },
+            {
+              "case_id": "region85",
+              "maximum_absolute_error": 8.326672684688674e-16
+            },
+            {
+              "case_id": "region33",
+              "maximum_absolute_error": 8.049116928532385e-16
+            },
+            {
+              "case_id": "region11",
+              "maximum_absolute_error": 6.661338147750939e-16
+            },
+            {
+              "case_id": "region47",
+              "maximum_absolute_error": 6.522560269672795e-16
+            },
+            {
+              "case_id": "region19",
+              "maximum_absolute_error": 5.551115123125783e-16
+            },
+            {
+              "case_id": "region97",
+              "maximum_absolute_error": 5.551115123125783e-16
+            },
+            {
+              "case_id": "region08",
+              "maximum_absolute_error": 5.273559366969494e-16
+            }
+          ]
+        },
+        "PP.H0.abf": {
+          "per_case_maximum_distribution": {
+            "n": 100,
+            "max": 6.661338147750939e-16,
+            "median": 4.440892098500626e-16,
+            "p90": 5.551115123125783e-16,
+            "p95": 6.397660179402464e-16,
+            "p99": 6.661338147750939e-16
+          },
+          "largest_cases": [
+            {
+              "case_id": "region15",
+              "maximum_absolute_error": 6.661338147750939e-16
+            },
+            {
+              "case_id": "region30",
+              "maximum_absolute_error": 6.661338147750939e-16
+            },
+            {
+              "case_id": "region47",
+              "maximum_absolute_error": 6.661338147750939e-16
+            },
+            {
+              "case_id": "region87",
+              "maximum_absolute_error": 6.661338147750939e-16
+            },
+            {
+              "case_id": "region96",
+              "maximum_absolute_error": 6.661338147750939e-16
+            },
+            {
+              "case_id": "region98",
+              "maximum_absolute_error": 6.38378239159465e-16
+            },
+            {
+              "case_id": "region72",
+              "maximum_absolute_error": 5.828670879282072e-16
+            },
+            {
+              "case_id": "region07",
+              "maximum_absolute_error": 5.551115123125783e-16
+            },
+            {
+              "case_id": "region16",
+              "maximum_absolute_error": 5.551115123125783e-16
+            },
+            {
+              "case_id": "region19",
+              "maximum_absolute_error": 5.551115123125783e-16
+            }
+          ]
+        },
+        "PP.H1.abf": {
+          "per_case_maximum_distribution": {
+            "n": 100,
+            "max": 1.0242806602889232e-11,
+            "median": 4.440892098500626e-16,
+            "p90": 1.8235413179468213e-15,
+            "p95": 6.677991493120316e-15,
+            "p99": 9.143485968366376e-13
+          },
+          "largest_cases": [
+            {
+              "case_id": "region25",
+              "maximum_absolute_error": 1.0242806602889232e-11
+            },
+            {
+              "case_id": "region03",
+              "maximum_absolute_error": 8.201217482906031e-13
+            },
+            {
+              "case_id": "region06",
+              "maximum_absolute_error": 1.4765966227514582e-14
+            },
+            {
+              "case_id": "region02",
+              "maximum_absolute_error": 1.0658141036401503e-14
+            },
+            {
+              "case_id": "region32",
+              "maximum_absolute_error": 6.994405055138486e-15
+            },
+            {
+              "case_id": "region10",
+              "maximum_absolute_error": 6.661338147750939e-15
+            },
+            {
+              "case_id": "region27",
+              "maximum_absolute_error": 3.552713678800501e-15
+            },
+            {
+              "case_id": "region20",
+              "maximum_absolute_error": 3.4416913763379853e-15
+            },
+            {
+              "case_id": "region04",
+              "maximum_absolute_error": 3.219646771412954e-15
+            },
+            {
+              "case_id": "region84",
+              "maximum_absolute_error": 1.9984014443252818e-15
+            }
+          ]
+        },
+        "PP.H2.abf": {
+          "per_case_maximum_distribution": {
+            "n": 100,
+            "max": 1.5987211554602254e-14,
+            "median": 3.3306690738754696e-16,
+            "p90": 2.3869795029440913e-15,
+            "p95": 3.516631430500176e-15,
+            "p99": 8.897882430858353e-15
+          },
+          "largest_cases": [
+            {
+              "case_id": "region67",
+              "maximum_absolute_error": 1.5987211554602254e-14
+            },
+            {
+              "case_id": "region45",
+              "maximum_absolute_error": 8.826273045769994e-15
+            },
+            {
+              "case_id": "region100",
+              "maximum_absolute_error": 7.66053886991358e-15
+            },
+            {
+              "case_id": "region24",
+              "maximum_absolute_error": 6.439293542825908e-15
+            },
+            {
+              "case_id": "region87",
+              "maximum_absolute_error": 5.995204332975845e-15
+            },
+            {
+              "case_id": "region15",
+              "maximum_absolute_error": 3.3861802251067274e-15
+            },
+            {
+              "case_id": "region18",
+              "maximum_absolute_error": 3.219646771412954e-15
+            },
+            {
+              "case_id": "region37",
+              "maximum_absolute_error": 3.1363800445660672e-15
+            },
+            {
+              "case_id": "region26",
+              "maximum_absolute_error": 2.9976021664879227e-15
+            },
+            {
+              "case_id": "region77",
+              "maximum_absolute_error": 2.886579864025407e-15
+            }
+          ]
+        },
+        "PP.H3.abf": {
+          "per_case_maximum_distribution": {
+            "n": 100,
+            "max": 4.0282222002474555e-12,
+            "median": 4.440892098500626e-16,
+            "p90": 6.8056671409522124e-15,
+            "p95": 1.0530465388569604e-14,
+            "p99": 1.0359157975871977e-13
+          },
+          "largest_cases": [
+            {
+              "case_id": "region25",
+              "maximum_absolute_error": 4.0282222002474555e-12
+            },
+            {
+              "case_id": "region03",
+              "maximum_absolute_error": 6.394884621840902e-14
+            },
+            {
+              "case_id": "region67",
+              "maximum_absolute_error": 1.587618925213974e-14
+            },
+            {
+              "case_id": "region06",
+              "maximum_absolute_error": 1.27675647831893e-14
+            },
+            {
+              "case_id": "region53",
+              "maximum_absolute_error": 1.2323475573339238e-14
+            },
+            {
+              "case_id": "region45",
+              "maximum_absolute_error": 1.0436096431476471e-14
+            },
+            {
+              "case_id": "region100",
+              "maximum_absolute_error": 7.993605777301127e-15
+            },
+            {
+              "case_id": "region04",
+              "maximum_absolute_error": 7.438494264988549e-15
+            },
+            {
+              "case_id": "region15",
+              "maximum_absolute_error": 7.105427357601002e-15
+            },
+            {
+              "case_id": "region32",
+              "maximum_absolute_error": 7.105427357601002e-15
+            }
+          ]
+        },
+        "PP.H4.abf": {
+          "per_case_maximum_distribution": {
+            "n": 100,
+            "max": 5.541331282721274e-13,
+            "median": 1.0755285551056204e-16,
+            "p90": 4.315992008230297e-16,
+            "p95": 1.5980272660698342e-15,
+            "p99": 6.643262329131513e-14
+          },
+          "largest_cases": [
+            {
+              "case_id": "region25",
+              "maximum_absolute_error": 5.541331282721274e-13
+            },
+            {
+              "case_id": "region03",
+              "maximum_absolute_error": 6.150635556423367e-14
+            },
+            {
+              "case_id": "region79",
+              "maximum_absolute_error": 6.772360450213455e-15
+            },
+            {
+              "case_id": "region36",
+              "maximum_absolute_error": 3.6637359812630166e-15
+            },
+            {
+              "case_id": "region67",
+              "maximum_absolute_error": 1.7694179454963432e-15
+            },
+            {
+              "case_id": "region32",
+              "maximum_absolute_error": 1.5890067039947553e-15
+            },
+            {
+              "case_id": "region59",
+              "maximum_absolute_error": 1.2351231148954867e-15
+            },
+            {
+              "case_id": "region40",
+              "maximum_absolute_error": 6.661338147750939e-16
+            },
+            {
+              "case_id": "region23",
+              "maximum_absolute_error": 5.412337245047638e-16
+            },
+            {
+              "case_id": "region57",
+              "maximum_absolute_error": 4.440892098500626e-16
+            }
+          ]
+        }
+      }
+    },
+    "real/susie": {
+      "case_count": 100,
+      "numeric_case_count": 66,
+      "fields": {
+        "H0-H4": {
+          "per_case_maximum_distribution": {
+            "n": 66,
+            "max": 1.5987211554602254e-14,
+            "median": 4.440892098500626e-16,
+            "p90": 6.772360450213455e-15,
+            "p95": 7.355227538141662e-15,
+            "p99": 1.3605783166781273e-14
+          },
+          "largest_cases": [
+            {
+              "case_id": "region67",
+              "maximum_absolute_error": 1.5987211554602254e-14
+            },
+            {
+              "case_id": "region53",
+              "maximum_absolute_error": 1.2323475573339238e-14
+            },
+            {
+              "case_id": "region03",
+              "maximum_absolute_error": 8.201772594418344e-15
+            },
+            {
+              "case_id": "region04",
+              "maximum_absolute_error": 7.438494264988549e-15
+            },
+            {
+              "case_id": "region15",
+              "maximum_absolute_error": 7.105427357601002e-15
+            },
+            {
+              "case_id": "region32",
+              "maximum_absolute_error": 7.105427357601002e-15
+            },
+            {
+              "case_id": "region55",
+              "maximum_absolute_error": 6.772360450213455e-15
+            },
+            {
+              "case_id": "region79",
+              "maximum_absolute_error": 6.772360450213455e-15
+            },
+            {
+              "case_id": "region08",
+              "maximum_absolute_error": 3.774758283725532e-15
+            },
+            {
+              "case_id": "region36",
+              "maximum_absolute_error": 3.6637359812630166e-15
+            }
+          ]
+        },
+        "SNP.PP.H4": {
+          "per_case_maximum_distribution": {
+            "n": 66,
+            "max": 1.4432899320127035e-15,
+            "median": 3.469446951953614e-16,
+            "p90": 4.718447854656915e-16,
+            "p95": 4.822531263215524e-16,
+            "p99": 9.291178937331734e-16
+          },
+          "largest_cases": [
+            {
+              "case_id": "region65",
+              "maximum_absolute_error": 1.4432899320127035e-15
+            },
+            {
+              "case_id": "region47",
+              "maximum_absolute_error": 6.522560269672795e-16
+            },
+            {
+              "case_id": "region79",
+              "maximum_absolute_error": 4.996003610813204e-16
+            },
+            {
+              "case_id": "region73",
+              "maximum_absolute_error": 4.85722573273506e-16
+            },
+            {
+              "case_id": "region29",
+              "maximum_absolute_error": 4.718447854656915e-16
+            },
+            {
+              "case_id": "region62",
+              "maximum_absolute_error": 4.718447854656915e-16
+            },
+            {
+              "case_id": "region67",
+              "maximum_absolute_error": 4.718447854656915e-16
+            },
+            {
+              "case_id": "region93",
+              "maximum_absolute_error": 4.718447854656915e-16
+            },
+            {
+              "case_id": "region20",
+              "maximum_absolute_error": 4.579669976578771e-16
+            },
+            {
+              "case_id": "region90",
+              "maximum_absolute_error": 4.579669976578771e-16
+            }
+          ]
+        },
+        "PP.H0.abf": {
+          "per_case_maximum_distribution": {
+            "n": 66,
+            "max": 2.220446049250313e-16,
+            "median": 1.3509243001909827e-29,
+            "p90": 1.0842021724855044e-19,
+            "p95": 2.7172816947917955e-18,
+            "p99": 1.0139458717084332e-16
+          },
+          "largest_cases": [
+            {
+              "case_id": "region63",
+              "maximum_absolute_error": 2.220446049250313e-16
+            },
+            {
+              "case_id": "region89",
+              "maximum_absolute_error": 3.642919299551295e-17
+            },
+            {
+              "case_id": "region40",
+              "maximum_absolute_error": 2.2551405187698492e-17
+            },
+            {
+              "case_id": "region65",
+              "maximum_absolute_error": 3.469446951953614e-18
+            },
+            {
+              "case_id": "region77",
+              "maximum_absolute_error": 4.607859233063394e-19
+            },
+            {
+              "case_id": "region92",
+              "maximum_absolute_error": 1.1180834903756764e-19
+            },
+            {
+              "case_id": "region53",
+              "maximum_absolute_error": 1.0842021724855044e-19
+            },
+            {
+              "case_id": "region80",
+              "maximum_absolute_error": 1.0842021724855044e-19
+            },
+            {
+              "case_id": "region99",
+              "maximum_absolute_error": 9.486769009248164e-20
+            },
+            {
+              "case_id": "region66",
+              "maximum_absolute_error": 1.3552527156068805e-20
+            }
+          ]
+        },
+        "PP.H1.abf": {
+          "per_case_maximum_distribution": {
+            "n": 66,
+            "max": 6.994405055138486e-15,
+            "median": 9.40917946779069e-23,
+            "p90": 3.0097452308197603e-16,
+            "p95": 1.0408340855860843e-15,
+            "p99": 4.419034582703296e-15
+          },
+          "largest_cases": [
+            {
+              "case_id": "region32",
+              "maximum_absolute_error": 6.994405055138486e-15
+            },
+            {
+              "case_id": "region03",
+              "maximum_absolute_error": 3.0322966360074588e-15
+            },
+            {
+              "case_id": "region53",
+              "maximum_absolute_error": 1.8041124150158794e-15
+            },
+            {
+              "case_id": "region89",
+              "maximum_absolute_error": 1.0547118733938987e-15
+            },
+            {
+              "case_id": "region40",
+              "maximum_absolute_error": 9.992007221626409e-16
+            },
+            {
+              "case_id": "region77",
+              "maximum_absolute_error": 6.661338147750939e-16
+            },
+            {
+              "case_id": "region60",
+              "maximum_absolute_error": 3.3306690738754696e-16
+            },
+            {
+              "case_id": "region06",
+              "maximum_absolute_error": 2.688821387764051e-16
+            },
+            {
+              "case_id": "region12",
+              "maximum_absolute_error": 1.457167719820518e-16
+            },
+            {
+              "case_id": "region96",
+              "maximum_absolute_error": 1.1796119636642288e-16
+            }
+          ]
+        },
+        "PP.H2.abf": {
+          "per_case_maximum_distribution": {
+            "n": 66,
+            "max": 1.5987211554602254e-14,
+            "median": 2.168404344971009e-19,
+            "p90": 2.96637714392034e-16,
+            "p95": 7.892991815694472e-16,
+            "p99": 7.79654119043009e-15
+          },
+          "largest_cases": [
+            {
+              "case_id": "region67",
+              "maximum_absolute_error": 1.5987211554602254e-14
+            },
+            {
+              "case_id": "region15",
+              "maximum_absolute_error": 3.3861802251067274e-15
+            },
+            {
+              "case_id": "region48",
+              "maximum_absolute_error": 1.1934897514720433e-15
+            },
+            {
+              "case_id": "region43",
+              "maximum_absolute_error": 9.298117831235686e-16
+            },
+            {
+              "case_id": "region31",
+              "maximum_absolute_error": 3.677613769070831e-16
+            },
+            {
+              "case_id": "region86",
+              "maximum_absolute_error": 3.3306690738754696e-16
+            },
+            {
+              "case_id": "region40",
+              "maximum_absolute_error": 3.157196726277789e-16
+            },
+            {
+              "case_id": "region92",
+              "maximum_absolute_error": 2.7755575615628914e-16
+            },
+            {
+              "case_id": "region21",
+              "maximum_absolute_error": 2.654126918244515e-16
+            },
+            {
+              "case_id": "region23",
+              "maximum_absolute_error": 2.3592239273284576e-16
+            }
+          ]
+        },
+        "PP.H3.abf": {
+          "per_case_maximum_distribution": {
+            "n": 66,
+            "max": 1.587618925213974e-14,
+            "median": 3.3306690738754696e-16,
+            "p90": 5.2735593669694936e-15,
+            "p95": 7.355227538141662e-15,
+            "p99": 1.3566925360919393e-14
+          },
+          "largest_cases": [
+            {
+              "case_id": "region67",
+              "maximum_absolute_error": 1.587618925213974e-14
+            },
+            {
+              "case_id": "region53",
+              "maximum_absolute_error": 1.2323475573339238e-14
+            },
+            {
+              "case_id": "region03",
+              "maximum_absolute_error": 8.201772594418344e-15
+            },
+            {
+              "case_id": "region04",
+              "maximum_absolute_error": 7.438494264988549e-15
+            },
+            {
+              "case_id": "region15",
+              "maximum_absolute_error": 7.105427357601002e-15
+            },
+            {
+              "case_id": "region32",
+              "maximum_absolute_error": 7.105427357601002e-15
+            },
+            {
+              "case_id": "region55",
+              "maximum_absolute_error": 6.772360450213455e-15
+            },
+            {
+              "case_id": "region08",
+              "maximum_absolute_error": 3.774758283725532e-15
+            },
+            {
+              "case_id": "region89",
+              "maximum_absolute_error": 1.5543122344752192e-15
+            },
+            {
+              "case_id": "region77",
+              "maximum_absolute_error": 1.4432899320127035e-15
+            }
+          ]
+        },
+        "PP.H4.abf": {
+          "per_case_maximum_distribution": {
+            "n": 66,
+            "max": 6.772360450213455e-15,
+            "median": 1.8058742435461683e-18,
+            "p90": 3.885780586188048e-16,
+            "p95": 1.5005358067199381e-15,
+            "p99": 4.751754545395652e-15
+          },
+          "largest_cases": [
+            {
+              "case_id": "region79",
+              "maximum_absolute_error": 6.772360450213455e-15
+            },
+            {
+              "case_id": "region36",
+              "maximum_absolute_error": 3.6637359812630166e-15
+            },
+            {
+              "case_id": "region67",
+              "maximum_absolute_error": 1.7694179454963432e-15
+            },
+            {
+              "case_id": "region32",
+              "maximum_absolute_error": 1.5890067039947553e-15
+            },
+            {
+              "case_id": "region59",
+              "maximum_absolute_error": 1.2351231148954867e-15
+            },
+            {
+              "case_id": "region23",
+              "maximum_absolute_error": 5.412337245047638e-16
+            },
+            {
+              "case_id": "region40",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "region03",
+              "maximum_absolute_error": 3.3306690738754696e-16
+            },
+            {
+              "case_id": "region51",
+              "maximum_absolute_error": 3.3306690738754696e-16
+            },
+            {
+              "case_id": "region73",
+              "maximum_absolute_error": 2.220446049250313e-16
+            }
+          ]
+        }
+      }
+    },
+    "toy/abf": {
+      "case_count": 2,
+      "numeric_case_count": 2,
+      "fields": {
+        "H0-H4": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 2.220446049250313e-16,
+            "median": 1.6653345369377348e-16,
+            "p90": 2.1094237467877973e-16,
+            "p95": 2.1649348980190552e-16,
+            "p99": 2.2093438190040615e-16
+          },
+          "largest_cases": [
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 2.220446049250313e-16
+            },
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 1.1102230246251565e-16
+            }
+          ]
+        },
+        "SNP.PP.H4": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 4.440892098500626e-16,
+            "median": 2.7755575615628914e-16,
+            "p90": 4.1078251911130794e-16,
+            "p95": 4.2743586448068523e-16,
+            "p99": 4.407585407761871e-16
+          },
+          "largest_cases": [
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 1.1102230246251565e-16
+            }
+          ]
+        },
+        "lABF.df1": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 5.684341886080802e-14,
+            "median": 5.3290705182007514e-14,
+            "p90": 5.613287612504792e-14,
+            "p95": 5.6488147492927966e-14,
+            "p99": 5.6772364587232006e-14
+          },
+          "largest_cases": [
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 5.684341886080802e-14
+            },
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 4.973799150320701e-14
+            }
+          ]
+        },
+        "lABF.df2": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 5.1514348342607263e-14,
+            "median": 4.973799150320701e-14,
+            "p90": 5.1159076974727215e-14,
+            "p95": 5.1336712658667236e-14,
+            "p99": 5.147882120581926e-14
+          },
+          "largest_cases": [
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 5.1514348342607263e-14
+            },
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 4.796163466380676e-14
+            }
+          ]
+        },
+        "PP.H0.abf": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 4.8148248609680896e-33,
+            "median": 2.407413061853081e-33,
+            "p90": 4.333342501145088e-33,
+            "p95": 4.574083681056589e-33,
+            "p99": 4.76667662498579e-33
+          },
+          "largest_cases": [
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 4.8148248609680896e-33
+            },
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 1.2627380721723792e-39
+            }
+          ]
+        },
+        "PP.H1.abf": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 5.082197683525802e-21,
+            "median": 2.541176389945328e-21,
+            "p90": 4.573993424809707e-21,
+            "p95": 4.8280955541677545e-21,
+            "p99": 5.031377257654193e-21
+          },
+          "largest_cases": [
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 5.082197683525802e-21
+            },
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 1.550963648536927e-25
+            }
+          ]
+        },
+        "PP.H2.abf": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 4.8467614016778965e-27,
+            "median": 2.4233807017793437e-27,
+            "p90": 4.362085261698186e-27,
+            "p95": 4.604423331688041e-27,
+            "p99": 4.7982937876799255e-27
+          },
+          "largest_cases": [
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 4.8467614016778965e-27
+            },
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 1.88079096131566e-36
+            }
+          ]
+        },
+        "PP.H3.abf": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 1.2034644114589099e-17,
+            "median": 7.345469718589293e-18,
+            "p90": 1.1096809235389137e-17,
+            "p95": 1.1565726674989118e-17,
+            "p99": 1.1940860626669104e-17
+          },
+          "largest_cases": [
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 1.2034644114589099e-17
+            },
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 2.656295322589486e-18
+            }
+          ]
+        },
+        "PP.H4.abf": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 2.220446049250313e-16,
+            "median": 1.6653345369377348e-16,
+            "p90": 2.1094237467877973e-16,
+            "p95": 2.1649348980190552e-16,
+            "p99": 2.2093438190040615e-16
+          },
+          "largest_cases": [
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 2.220446049250313e-16
+            },
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 1.1102230246251565e-16
+            }
+          ]
+        }
+      }
+    },
+    "toy/bf": {
+      "case_count": 2,
+      "numeric_case_count": 2,
+      "fields": {
+        "H0-H4": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 4.440892098500626e-16,
+            "median": 4.440892098500626e-16,
+            "p90": 4.440892098500626e-16,
+            "p95": 4.440892098500626e-16,
+            "p99": 4.440892098500626e-16
+          },
+          "largest_cases": [
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 4.440892098500626e-16
+            }
+          ]
+        },
+        "SNP.PP.H4": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 4.440892098500626e-16,
+            "median": 4.440892098500626e-16,
+            "p90": 4.440892098500626e-16,
+            "p95": 4.440892098500626e-16,
+            "p99": 4.440892098500626e-16
+          },
+          "largest_cases": [
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 4.440892098500626e-16
+            }
+          ]
+        },
+        "PP.H0.abf": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 3.3306690738754696e-16,
+            "median": 3.3306690738754696e-16,
+            "p90": 3.3306690738754696e-16,
+            "p95": 3.3306690738754696e-16,
+            "p99": 3.3306690738754696e-16
+          },
+          "largest_cases": [
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 3.3306690738754696e-16
+            },
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 3.3306690738754696e-16
+            }
+          ]
+        },
+        "PP.H1.abf": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 4.440892098500626e-16,
+            "median": 3.3306690738754696e-16,
+            "p90": 4.2188474935755947e-16,
+            "p95": 4.3298697960381104e-16,
+            "p99": 4.418687638008123e-16
+          },
+          "largest_cases": [
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 2.220446049250313e-16
+            }
+          ]
+        },
+        "PP.H2.abf": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 3.3306690738754696e-16,
+            "median": 2.7755575615628914e-16,
+            "p90": 3.219646771412954e-16,
+            "p95": 3.275157922644212e-16,
+            "p99": 3.3195668436292183e-16
+          },
+          "largest_cases": [
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 3.3306690738754696e-16
+            },
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 2.220446049250313e-16
+            }
+          ]
+        },
+        "PP.H3.abf": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 2.220446049250313e-16,
+            "median": 1.8388068845354155e-16,
+            "p90": 2.1441182163073335e-16,
+            "p95": 2.1822821327788233e-16,
+            "p99": 2.2128132659560152e-16
+          },
+          "largest_cases": [
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 2.220446049250313e-16
+            },
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 1.457167719820518e-16
+            }
+          ]
+        },
+        "PP.H4.abf": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 4.440892098500626e-16,
+            "median": 4.440892098500626e-16,
+            "p90": 4.440892098500626e-16,
+            "p95": 4.440892098500626e-16,
+            "p99": 4.440892098500626e-16
+          },
+          "largest_cases": [
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 4.440892098500626e-16
+            }
+          ]
+        }
+      }
+    },
+    "toy/susie": {
+      "case_count": 4,
+      "numeric_case_count": 3,
+      "fields": {
+        "H0-H4": {
+          "per_case_maximum_distribution": {
+            "n": 3,
+            "max": 4.440892098500626e-16,
+            "median": 4.440892098500626e-16,
+            "p90": 4.440892098500626e-16,
+            "p95": 4.440892098500626e-16,
+            "p99": 4.440892098500626e-16
+          },
+          "largest_cases": [
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "D3_one_iteration_D4",
+              "maximum_absolute_error": 4.440892098500626e-16
+            }
+          ]
+        },
+        "SNP.PP.H4": {
+          "per_case_maximum_distribution": {
+            "n": 3,
+            "max": 4.440892098500626e-16,
+            "median": 4.440892098500626e-16,
+            "p90": 4.440892098500626e-16,
+            "p95": 4.440892098500626e-16,
+            "p99": 4.440892098500626e-16
+          },
+          "largest_cases": [
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "D3_one_iteration_D4",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 6.938893903907228e-18
+            }
+          ]
+        },
+        "PP.H0.abf": {
+          "per_case_maximum_distribution": {
+            "n": 3,
+            "max": 2.964615315390051e-21,
+            "median": 3.3703774026776627e-34,
+            "p90": 2.3716922523121085e-21,
+            "p95": 2.6681537838510795e-21,
+            "p99": 2.9053230090822567e-21
+          },
+          "largest_cases": [
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 2.964615315390051e-21
+            },
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 3.3703774026776627e-34
+            },
+            {
+              "case_id": "D3_one_iteration_D4",
+              "maximum_absolute_error": 2.2958874039497803e-41
+            }
+          ]
+        },
+        "PP.H1.abf": {
+          "per_case_maximum_distribution": {
+            "n": 3,
+            "max": 2.710505431213761e-20,
+            "median": 2.117582368135751e-22,
+            "p90": 2.1726395097072806e-20,
+            "p95": 2.4415724704605204e-20,
+            "p99": 2.656718839063113e-20
+          },
+          "largest_cases": [
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 2.710505431213761e-20
+            },
+            {
+              "case_id": "D3_one_iteration_D4",
+              "maximum_absolute_error": 2.117582368135751e-22
+            },
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 3.101927297073854e-25
+            }
+          ]
+        },
+        "PP.H2.abf": {
+          "per_case_maximum_distribution": {
+            "n": 3,
+            "max": 2.6020852139652106e-18,
+            "median": 3.2311742677852644e-27,
+            "p90": 2.0816681718184034e-18,
+            "p95": 2.341876692891807e-18,
+            "p99": 2.5500435097505298e-18
+          },
+          "largest_cases": [
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 2.6020852139652106e-18
+            },
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 3.2311742677852644e-27
+            },
+            {
+              "case_id": "D3_one_iteration_D4",
+              "maximum_absolute_error": 1.88079096131566e-37
+            }
+          ]
+        },
+        "PP.H3.abf": {
+          "per_case_maximum_distribution": {
+            "n": 3,
+            "max": 2.220446049250313e-16,
+            "median": 2.6237692574149207e-17,
+            "p90": 1.828832224548549e-16,
+            "p95": 2.0246391368994308e-16,
+            "p99": 2.1812846667801365e-16
+          },
+          "largest_cases": [
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 2.220446049250313e-16
+            },
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 2.6237692574149207e-17
+            },
+            {
+              "case_id": "D3_one_iteration_D4",
+              "maximum_absolute_error": 2.4936649967166602e-18
+            }
+          ]
+        },
+        "PP.H4.abf": {
+          "per_case_maximum_distribution": {
+            "n": 3,
+            "max": 4.440892098500626e-16,
+            "median": 4.440892098500626e-16,
+            "p90": 4.440892098500626e-16,
+            "p95": 4.440892098500626e-16,
+            "p99": 4.440892098500626e-16
+          },
+          "largest_cases": [
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 4.440892098500626e-16
+            },
+            {
+              "case_id": "D3_one_iteration_D4",
+              "maximum_absolute_error": 4.440892098500626e-16
+            }
+          ]
+        }
+      }
+    }
+  },
+  "native_end_to_end": {
+    "real": {
+      "case_count": 100,
+      "mutually_converged_count": 99,
+      "numeric_pairing_case_count": 65,
+      "fields": {
+        "H0-H4": {
+          "per_case_maximum_distribution": {
+            "n": 65,
+            "max": 9.700900693854209e-09,
+            "median": 1.77262649003751e-11,
+            "p90": 2.570842827509525e-09,
+            "p95": 3.9998564682619526e-09,
+            "p99": 6.409216044556129e-09
+          },
+          "largest_cases": [
+            {
+              "case_id": "region32",
+              "maximum_absolute_error": 9.700900693854209e-09
+            },
+            {
+              "case_id": "region89",
+              "maximum_absolute_error": 4.557643429325964e-09
+            },
+            {
+              "case_id": "region31",
+              "maximum_absolute_error": 4.198596581517222e-09
+            },
+            {
+              "case_id": "region48",
+              "maximum_absolute_error": 4.015453858308149e-09
+            },
+            {
+              "case_id": "region40",
+              "maximum_absolute_error": 3.93746690807717e-09
+            },
+            {
+              "case_id": "region67",
+              "maximum_absolute_error": 3.8800476165334885e-09
+            },
+            {
+              "case_id": "region65",
+              "maximum_absolute_error": 3.018002736610015e-09
+            },
+            {
+              "case_id": "region63",
+              "maximum_absolute_error": 1.900102963858785e-09
+            },
+            {
+              "case_id": "region38",
+              "maximum_absolute_error": 1.5992542012899236e-09
+            },
+            {
+              "case_id": "region86",
+              "maximum_absolute_error": 9.65485913440034e-10
+            }
+          ]
+        },
+        "SNP.PP.H4": {
+          "per_case_maximum_distribution": {
+            "n": 65,
+            "max": 7.468237217533868e-08,
+            "median": 3.230671979936872e-10,
+            "p90": 3.59762596796598e-09,
+            "p95": 1.0343561718251221e-08,
+            "p99": 3.6792487505543617e-08
+          },
+          "largest_cases": [
+            {
+              "case_id": "region08",
+              "maximum_absolute_error": 7.468237217533868e-08
+            },
+            {
+              "case_id": "region17",
+              "maximum_absolute_error": 1.547942737878394e-08
+            },
+            {
+              "case_id": "region63",
+              "maximum_absolute_error": 1.4761021294162902e-08
+            },
+            {
+              "case_id": "region20",
+              "maximum_absolute_error": 1.152562012496361e-08
+            },
+            {
+              "case_id": "region65",
+              "maximum_absolute_error": 5.61532809140175e-09
+            },
+            {
+              "case_id": "region40",
+              "maximum_absolute_error": 5.1006063817027325e-09
+            },
+            {
+              "case_id": "region15",
+              "maximum_absolute_error": 3.998270776961466e-09
+            },
+            {
+              "case_id": "region21",
+              "maximum_absolute_error": 2.9966587544727474e-09
+            },
+            {
+              "case_id": "region42",
+              "maximum_absolute_error": 2.165073948248719e-09
+            },
+            {
+              "case_id": "region93",
+              "maximum_absolute_error": 2.0794431732085172e-09
+            }
+          ]
+        },
+        "PP.H0.abf": {
+          "per_case_maximum_distribution": {
+            "n": 65,
+            "max": 1.4706219020332867e-09,
+            "median": 3.046021132956359e-22,
+            "p90": 5.683772978095847e-13,
+            "p95": 2.2617388430873318e-11,
+            "p99": 7.947545066500078e-10
+          },
+          "largest_cases": [
+            {
+              "case_id": "region63",
+              "maximum_absolute_error": 1.4706219020332867e-09
+            },
+            {
+              "case_id": "region89",
+              "maximum_absolute_error": 4.145790967469143e-10
+            },
+            {
+              "case_id": "region40",
+              "maximum_absolute_error": 1.5836445696471024e-10
+            },
+            {
+              "case_id": "region80",
+              "maximum_absolute_error": 2.516217567421694e-11
+            },
+            {
+              "case_id": "region65",
+              "maximum_absolute_error": 1.2438239457499e-11
+            },
+            {
+              "case_id": "region38",
+              "maximum_absolute_error": 1.0838058315393306e-11
+            },
+            {
+              "case_id": "region77",
+              "maximum_absolute_error": 6.691387353062461e-13
+            },
+            {
+              "case_id": "region66",
+              "maximum_absolute_error": 4.172351415645918e-13
+            },
+            {
+              "case_id": "region53",
+              "maximum_absolute_error": 3.5320921534798266e-13
+            },
+            {
+              "case_id": "region92",
+              "maximum_absolute_error": 9.39650782313603e-14
+            }
+          ]
+        },
+        "PP.H1.abf": {
+          "per_case_maximum_distribution": {
+            "n": 65,
+            "max": 9.568575709550942e-09,
+            "median": 2.101812541988703e-17,
+            "p90": 2.0385901300379332e-10,
+            "p95": 1.7054689292750309e-09,
+            "p99": 6.361579050206953e-09
+          },
+          "largest_cases": [
+            {
+              "case_id": "region32",
+              "maximum_absolute_error": 9.568575709550942e-09
+            },
+            {
+              "case_id": "region89",
+              "maximum_absolute_error": 4.557643429325964e-09
+            },
+            {
+              "case_id": "region40",
+              "maximum_absolute_error": 3.93746690807717e-09
+            },
+            {
+              "case_id": "region63",
+              "maximum_absolute_error": 1.900102963858785e-09
+            },
+            {
+              "case_id": "region96",
+              "maximum_absolute_error": 9.269327909400271e-10
+            },
+            {
+              "case_id": "region77",
+              "maximum_absolute_error": 8.188959510491145e-10
+            },
+            {
+              "case_id": "region80",
+              "maximum_absolute_error": 2.430017298493681e-10
+            },
+            {
+              "case_id": "region12",
+              "maximum_absolute_error": 1.451449377354308e-10
+            },
+            {
+              "case_id": "region27",
+              "maximum_absolute_error": 1.1273284042379039e-10
+            },
+            {
+              "case_id": "region66",
+              "maximum_absolute_error": 8.275662620460533e-11
+            }
+          ]
+        },
+        "PP.H2.abf": {
+          "per_case_maximum_distribution": {
+            "n": 65,
+            "max": 4.08967765208601e-09,
+            "median": 6.002093294287512e-14,
+            "p90": 9.812906529016458e-10,
+            "p95": 2.6948311859786817e-09,
+            "p99": 4.0146912350103035e-09
+          },
+          "largest_cases": [
+            {
+              "case_id": "region31",
+              "maximum_absolute_error": 4.08967765208601e-09
+            },
+            {
+              "case_id": "region48",
+              "maximum_absolute_error": 3.972511375405219e-09
+            },
+            {
+              "case_id": "region67",
+              "maximum_absolute_error": 3.4497872336558544e-09
+            },
+            {
+              "case_id": "region65",
+              "maximum_absolute_error": 2.968725432150876e-09
+            },
+            {
+              "case_id": "region38",
+              "maximum_absolute_error": 1.5992542012899236e-09
+            },
+            {
+              "case_id": "region63",
+              "maximum_absolute_error": 1.4095276612557939e-09
+            },
+            {
+              "case_id": "region89",
+              "maximum_absolute_error": 1.180822557789174e-09
+            },
+            {
+              "case_id": "region86",
+              "maximum_absolute_error": 6.81992795570352e-10
+            },
+            {
+              "case_id": "region85",
+              "maximum_absolute_error": 5.992207632865565e-10
+            },
+            {
+              "case_id": "region80",
+              "maximum_absolute_error": 5.55419975636906e-10
+            }
+          ]
+        },
+        "PP.H3.abf": {
+          "per_case_maximum_distribution": {
+            "n": 65,
+            "max": 9.700900693854209e-09,
+            "median": 1.77262649003751e-11,
+            "p90": 2.5391562852306056e-09,
+            "p95": 3.877625698311959e-09,
+            "p99": 6.179426061958534e-09
+          },
+          "largest_cases": [
+            {
+              "case_id": "region32",
+              "maximum_absolute_error": 9.700900693854209e-09
+            },
+            {
+              "case_id": "region31",
+              "maximum_absolute_error": 4.198596581517222e-09
+            },
+            {
+              "case_id": "region48",
+              "maximum_absolute_error": 4.015453858308149e-09
+            },
+            {
+              "case_id": "region67",
+              "maximum_absolute_error": 3.8800476165334885e-09
+            },
+            {
+              "case_id": "region40",
+              "maximum_absolute_error": 3.867938025425843e-09
+            },
+            {
+              "case_id": "region89",
+              "maximum_absolute_error": 3.374395873834146e-09
+            },
+            {
+              "case_id": "region65",
+              "maximum_absolute_error": 3.018002736610015e-09
+            },
+            {
+              "case_id": "region63",
+              "maximum_absolute_error": 1.8208866081614872e-09
+            },
+            {
+              "case_id": "region38",
+              "maximum_absolute_error": 1.5592896973615211e-09
+            },
+            {
+              "case_id": "region86",
+              "maximum_absolute_error": 9.65485913440034e-10
+            }
+          ]
+        },
+        "PP.H4.abf": {
+          "per_case_maximum_distribution": {
+            "n": 65,
+            "max": 2.1654712467622517e-09,
+            "median": 2.45277488098751e-12,
+            "p90": 3.538739065667153e-10,
+            "p95": 7.099600685123163e-10,
+            "p99": 1.6568878269396233e-09
+          },
+          "largest_cases": [
+            {
+              "case_id": "region32",
+              "maximum_absolute_error": 2.1654712467622517e-09
+            },
+            {
+              "case_id": "region89",
+              "maximum_absolute_error": 1.3708096532893954e-09
+            },
+            {
+              "case_id": "region79",
+              "maximum_absolute_error": 8.941737350554035e-10
+            },
+            {
+              "case_id": "region67",
+              "maximum_absolute_error": 7.181844563497464e-10
+            },
+            {
+              "case_id": "region40",
+              "maximum_absolute_error": 6.770625171625966e-10
+            },
+            {
+              "case_id": "region36",
+              "maximum_absolute_error": 5.872664576855868e-10
+            },
+            {
+              "case_id": "region59",
+              "maximum_absolute_error": 4.0076092444607525e-10
+            },
+            {
+              "case_id": "region86",
+              "maximum_absolute_error": 2.8354337974767496e-10
+            },
+            {
+              "case_id": "region77",
+              "maximum_absolute_error": 2.331083243101162e-10
+            },
+            {
+              "case_id": "region63",
+              "maximum_absolute_error": 1.403098904423361e-10
+            }
+          ]
+        }
+      },
+      "unavailable_CS_cases": [
+        "region01",
+        "region02",
+        "region07",
+        "region10",
+        "region16",
+        "region18",
+        "region19",
+        "region28",
+        "region33",
+        "region35",
+        "region39",
+        "region41",
+        "region46",
+        "region52",
+        "region56",
+        "region64",
+        "region68",
+        "region69",
+        "region70",
+        "region71",
+        "region72",
+        "region74",
+        "region75",
+        "region76",
+        "region78",
+        "region81",
+        "region82",
+        "region83",
+        "region84",
+        "region87",
+        "region94",
+        "region97",
+        "region98",
+        "region100"
+      ]
+    },
+    "toy": {
+      "case_count": 4,
+      "mutually_converged_count": 3,
+      "numeric_pairing_case_count": 2,
+      "fields": {
+        "H0-H4": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 9.13976744981726e-10,
+            "median": 4.5717261400179954e-10,
+            "p90": 8.226159187857408e-10,
+            "p95": 8.682963318837333e-10,
+            "p99": 9.048406623621275e-10
+          },
+          "largest_cases": [
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 9.13976744981726e-10
+            },
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 3.6848302187308946e-13
+            }
+          ]
+        },
+        "SNP.PP.H4": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 3.6612779474864965e-10,
+            "median": 2.433253598610463e-10,
+            "p90": 3.4156730777112896e-10,
+            "p95": 3.538475512598893e-10,
+            "p99": 3.6367174605089757e-10
+          },
+          "largest_cases": [
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 3.6612779474864965e-10
+            },
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 1.2052292497344297e-10
+            }
+          ]
+        },
+        "PP.H0.abf": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 2.593154522085835e-15,
+            "median": 1.2965772610429285e-15,
+            "p90": 2.3338390698772535e-15,
+            "p95": 2.4634967959815442e-15,
+            "p99": 2.5672229768649766e-15
+          },
+          "largest_cases": [
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 2.593154522085835e-15
+            },
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 2.2211220417883285e-29
+            }
+          ]
+        },
+        "PP.H1.abf": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 2.0663695364173118e-13,
+            "median": 1.0331848587322002e-13,
+            "p90": 1.8597326008802896e-13,
+            "p95": 1.9630510686488004e-13,
+            "p99": 2.0457058428636095e-13
+          },
+          "largest_cases": [
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 2.0663695364173118e-13
+            },
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 1.8104708862101255e-20
+            }
+          ]
+        },
+        "PP.H2.abf": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 1.1302480652786162e-11,
+            "median": 5.651240326618073e-12,
+            "p90": 1.0172232587552544e-11,
+            "p95": 1.0737356620169352e-11,
+            "p99": 1.11894558462628e-11
+          },
+          "largest_cases": [
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 1.1302480652786162e-11
+            },
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 4.499846376417132e-22
+            }
+          ]
+        },
+        "PP.H3.abf": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 9.024648806033042e-10,
+            "median": 4.5141621538881405e-10,
+            "p90": 8.122551475604062e-10,
+            "p95": 8.573600140818552e-10,
+            "p99": 8.934439072990144e-10
+          },
+          "largest_cases": [
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 9.024648806033042e-10
+            },
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 3.6755017432388293e-13
+            }
+          ]
+        },
+        "PP.H4.abf": {
+          "per_case_maximum_distribution": {
+            "n": 2,
+            "max": 9.13976744981726e-10,
+            "median": 4.5717261400179954e-10,
+            "p90": 8.226159187857408e-10,
+            "p95": 8.682963318837333e-10,
+            "p99": 9.048406623621275e-10
+          },
+          "largest_cases": [
+            {
+              "case_id": "D3_D4",
+              "maximum_absolute_error": 9.13976744981726e-10
+            },
+            {
+              "case_id": "D1_D2",
+              "maximum_absolute_error": 3.6848302187308946e-13
+            }
+          ]
+        }
+      },
+      "unavailable_CS_cases": [
+        "D3_strict_purity_D4"
+      ]
+    }
+  },
+  "native_fit_alpha": {
+    "real": {
+      "fit_count": 200,
+      "mutually_converged_fit_count": 199,
+      "fields": {
+        "alpha": {
+          "per_case_maximum_distribution": {
+            "n": 199,
+            "max": 1.277393663068338e-08,
+            "median": 3.7884785239472585e-10,
+            "p90": 1.869220734446179e-09,
+            "p95": 3.6757309307411384e-09,
+            "p99": 6.202584324766011e-09
+          },
+          "largest_cases": [
+            {
+              "case_id": "region16/gwas",
+              "maximum_absolute_error": 1.277393663068338e-08
+            },
+            {
+              "case_id": "region31/eqtl",
+              "maximum_absolute_error": 1.2308052355081145e-08
+            },
+            {
+              "case_id": "region32/eqtl",
+              "maximum_absolute_error": 6.077982936392168e-09
+            },
+            {
+              "case_id": "region31/gwas",
+              "maximum_absolute_error": 5.357384535997767e-09
+            },
+            {
+              "case_id": "region64/gwas",
+              "maximum_absolute_error": 5.095816733857728e-09
+            },
+            {
+              "case_id": "region10/gwas",
+              "maximum_absolute_error": 4.686481980265e-09
+            },
+            {
+              "case_id": "region14/eqtl",
+              "maximum_absolute_error": 4.551021857979176e-09
+            },
+            {
+              "case_id": "region78/eqtl",
+              "maximum_absolute_error": 4.3865295840106455e-09
+            },
+            {
+              "case_id": "region87/eqtl",
+              "maximum_absolute_error": 4.007427334418168e-09
+            },
+            {
+              "case_id": "region86/eqtl",
+              "maximum_absolute_error": 3.758190869618261e-09
+            }
+          ]
+        },
+        "PIP diagnostic": {
+          "per_case_maximum_distribution": {
+            "n": 199,
+            "max": 1.2769358403996733e-08,
+            "median": 2.900116709281253e-10,
+            "p90": 1.6217109280458613e-09,
+            "p95": 2.3501192436547975e-09,
+            "p99": 6.196687413750965e-09
+          },
+          "largest_cases": [
+            {
+              "case_id": "region16/gwas",
+              "maximum_absolute_error": 1.2769358403996733e-08
+            },
+            {
+              "case_id": "region31/eqtl",
+              "maximum_absolute_error": 1.2308052355081145e-08
+            },
+            {
+              "case_id": "region32/eqtl",
+              "maximum_absolute_error": 6.071965680254365e-09
+            },
+            {
+              "case_id": "region31/gwas",
+              "maximum_absolute_error": 5.347173537284533e-09
+            },
+            {
+              "case_id": "region10/gwas",
+              "maximum_absolute_error": 4.6738688475045365e-09
+            },
+            {
+              "case_id": "region87/eqtl",
+              "maximum_absolute_error": 4.007427334418168e-09
+            },
+            {
+              "case_id": "region86/eqtl",
+              "maximum_absolute_error": 3.758191091662866e-09
+            },
+            {
+              "case_id": "region72/eqtl",
+              "maximum_absolute_error": 3.630717615443757e-09
+            },
+            {
+              "case_id": "region78/eqtl",
+              "maximum_absolute_error": 3.1781519915785594e-09
+            },
+            {
+              "case_id": "region45/eqtl",
+              "maximum_absolute_error": 3.127880399134142e-09
+            }
+          ]
+        }
+      },
+      "by_original_component_id": {
+        "0": {
+          "per_case_maximum_distribution": {
+            "n": 199,
+            "max": 5.357384535997767e-09,
+            "median": 7.14444059468633e-11,
+            "p90": 9.108890225428827e-10,
+            "p95": 1.346691183568005e-09,
+            "p99": 2.3142487903804606e-09
+          },
+          "largest_cases": [
+            {
+              "case_id": "region31/gwas",
+              "maximum_absolute_error": 5.357384535997767e-09
+            },
+            {
+              "case_id": "region72/eqtl",
+              "maximum_absolute_error": 3.6665687153103477e-09
+            },
+            {
+              "case_id": "region17/gwas",
+              "maximum_absolute_error": 2.2866504245655506e-09
+            }
+          ]
+        },
+        "1": {
+          "per_case_maximum_distribution": {
+            "n": 199,
+            "max": 1.2308052355081145e-08,
+            "median": 1.0651721171761608e-10,
+            "p90": 1.319670392754824e-09,
+            "p95": 1.7817077355153362e-09,
+            "p99": 4.018299224889393e-09
+          },
+          "largest_cases": [
+            {
+              "case_id": "region31/eqtl",
+              "maximum_absolute_error": 1.2308052355081145e-08
+            },
+            {
+              "case_id": "region14/eqtl",
+              "maximum_absolute_error": 4.551021857979176e-09
+            },
+            {
+              "case_id": "region87/eqtl",
+              "maximum_absolute_error": 4.007427334418168e-09
+            }
+          ]
+        },
+        "2": {
+          "per_case_maximum_distribution": {
+            "n": 199,
+            "max": 1.277393663068338e-08,
+            "median": 4.7704895589362195e-18,
+            "p90": 8.487367850196218e-10,
+            "p95": 1.427478431726553e-09,
+            "p99": 4.4203586510582934e-09
+          },
+          "largest_cases": [
+            {
+              "case_id": "region16/gwas",
+              "maximum_absolute_error": 1.277393663068338e-08
+            },
+            {
+              "case_id": "region32/eqtl",
+              "maximum_absolute_error": 6.077982936392168e-09
+            },
+            {
+              "case_id": "region78/eqtl",
+              "maximum_absolute_error": 4.3865295840106455e-09
+            }
+          ]
+        },
+        "3": {
+          "per_case_maximum_distribution": {
+            "n": 199,
+            "max": 5.095816733857728e-09,
+            "median": 3.903127820947816e-18,
+            "p90": 4.809796616545016e-10,
+            "p95": 9.199830872802515e-10,
+            "p99": 2.280880676899824e-09
+          },
+          "largest_cases": [
+            {
+              "case_id": "region64/gwas",
+              "maximum_absolute_error": 5.095816733857728e-09
+            },
+            {
+              "case_id": "region10/gwas",
+              "maximum_absolute_error": 4.686481980265e-09
+            },
+            {
+              "case_id": "region92/gwas",
+              "maximum_absolute_error": 2.231786772749489e-09
+            }
+          ]
+        },
+        "4": {
+          "per_case_maximum_distribution": {
+            "n": 199,
+            "max": 4.725945747588445e-09,
+            "median": 3.903127820947816e-18,
+            "p90": 3.9160349477040964e-10,
+            "p95": 7.455450349094778e-10,
+            "p99": 1.579540259422096e-09
+          },
+          "largest_cases": [
+            {
+              "case_id": "region64/gwas",
+              "maximum_absolute_error": 4.725945747588445e-09
+            },
+            {
+              "case_id": "region36/gwas",
+              "maximum_absolute_error": 2.6100229772590966e-09
+            },
+            {
+              "case_id": "region46/eqtl",
+              "maximum_absolute_error": 1.5585099998743912e-09
+            }
+          ]
+        }
+      },
+      "credible_set_membership": "Identical original component IDs and members for every fit, including separately reported nonconverged fits."
+    },
+    "toy": {
+      "fit_count": 6,
+      "mutually_converged_fit_count": 5,
+      "fields": {
+        "alpha": {
+          "per_case_maximum_distribution": {
+            "n": 5,
+            "max": 1.7116387196480787e-09,
+            "median": 8.814893259767587e-10,
+            "p90": 1.7116387196480787e-09,
+            "p95": 1.7116387196480787e-09,
+            "p99": 1.7116387196480787e-09
+          },
+          "largest_cases": [
+            {
+              "case_id": "D3",
+              "maximum_absolute_error": 1.7116387196480787e-09
+            },
+            {
+              "case_id": "D3_strict_purity",
+              "maximum_absolute_error": 1.7116387196480787e-09
+            },
+            {
+              "case_id": "D4",
+              "maximum_absolute_error": 8.814893259767587e-10
+            },
+            {
+              "case_id": "D1",
+              "maximum_absolute_error": 5.469400488067322e-10
+            },
+            {
+              "case_id": "D2",
+              "maximum_absolute_error": 2.007251032054569e-10
+            }
+          ]
+        },
+        "PIP diagnostic": {
+          "per_case_maximum_distribution": {
+            "n": 5,
+            "max": 1.7116362216462733e-09,
+            "median": 8.814893259767587e-10,
+            "p90": 1.7116362216462733e-09,
+            "p95": 1.7116362216462733e-09,
+            "p99": 1.7116362216462733e-09
+          },
+          "largest_cases": [
+            {
+              "case_id": "D3",
+              "maximum_absolute_error": 1.7116362216462733e-09
+            },
+            {
+              "case_id": "D3_strict_purity",
+              "maximum_absolute_error": 1.7116362216462733e-09
+            },
+            {
+              "case_id": "D4",
+              "maximum_absolute_error": 8.814893259767587e-10
+            },
+            {
+              "case_id": "D1",
+              "maximum_absolute_error": 5.469400488067322e-10
+            },
+            {
+              "case_id": "D2",
+              "maximum_absolute_error": 2.007251032054569e-10
+            }
+          ]
+        }
+      },
+      "by_original_component_id": {
+        "0": {
+          "per_case_maximum_distribution": {
+            "n": 5,
+            "max": 8.814893259767587e-10,
+            "median": 2.0122969957014902e-10,
+            "p90": 7.476696151087481e-10,
+            "p95": 8.145794705427533e-10,
+            "p99": 8.681073548899576e-10
+          },
+          "largest_cases": [
+            {
+              "case_id": "D4",
+              "maximum_absolute_error": 8.814893259767587e-10
+            },
+            {
+              "case_id": "D1",
+              "maximum_absolute_error": 5.469400488067322e-10
+            },
+            {
+              "case_id": "D3",
+              "maximum_absolute_error": 2.0122969957014902e-10
+            }
+          ]
+        },
+        "1": {
+          "per_case_maximum_distribution": {
+            "n": 5,
+            "max": 1.7116387196480787e-09,
+            "median": 0.0,
+            "p90": 1.7116387196480787e-09,
+            "p95": 1.7116387196480787e-09,
+            "p99": 1.7116387196480787e-09
+          },
+          "largest_cases": [
+            {
+              "case_id": "D3",
+              "maximum_absolute_error": 1.7116387196480787e-09
+            },
+            {
+              "case_id": "D3_strict_purity",
+              "maximum_absolute_error": 1.7116387196480787e-09
+            },
+            {
+              "case_id": "D1",
+              "maximum_absolute_error": 0.0
+            }
+          ]
+        },
+        "2": {
+          "per_case_maximum_distribution": {
+            "n": 5,
+            "max": 0.0,
+            "median": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          },
+          "largest_cases": [
+            {
+              "case_id": "D1",
+              "maximum_absolute_error": 0.0
+            },
+            {
+              "case_id": "D2",
+              "maximum_absolute_error": 0.0
+            },
+            {
+              "case_id": "D3",
+              "maximum_absolute_error": 0.0
+            }
+          ]
+        },
+        "3": {
+          "per_case_maximum_distribution": {
+            "n": 5,
+            "max": 0.0,
+            "median": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          },
+          "largest_cases": [
+            {
+              "case_id": "D1",
+              "maximum_absolute_error": 0.0
+            },
+            {
+              "case_id": "D2",
+              "maximum_absolute_error": 0.0
+            },
+            {
+              "case_id": "D3",
+              "maximum_absolute_error": 0.0
+            }
+          ]
+        },
+        "4": {
+          "per_case_maximum_distribution": {
+            "n": 5,
+            "max": 0.0,
+            "median": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          },
+          "largest_cases": [
+            {
+              "case_id": "D1",
+              "maximum_absolute_error": 0.0
+            },
+            {
+              "case_id": "D2",
+              "maximum_absolute_error": 0.0
+            },
+            {
+              "case_id": "D3",
+              "maximum_absolute_error": 0.0
+            }
+          ]
+        },
+        "5": {
+          "per_case_maximum_distribution": {
+            "n": 5,
+            "max": 0.0,
+            "median": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          },
+          "largest_cases": [
+            {
+              "case_id": "D1",
+              "maximum_absolute_error": 0.0
+            },
+            {
+              "case_id": "D2",
+              "maximum_absolute_error": 0.0
+            },
+            {
+              "case_id": "D3",
+              "maximum_absolute_error": 0.0
+            }
+          ]
+        },
+        "6": {
+          "per_case_maximum_distribution": {
+            "n": 5,
+            "max": 0.0,
+            "median": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          },
+          "largest_cases": [
+            {
+              "case_id": "D1",
+              "maximum_absolute_error": 0.0
+            },
+            {
+              "case_id": "D2",
+              "maximum_absolute_error": 0.0
+            },
+            {
+              "case_id": "D3",
+              "maximum_absolute_error": 0.0
+            }
+          ]
+        },
+        "7": {
+          "per_case_maximum_distribution": {
+            "n": 5,
+            "max": 0.0,
+            "median": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          },
+          "largest_cases": [
+            {
+              "case_id": "D1",
+              "maximum_absolute_error": 0.0
+            },
+            {
+              "case_id": "D2",
+              "maximum_absolute_error": 0.0
+            },
+            {
+              "case_id": "D3",
+              "maximum_absolute_error": 0.0
+            }
+          ]
+        },
+        "8": {
+          "per_case_maximum_distribution": {
+            "n": 5,
+            "max": 0.0,
+            "median": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          },
+          "largest_cases": [
+            {
+              "case_id": "D1",
+              "maximum_absolute_error": 0.0
+            },
+            {
+              "case_id": "D2",
+              "maximum_absolute_error": 0.0
+            },
+            {
+              "case_id": "D3",
+              "maximum_absolute_error": 0.0
+            }
+          ]
+        },
+        "9": {
+          "per_case_maximum_distribution": {
+            "n": 5,
+            "max": 0.0,
+            "median": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          },
+          "largest_cases": [
+            {
+              "case_id": "D1",
+              "maximum_absolute_error": 0.0
+            },
+            {
+              "case_id": "D2",
+              "maximum_absolute_error": 0.0
+            },
+            {
+              "case_id": "D3",
+              "maximum_absolute_error": 0.0
+            }
+          ]
+        }
+      },
+      "credible_set_membership": "Identical original component IDs and members for every fit, including separately reported nonconverged fits."
+    }
+  },
+  "nonconverged_fits": [
+    {
+      "case_id": "region25/gwas",
+      "converged_native": false,
+      "converged_R": false,
+      "niter_native": 100,
+      "niter_R": 100
+    },
+    {
+      "case_id": "D3_one_iteration",
+      "converged_native": false,
+      "converged_R": false,
+      "niter_native": 1,
+      "niter_R": 1
+    }
+  ],
+  "nonconverged_pair_cases": [
+    {
+      "case_id": "region25",
+      "panel": "real",
+      "fit_cases": [
+        "region25/gwas",
+        "region25/eqtl"
+      ]
+    },
+    {
+      "case_id": "D3_one_iteration_D4",
+      "panel": "toy",
+      "fit_cases": [
+        "D3_one_iteration",
+        "D4"
+      ]
+    }
+  ],
+  "largest_cases_and_observed_origin": [
+    {
+      "comparison": "same_input/real/abf",
+      "field": "H0-H4",
+      "case_id": "region88",
+      "maximum_absolute_error": 1.0658141036401503e-14,
+      "cause": "The signed summary-statistic inputs are identical; the remaining difference is independent floating-point evaluation of ABFs and colocalisation."
+    },
+    {
+      "comparison": "same_input/real/abf",
+      "field": "SNP.PP.H4",
+      "case_id": "region25",
+      "maximum_absolute_error": 1.2378986724570495e-14,
+      "cause": "The signed summary-statistic inputs are identical; the remaining difference is independent floating-point evaluation of ABFs and colocalisation."
+    },
+    {
+      "comparison": "same_input/real/abf",
+      "field": "lABF.df1",
+      "case_id": "region01",
+      "maximum_absolute_error": 3.126388037344441e-13,
+      "cause": "The signed summary-statistic inputs are identical; the remaining difference is independent floating-point evaluation of ABFs and colocalisation."
+    },
+    {
+      "comparison": "same_input/real/abf",
+      "field": "lABF.df2",
+      "case_id": "region08",
+      "maximum_absolute_error": 5.115907697472721e-13,
+      "cause": "The signed summary-statistic inputs are identical; the remaining difference is independent floating-point evaluation of ABFs and colocalisation."
+    },
+    {
+      "comparison": "same_input/real/bf",
+      "field": "H0-H4",
+      "case_id": "region25",
+      "maximum_absolute_error": 1.0242806602889232e-11,
+      "cause": "The inputs and full component Bayes factors are identical; the remaining difference is floating-point evaluation of colocalisation."
+    },
+    {
+      "comparison": "same_input/real/bf",
+      "field": "SNP.PP.H4",
+      "case_id": "region31",
+      "maximum_absolute_error": 4.551914400963142e-15,
+      "cause": "The inputs and full component Bayes factors are identical; the remaining difference is floating-point evaluation of colocalisation."
+    },
+    {
+      "comparison": "same_input/real/susie",
+      "field": "H0-H4",
+      "case_id": "region67",
+      "maximum_absolute_error": 1.5987211554602254e-14,
+      "cause": "The inputs and full component Bayes factors are identical; the remaining difference is floating-point evaluation of colocalisation."
+    },
+    {
+      "comparison": "same_input/real/susie",
+      "field": "SNP.PP.H4",
+      "case_id": "region65",
+      "maximum_absolute_error": 1.4432899320127035e-15,
+      "cause": "The inputs and full component Bayes factors are identical; the remaining difference is floating-point evaluation of colocalisation."
+    },
+    {
+      "comparison": "same_input/toy/abf",
+      "field": "H0-H4",
+      "case_id": "D3_D4",
+      "maximum_absolute_error": 2.220446049250313e-16,
+      "cause": "The signed summary-statistic inputs are identical; the remaining difference is independent floating-point evaluation of ABFs and colocalisation."
+    },
+    {
+      "comparison": "same_input/toy/abf",
+      "field": "SNP.PP.H4",
+      "case_id": "D3_D4",
+      "maximum_absolute_error": 4.440892098500626e-16,
+      "cause": "The signed summary-statistic inputs are identical; the remaining difference is independent floating-point evaluation of ABFs and colocalisation."
+    },
+    {
+      "comparison": "same_input/toy/abf",
+      "field": "lABF.df1",
+      "case_id": "D3_D4",
+      "maximum_absolute_error": 5.684341886080802e-14,
+      "cause": "The signed summary-statistic inputs are identical; the remaining difference is independent floating-point evaluation of ABFs and colocalisation."
+    },
+    {
+      "comparison": "same_input/toy/abf",
+      "field": "lABF.df2",
+      "case_id": "D1_D2",
+      "maximum_absolute_error": 5.1514348342607263e-14,
+      "cause": "The signed summary-statistic inputs are identical; the remaining difference is independent floating-point evaluation of ABFs and colocalisation."
+    },
+    {
+      "comparison": "same_input/toy/bf",
+      "field": "H0-H4",
+      "case_id": "D1_D2",
+      "maximum_absolute_error": 4.440892098500626e-16,
+      "cause": "The inputs and full component Bayes factors are identical; the remaining difference is floating-point evaluation of colocalisation."
+    },
+    {
+      "comparison": "same_input/toy/bf",
+      "field": "SNP.PP.H4",
+      "case_id": "D1_D2",
+      "maximum_absolute_error": 4.440892098500626e-16,
+      "cause": "The inputs and full component Bayes factors are identical; the remaining difference is floating-point evaluation of colocalisation."
+    },
+    {
+      "comparison": "same_input/toy/susie",
+      "field": "H0-H4",
+      "case_id": "D1_D2",
+      "maximum_absolute_error": 4.440892098500626e-16,
+      "cause": "The inputs and full component Bayes factors are identical; the remaining difference is floating-point evaluation of colocalisation."
+    },
+    {
+      "comparison": "same_input/toy/susie",
+      "field": "SNP.PP.H4",
+      "case_id": "D3_D4",
+      "maximum_absolute_error": 4.440892098500626e-16,
+      "cause": "The inputs and full component Bayes factors are identical; the remaining difference is floating-point evaluation of colocalisation."
+    },
+    {
+      "comparison": "native_end_to_end/real",
+      "field": "H0-H4",
+      "case_id": "region32",
+      "maximum_absolute_error": 9.700900693854209e-09,
+      "cause": "The independently fitted native and R component Bayes factors differ numerically; returned credible-set component IDs and members agree."
+    },
+    {
+      "comparison": "native_end_to_end/real",
+      "field": "SNP.PP.H4",
+      "case_id": "region08",
+      "maximum_absolute_error": 7.468237217533868e-08,
+      "cause": "The independently fitted native and R component Bayes factors differ numerically; returned credible-set component IDs and members agree."
+    },
+    {
+      "comparison": "native_end_to_end/toy",
+      "field": "H0-H4",
+      "case_id": "D3_D4",
+      "maximum_absolute_error": 9.13976744981726e-10,
+      "cause": "The independently fitted native and R component Bayes factors differ numerically; returned credible-set component IDs and members agree."
+    },
+    {
+      "comparison": "native_end_to_end/toy",
+      "field": "SNP.PP.H4",
+      "case_id": "D3_D4",
+      "maximum_absolute_error": 3.6612779474864965e-10,
+      "cause": "The independently fitted native and R component Bayes factors differ numerically; returned credible-set component IDs and members agree."
+    }
+  ],
+  "interpretation": [
+    "Same-input comparisons isolate colocalisation arithmetic from fine-mapping differences.",
+    "The native end-to-end distributions include only cases where both fits converged; CS order is ignored and pairs use original component IDs.",
+    "region25/gwas reached 100 iterations without convergence in both implementations; its region is recorded separately.",
+    "D3_one_iteration intentionally stops after one iteration; D3_strict_purity intentionally has no credible set.",
+    "The numerical scales describe reproducibility of these computations, not statistical evidence for colocalisation."
+  ]
+}

@@ -13,7 +13,7 @@
 <div class="site-shell">
 <aside class="sidebar" aria-label="Documentation sidebar">
 <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
-<span class="version">0.2.2rc3 <span>release candidate</span></span>
+<span class="version">0.2.2</span>
 <nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Get started</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Offline example</a></div><div class="nav-group"><p class="nav-label">Use the package</p><a href="inputs.html">Inputs and priors</a><a href="api.html">API</a><a href="result_schema.html">Results</a><a href="locus_plot.html">Locus plots</a></div><div class="nav-group"><p class="nav-label">Understand and contribute</p><a href="r_agreement.html">R agreement</a><a href="performance.html" aria-current="page">Performance</a><a href="compatibility.html">Scope and limitations</a><a href="methods.html">Methods</a><a href="contributing.html">Contributing</a><a href="https://github.com/LucaJiang/pycoloc">GitHub</a></div></nav>
 <div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
 </aside>
@@ -21,7 +21,7 @@
 <div class="page-meta"><span>Colocalisation / Documentation</span><a href="performance.md">Markdown source</a></div>
 <article><details class="on-this-page"><summary>On this page</summary><div class="toc">
 <ul>
-<li><a href="#new-fixed-r-measurements">New fixed-R measurements</a><ul>
+<li><a href="#measured-versions-and-inputs">Measured versions and inputs</a><ul>
 <li><a href="#public-500-snp-fixture">Public 500-SNP fixture</a></li>
 <li><a href="#complete-records-and-counterexamples">Complete records and counterexamples</a></li>
 </ul>
@@ -31,8 +31,8 @@
 </ul>
 </div>
 </details><h1 id="runtime-and-peak-process-rss">Runtime and peak process RSS</h1>
-<h2 id="new-fixed-r-measurements">New fixed-R measurements</h2>
-<p>These full-call measurements use pycoloc 0.2.2rc3 and prusie 0.2.3rc4, R 4.4.0 with OpenBLAS 0.3.20, coloc 6.0.3 and susieR 0.16.6. Each backend uses one numerical thread. The fixed real panel has 100 regions, 200 traits and 103–4162 SNPs per region. It consists of previously selected association windows from one disease/cell-type pairing; it is not a random sample of all loci.</p>
+<h2 id="measured-versions-and-inputs">Measured versions and inputs</h2>
+<p>These existing full-call measurements use pycoloc 0.2.2rc3 and prusie 0.2.3rc4, R 4.4.0 with OpenBLAS 0.3.20, coloc 6.0.3 and susieR 0.16.6. The inference code is unchanged in pycoloc 0.2.2; these are measurements of 0.2.2rc3, not new timings. Each backend uses one numerical thread. The fixed real panel has 100 regions, 200 traits and 103–4162 SNPs per region. It consists of previously selected association windows from one disease/cell-type pairing; it is not a random sample of all loci.</p>
 <div class="table-wrap" role="region" aria-label="Scrollable data table" tabindex="0"><table>
 <thead>
 <tr>
@@ -205,7 +205,7 @@
 </tr>
 </tbody>
 </table></div>
-<p>These are the full existing synthetic teaching datasets, separately reported from the real panel. D1–D4 are the fine-mapping timing panel; D1/D2 and D3/D4 are the pairing panel. The three additional diagnostic fits are numerically checked but not timed.</p>
+<p>These are the full existing synthetic toy datasets, separately reported from the real panel. D1–D4 are the fine-mapping timing panel; D1/D2 and D3/D4 are the pairing panel. The three additional diagnostic fits are numerically checked but not timed.</p>
 <h3 id="complete-records-and-counterexamples">Complete records and counterexamples</h3>
 <p>The per-case table (<a href="assets/r_comparison_cases.tsv">TSV</a>, <a href="assets/r_comparison_cases.json">JSON</a>), <a href="assets/r_comparison_repeats.json">all retained repeats</a>, <a href="assets/r_comparison_summary.json">summary</a> and <a href="assets/r_comparison_protocol.json">parameters/protocol</a> preserve all workloads and statuses. Per-repeat rows link to separate numerical validation and separate case/backend memory measurements; those quantities are not measured inside every timing repetition. Private genotypes, association files, variant IDs and input paths are not redistributed.</p>
 <ul>
@@ -242,7 +242,7 @@ first call includes compilation and must be separated from warm calls.</p>
 fine-mapping costs O(m²) storage. Plot-only LD thinning leaves analysis inputs
 and association tracks unchanged. See <a href="locus_plot.html">locus plots</a> for rendering
 and annotation details, and <a href="r_agreement.html">agreement</a> for numerical scope.</p></article>
-<footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
+<footer><p>pycoloc 0.2.2 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
 </main>
 </div>
 </body>

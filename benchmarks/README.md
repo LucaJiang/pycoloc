@@ -13,7 +13,7 @@ R/package source identity and CPU/OS when comparing performance.
 
 ## Inputs and numerical checks
 
-Export one complete bundled teaching pair into a **new** directory:
+Export one complete bundled toy pair into a **new** directory:
 
 ```sh
 python benchmarks/coloc_case.py --export-fixture bench-output/D1_D2 --pair D1 D2

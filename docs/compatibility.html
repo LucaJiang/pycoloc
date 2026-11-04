@@ -13,7 +13,7 @@
 <div class="site-shell">
 <aside class="sidebar" aria-label="Documentation sidebar">
 <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
-<span class="version">0.2.2rc3 <span>release candidate</span></span>
+<span class="version">0.2.2</span>
 <nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Get started</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Offline example</a></div><div class="nav-group"><p class="nav-label">Use the package</p><a href="inputs.html">Inputs and priors</a><a href="api.html">API</a><a href="result_schema.html">Results</a><a href="locus_plot.html">Locus plots</a></div><div class="nav-group"><p class="nav-label">Understand and contribute</p><a href="r_agreement.html">R agreement</a><a href="performance.html">Performance</a><a href="compatibility.html" aria-current="page">Scope and limitations</a><a href="methods.html">Methods</a><a href="contributing.html">Contributing</a><a href="https://github.com/LucaJiang/pycoloc">GitHub</a></div></nav>
 <div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
 </aside>
@@ -28,7 +28,8 @@ existing SuSiE results with nonconsecutive CS indices; marginal regional plots.<
 8f20f0bc5e60ffc99e4c2f787bd55fd30cfe7c45, source archive SHA256
 f6580ab471e1bd9f3acc45e23a73bb2ee16fe3c0a45e01cd8cc008854661b479.
 See <a href="reference_mapping.html">source mapping</a> for provenance.</p>
-<p>The exported SusieResult contract is a mapping or object with <code>as_dict()</code>.
+<p>Integration tests exercise prusie 0.3.1 <code>susie_rss</code> results, including refined,
+nonconverged and no-CS fits. The exported SusieResult contract is a mapping or object with <code>as_dict()</code>.
 Required consumption fields are <code>variant_ids</code>, <code>lbf_variable</code>, <code>sets</code> and
 <code>converged</code>; null_index is explicit when present. Additional arrays and metadata
 are allowed. pycoloc never imports prusie during ABF or fit consumption.</p>
@@ -48,7 +49,7 @@ These must not be described as exact parity on upstream-bug counterexamples.</p>
 Partial-zero weights are legal for every coloc interface; they denote exact
 zero configuration support. The overlap diagnostic keeps its previous BF-only
 definition and is unaffected by coloc weights. See <a href="result_schema.html">result schema</a>.</p></article>
-<footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
+<footer><p>pycoloc 0.2.2 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
 </main>
 </div>
 </body>

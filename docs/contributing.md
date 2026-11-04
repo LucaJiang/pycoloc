@@ -6,7 +6,9 @@ existing tests for affected code, and document any changed scientific behavior.
 ## Tests and packages
 
 ```sh
-python -m pip install -c requirements-dev.lock '.[jit,annotation,test]'
+python -m pip install '.[jit,annotation,test]' ruff==0.16.9
+ruff check
+ruff format --check
 python -m pytest tests
 python examples/quickstart.py
 python examples/check_example.py --output-dir example-output
@@ -43,7 +45,7 @@ Open `http://127.0.0.1:8000/`, or open `docs/index.html` directly. Navigation,
 code and tables work without JavaScript; Tab reaches the skip link and scrollable
 content. Links are relative so the site also works below a repository subpath.
 `--check` detects stale HTML; the link checker validates local pages, anchors,
-assets and metadata. Review desktop and mobile rendering after layout changes.
+and assets. Review desktop and mobile rendering after layout changes.
 When merging a page, remove its obsolete HTML and update inbound links too.
 
 The published site is [pycoloc documentation](https://lucajiang.github.io/pycoloc/).
@@ -64,6 +66,6 @@ See [source mapping](reference_mapping.md) for implementation responsibilities.
 
 Retain GPL and third-party notices with code and data. Cite the statistical
 methods as well as the software version. Tests use redistributable analytical
-inputs and the fixed synthetic teaching fixture; they do not need private study
+inputs and the fixed synthetic toy example; they do not need private study
 data or an R installation. The workflow in `.github/workflows/ci.yml` runs local
 build/test/doc commands on GitHub; consult the actual workflow run for CI status.

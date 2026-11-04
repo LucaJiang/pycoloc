@@ -1,8 +1,8 @@
 # Runtime and peak process RSS
 
-## New fixed-R measurements
+## Measured versions and inputs
 
-These full-call measurements use pycoloc 0.2.2rc3 and prusie 0.2.3rc4, R 4.4.0 with OpenBLAS 0.3.20, coloc 6.0.3 and susieR 0.16.6. Each backend uses one numerical thread. The fixed real panel has 100 regions, 200 traits and 103–4162 SNPs per region. It consists of previously selected association windows from one disease/cell-type pairing; it is not a random sample of all loci.
+These existing full-call measurements use pycoloc 0.2.2rc3 and prusie 0.2.3rc4, R 4.4.0 with OpenBLAS 0.3.20, coloc 6.0.3 and susieR 0.16.6. The inference code is unchanged in pycoloc 0.2.2; these are measurements of 0.2.2rc3, not new timings. Each backend uses one numerical thread. The fixed real panel has 100 regions, 200 traits and 103–4162 SNPs per region. It consists of previously selected association windows from one disease/cell-type pairing; it is not a random sample of all loci.
 
 | Task | Comparable cases | Median time, R → Python (ms) | Paired speedup¹ | Faster / tied / slower |
 | --- | ---: | ---: | ---: | ---: |
@@ -45,7 +45,7 @@ Relative repeat IQR is (Q3−Q1)/median across the seven retained times. A runti
 | All component BFs | 263 → 99 | 2 / 0 / 0 |
 | Existing-fit CS pairing | 260 → 97 | 2 / 0 / 0 |
 
-These are the full existing synthetic teaching datasets, separately reported from the real panel. D1–D4 are the fine-mapping timing panel; D1/D2 and D3/D4 are the pairing panel. The three additional diagnostic fits are numerically checked but not timed.
+These are the full existing synthetic toy datasets, separately reported from the real panel. D1–D4 are the fine-mapping timing panel; D1/D2 and D3/D4 are the pairing panel. The three additional diagnostic fits are numerically checked but not timed.
 
 ### Complete records and counterexamples
 

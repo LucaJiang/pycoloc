@@ -13,7 +13,7 @@
 <div class="site-shell">
 <aside class="sidebar" aria-label="Documentation sidebar">
 <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">C</span><span>pycoloc<small>Bayesian colocalisation</small></span></a>
-<span class="version">0.2.2rc3 <span>release candidate</span></span>
+<span class="version">0.2.2</span>
 <nav aria-label="Documentation"><div class="nav-group"><p class="nav-label">Get started</p><a href="index.html">Overview</a><a href="install.html">Install</a><a href="example.html">Offline example</a></div><div class="nav-group"><p class="nav-label">Use the package</p><a href="inputs.html">Inputs and priors</a><a href="api.html">API</a><a href="result_schema.html">Results</a><a href="locus_plot.html">Locus plots</a></div><div class="nav-group"><p class="nav-label">Understand and contribute</p><a href="r_agreement.html">R agreement</a><a href="performance.html">Performance</a><a href="compatibility.html">Scope and limitations</a><a href="methods.html">Methods</a><a href="contributing.html" aria-current="page">Contributing</a><a href="https://github.com/LucaJiang/pycoloc">GitHub</a></div></nav>
 <div class="sidebar-note">Python software · Wenxin Jiang<br>Static documentation. Works offline.</div>
 </aside>
@@ -30,7 +30,9 @@
 <p>Start with the checkout and environment in <a href="install.html">installation</a>. Run the
 existing tests for affected code, and document any changed scientific behavior.</p>
 <h2 id="tests-and-packages">Tests and packages</h2>
-<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python -m pip install -c requirements-dev.lock '.[jit,annotation,test]'
+<pre tabindex="0" aria-label="Code example; scroll horizontally if needed"><code class="language-sh">python -m pip install '.[jit,annotation,test]' ruff==0.16.9
+ruff check
+ruff format --check
 python -m pytest tests
 python examples/quickstart.py
 python examples/check_example.py --output-dir example-output
@@ -60,7 +62,7 @@ python -m http.server 8000 --bind 127.0.0.1 --directory docs
 code and tables work without JavaScript; Tab reaches the skip link and scrollable
 content. Links are relative so the site also works below a repository subpath.
 <code>--check</code> detects stale HTML; the link checker validates local pages, anchors,
-assets and metadata. Review desktop and mobile rendering after layout changes.
+and assets. Review desktop and mobile rendering after layout changes.
 When merging a page, remove its obsolete HTML and update inbound links too.</p>
 <p>The published site is <a href="https://lucajiang.github.io/pycoloc/">pycoloc documentation</a>.
 An owner can configure it under <strong>Settings → Pages → Build and deployment</strong>:
@@ -77,10 +79,10 @@ uses a separate directory and the pinned recipe in
 See <a href="reference_mapping.html">source mapping</a> for implementation responsibilities.</p>
 <p>Retain GPL and third-party notices with code and data. Cite the statistical
 methods as well as the software version. Tests use redistributable analytical
-inputs and the fixed synthetic teaching fixture; they do not need private study
+inputs and the fixed synthetic toy example; they do not need private study
 data or an R installation. The workflow in <code>.github/workflows/ci.yml</code> runs local
 build/test/doc commands on GitHub; consult the actual workflow run for CI status.</p></article>
-<footer><p>pycoloc 0.2.2rc3 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
+<footer><p>pycoloc 0.2.2 · Wenxin Jiang</p><p>Read the <a href="compatibility.html">scope and limitations</a> before interpreting a result.</p></footer>
 </main>
 </div>
 </body>

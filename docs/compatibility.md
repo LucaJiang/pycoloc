@@ -10,7 +10,8 @@ The algorithm reference is pinned coloc 6.0.3, official GitHub commit
 f6580ab471e1bd9f3acc45e23a73bb2ee16fe3c0a45e01cd8cc008854661b479.
 See [source mapping](reference_mapping.md) for provenance.
 
-The exported SusieResult contract is a mapping or object with `as_dict()`.
+Integration tests exercise prusie 0.3.1 `susie_rss` results, including refined,
+nonconverged and no-CS fits. The exported SusieResult contract is a mapping or object with `as_dict()`.
 Required consumption fields are `variant_ids`, `lbf_variable`, `sets` and
 `converged`; null_index is explicit when present. Additional arrays and metadata
 are allowed. pycoloc never imports prusie during ABF or fit consumption.
