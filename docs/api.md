@@ -60,7 +60,7 @@ coloc 6.0.3, claudia.R: process.dataset, combine_abf_weighted, coloc.abf.
 
 
 ```pycon
->>> d = dict(snp=['a', 'b'], beta=[0.2, 0.0], varbeta=[0.01, 0.01], type='cc')
+>>> d = dict(snp=["a", "b"], beta=[0.2, 0.0], varbeta=[0.01, 0.01], type="cc")
 >>> coloc_abf(d, d).nsnps
 2
 ```
@@ -119,7 +119,7 @@ coloc 6.0.3 susie.R: coloc.bf_bf and logbf_to_pp.
 
 
 ```pycon
->>> r = coloc_bf_bf([1., 3.], [2., 4.], snps1=['a', 'b'], snps2=['a', 'b'])
+>>> r = coloc_bf_bf([1.0, 3.0], [2.0, 4.0], snps1=["a", "b"], snps2=["a", "b"])
 >>> r.summary.idx1.tolist()
 [0]
 ```

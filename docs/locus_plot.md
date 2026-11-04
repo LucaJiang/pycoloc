@@ -10,18 +10,29 @@ from pycoloc import LDMatrix, prepare_region_annotation, plot_coloc_locus
 
 # All input objects and metadata are supplied by the caller.
 annotation = prepare_region_annotation(
-    local_gtf, chromosome=chromosome, start=start, end=end,
-    genome_build="GRCh38", version=annotation_version,
-    cache_dir="annotation-index", source_name="GENCODE",
+    local_gtf,
+    chromosome=chromosome,
+    start=start,
+    end=end,
+    genome_build="GRCh38",
+    version=annotation_version,
+    cache_dir="annotation-index",
+    source_name="GENCODE",
 )
-ld1 = LDMatrix(r1, ids1, positions1, kind="r", panel="Trait 1 reference",
-               provenance=provenance1)
-ld2 = LDMatrix(r2, ids2, positions2, kind="r", panel="Trait 2 reference",
-               provenance=provenance2)
+ld1 = LDMatrix(r1, ids1, positions1, kind="r", panel="Trait 1 reference", provenance=provenance1)
+ld2 = LDMatrix(r2, ids2, positions2, kind="r", panel="Trait 2 reference", provenance=provenance2)
 fig, axes = plot_coloc_locus(
-    result, dataset1, dataset2, region=(chromosome, start, end, "GRCh38"),
-    annotation=annotation, target_gene=target_gene, signal_pair=signal_pair,
-    gwas_ld=ld1, eqtl_ld=ld2, heatmap_ld=ld2, output_prefix="figures/locus",
+    result,
+    dataset1,
+    dataset2,
+    region=(chromosome, start, end, "GRCh38"),
+    annotation=annotation,
+    target_gene=target_gene,
+    signal_pair=signal_pair,
+    gwas_ld=ld1,
+    eqtl_ld=ld2,
+    heatmap_ld=ld2,
+    output_prefix="figures/locus",
 )
 ```
 
