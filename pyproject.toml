@@ -6,12 +6,12 @@ build-backend = "setuptools.build_meta"
 authors = [{name = "Wenxin Jiang"}]
 maintainers = [{name = "Wenxin Jiang"}]
 name = "pycoloc"
-version = "0.2.2rc3"
+version = "0.2.2"
 description = "Auditable Bayesian colocalisation with variant-specific priors"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "GPL-3.0-or-later"
-license-files = ["LICENSE", "THIRD_PARTY_NOTICES", "examples/data/LICENSE.GPL-3", "examples/data/upstream/coloc_DESCRIPTION"]
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md", "examples/data/LICENSE.GPL-3", "examples/data/upstream/coloc_DESCRIPTION"]
 dependencies = ["numpy>=1.24", "scipy>=1.10", "pandas>=2", "matplotlib>=3.7"]
 
 [project.urls]
@@ -33,6 +33,8 @@ addopts = "-ra"
 
 [tool.ruff]
 line-length = 100
+# Preserve the byte identity of frozen reference recipes.
+extend-exclude = ["examples/data"]
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F", "I"]

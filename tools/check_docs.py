@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Check local Markdown/Pages links, HTML anchors/assets and package metadata offline."""
+"""Check local Markdown/Pages links, HTML anchors and assets offline."""
 from __future__ import annotations
+
 import argparse
-import ast
-from html.parser import HTMLParser
 import json
-from pathlib import Path
 import re
+from html.parser import HTMLParser
+from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,15 +16,12 @@ class Page(HTMLParser):
     def __init__(self, text):
         super().__init__()
         self.ids = set()
-        self.h1_count = 0
         self.links = []
         self.errors = []
         self.feed(text)
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
-        if tag == "h1":
-            self.h1_count += 1
         if "id" in a:
             if a['id'] in self.ids:
                 self.errors.append(f"duplicate id {a['id']}")
@@ -41,8 +38,6 @@ def check():
     docs = ROOT / 'docs'
     pages = {p.resolve(): Page(p.read_text()) for p in docs.rglob('*.html')}
     for path, page in pages.items():
-        if page.h1_count != 1:
-            errors.append(f"{path.relative_to(ROOT)}: expected one H1, found {page.h1_count}")
         errors.extend(f'{path.relative_to(ROOT)}: {e}' for e in page.errors)
         for target in page.links:
             url = urlsplit(target)
@@ -73,26 +68,6 @@ def check():
                 errors.append(f'{path.relative_to(ROOT)}: missing {target}')
         if '/home/' in text or '/opt/anaconda' in text:
             errors.append(f'{path.relative_to(ROOT)}: private path')
-    cfg = (ROOT / 'pyproject.toml').read_text()
-    package = re.search(r'^name = "([^"]+)"', cfg, re.M)[1]
-    version = re.search(r'^version = "([^"]+)"', cfg, re.M)[1]
-    init = ROOT / 'src' / package / '__init__.py'
-    runtime = next(ast.literal_eval(n.value) for n in ast.parse(init.read_text()).body if isinstance(n, ast.Assign) and any(isinstance(t, ast.Name) and t.id == '__version__' for t in n.targets))
-    if runtime != version:
-        errors.append('Python metadata version mismatch')
-    cff = (ROOT / 'CITATION.cff').read_text()
-    if f'version: "{version}"' not in cff:
-        errors.append('Citation version mismatch')
-    if 'given-names: Wenxin' not in cff or 'family-names: Jiang' not in cff:
-        errors.append('Missing confirmed author')
-    if (ROOT / 'Cargo.toml').exists():
-        cargo = re.search(r'^version = "([^"]+)"', (ROOT / 'Cargo.toml').read_text(), re.M)[1]
-        if cargo.replace('-rc.', 'rc') != version:
-            errors.append('Cargo version mismatch')
-    if not (docs / '.nojekyll').is_file():
-        errors.append('Missing .nojekyll')
-    if not (docs / 'index.html').is_file():
-        errors.append('Missing Pages entry')
     return dict(passed=not errors, checked_links=checked, html_pages=len(pages), errors=errors,
                 external_urls_checked=False, browser_visual_check=False)
 

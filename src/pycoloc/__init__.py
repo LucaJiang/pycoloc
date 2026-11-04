@@ -8,7 +8,7 @@ from .pairing import coloc_bf_bf, coloc_susie
 from .plotting import plot_coloc
 from .result import ColocResult
 
-__version__ = "0.2.2rc3"
+__version__ = "0.2.2"
 __all__ = [
     "coloc_abf",
     "coloc_bf_bf",

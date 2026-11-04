@@ -2,59 +2,90 @@ name: tests-and-packages
 on: [push, pull_request, workflow_dispatch]
 permissions:
   contents: read
+defaults:
+  run:
+    shell: bash
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+  OMP_NUM_THREADS: '1'
+  OPENBLAS_NUM_THREADS: '1'
+  PRUSIE_NUM_THREADS: '1'
+  MPLBACKEND: Agg
 jobs:
-  linux-python312:
+  lint:
     runs-on: ubuntu-24.04
-    env:
-      PYTHONDONTWRITEBYTECODE: '1'
-      OMP_NUM_THREADS: '1'
-      OPENBLAS_NUM_THREADS: '1'
-      PRUSIE_NUM_THREADS: '1'
-      MPLBACKEND: Agg
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
-          python-version: '3.12'
-      - run: python -m pip install -c requirements-dev.lock build '.[jit,annotation,test]' -r tools/docs-requirements.txt
-      - run: python -m pytest tests
-      - run: python examples/quickstart.py
-      - run: python examples/check_example.py --output-dir example-output
+          python-version: '3.13'
+      - run: python -m pip install ruff==0.16.9
+      - run: ruff check
+      - run: ruff format --check
+  test:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.10', '3.13']
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install build
+      - run: python -m build --wheel
+      - name: Install wheel in an independent environment
+        env:
+          TEST_PYTHON: ${{ matrix.python }}
+        run: |
+          python -m venv "$RUNNER_TEMP/test-env"
+          py="$RUNNER_TEMP/test-env/bin/python"
+          numpy=()
+          if [[ "$TEST_PYTHON" == 3.10 ]]; then numpy=('numpy==1.26.4'); fi
+          "$py" -m pip install dist/*.whl pytest numba gffutils "${numpy[@]}"
+          cp -R tests examples "$RUNNER_TEMP/"
+          cd "$RUNNER_TEMP"
+          "$py" -c 'import importlib.util, importlib.metadata, pycoloc; assert importlib.util.find_spec("prusie") is None; assert pycoloc.__version__ == importlib.metadata.version("pycoloc") == "0.2.2"'
+          "$py" -m pytest tests
+          "$py" examples/quickstart.py
+          "$py" examples/check_example.py --output-dir example-output
+  native:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - run: python -m pip install . pytest prusie==0.3.1
+      - run: python -m pytest tests/test_prusie_integration.py
+      - run: python examples/check_example.py --native-pair --output-dir native-example-output
+  docs:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - run: python -m pip install -r tools/docs-requirements.txt
       - run: python tools/build_docs.py --check
       - run: python tools/check_docs.py
-      - run: python -m build
-      - name: Inspect wheel and source payloads
-        run: python tools/check_artifacts.py dist/*.whl dist/*.tar.gz --output artifact-checks.json
-      - name: Rebuild the wheel from the source distribution
-        shell: bash
-        run: |
-          mkdir -p artifact-work/source artifact-work/rebuilt
-          tar -xzf dist/pycoloc-*.tar.gz -C artifact-work/source
-          python -m build --wheel artifact-work/source/pycoloc-* --outdir artifact-work/rebuilt
-          python tools/check_artifacts.py artifact-work/rebuilt/*.whl
-      - name: Install and test each wheel outside the checkout
-        shell: bash
-        run: |
-          for kind in original rebuilt; do
-            if [ "$kind" = original ]; then wheel_dir=dist; else wheel_dir=artifact-work/rebuilt; fi
-            python -m venv "artifact-work/$kind-env"
-            py="$PWD/artifact-work/$kind-env/bin/python"
-            "$py" -m pip install -c requirements-dev.lock "$wheel_dir"/*.whl pytest numba gffutils
-            mkdir -p "artifact-work/$kind-check"
-            cp -R tests examples "artifact-work/$kind-check/"
-            (
-              cd "artifact-work/$kind-check"
-              unset PYTHONPATH
-              "$py" -c 'import pathlib, sys, pycoloc; assert pathlib.Path(pycoloc.__file__).resolve().is_relative_to(pathlib.Path(sys.prefix).resolve()); print(pycoloc.__version__, pycoloc.__file__)'
-              "$py" -m pytest tests
-              "$py" examples/quickstart.py
-              "$py" examples/check_example.py --output-dir example-output
-            )
-          done
-      - uses: actions/upload-artifact@v4
+  package:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
-          name: pycoloc-python312-local-artifacts
-          path: |
-            dist/*
-            artifact-work/rebuilt/*.whl
-            artifact-checks.json
+          python-version: '3.13'
+      - run: python -m pip install build twine
+      - run: python -m build
+      - run: python -m twine check --strict dist/*
+      - run: python -m pip wheel --no-deps dist/*.tar.gz -w rebuilt
+      - name: Install the rebuilt wheel outside the checkout
+        run: |
+          python -m venv "$RUNNER_TEMP/rebuilt-env"
+          py="$RUNNER_TEMP/rebuilt-env/bin/python"
+          "$py" -m pip install rebuilt/*.whl
+          cp -R examples "$RUNNER_TEMP/"
+          cd "$RUNNER_TEMP"
+          "$py" examples/quickstart.py

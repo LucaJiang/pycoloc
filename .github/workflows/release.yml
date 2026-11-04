@@ -1,0 +1,59 @@
+name: release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+env:
+  OMP_NUM_THREADS: '1'
+  OPENBLAS_NUM_THREADS: '1'
+  MPLBACKEND: Agg
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - run: python -m pip install build twine
+      - run: python -m build
+      - run: python -m twine check --strict dist/*
+      - name: Install and test wheel outside the checkout
+        run: |
+          python -m venv "$RUNNER_TEMP/release-env"
+          py="$RUNNER_TEMP/release-env/bin/python"
+          "$py" -m pip install dist/*.whl pytest numba gffutils
+          cp -R tests examples "$RUNNER_TEMP/"
+          cd "$RUNNER_TEMP"
+          "$py" -m pytest tests
+          "$py" examples/quickstart.py
+          "$py" examples/check_example.py --output-dir example-output
+      - name: Extract release notes and verify version
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          python - <<'PY'
+          import os, pathlib, re, tomllib
+          version = tomllib.loads(pathlib.Path('pyproject.toml').read_text())['project']['version']
+          assert os.environ['RELEASE_TAG'] == 'v' + version
+          text = pathlib.Path('CHANGELOG.md').read_text()
+          section = re.search(r'^## ' + re.escape(version) + r' — .*?(?=^## |\Z)', text, re.M | re.S)
+          assert section, 'Missing version section in CHANGELOG.md'
+          pathlib.Path('release-notes.md').write_text(section.group().strip() + '\n')
+          PY
+      - name: Write checksums
+        run: cd dist && sha256sum *.whl *.tar.gz > SHA256SUMS
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$RELEASE_TAG" dist/*.whl dist/*.tar.gz dist/SHA256SUMS \
+            --repo "$GITHUB_REPOSITORY" --verify-tag --latest \
+            --title "pycoloc ${RELEASE_TAG#v}" --notes-file release-notes.md

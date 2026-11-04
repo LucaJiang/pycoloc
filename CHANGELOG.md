@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.2 — 2026-11-04
+
+- Finalize 0.2.2 with prusie 0.3.1 integration and refreshed comparisons against coloc 6.0.3 and susieR 0.16.6.
+- Add Python 3.10/3.13 installed-wheel CI, lint checks and GitHub Release packages.
+- Simplify documentation checks and consolidate license notices; inference is unchanged.
+- Distribute through GitHub only; the PyPI project named pycoloc is unrelated.
+
 ## 0.2.2rc3
 
 - Use prusie for the optional native-fitting example; standalone inference is unchanged.
